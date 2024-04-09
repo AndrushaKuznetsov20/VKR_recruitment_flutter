@@ -6,8 +6,13 @@ import 'dart:convert';
 import 'Home.dart';
 import 'Register.dart';
 
-class Login extends StatelessWidget
+class Login extends StatefulWidget {
+  @override
+  LoginState createState() => LoginState();
+}
+class LoginState extends State<Login>
 {
+  bool _isObscure = true;
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -46,11 +51,21 @@ class Login extends StatelessWidget
             SizedBox(height: 12.0),
             TextField(
               controller: passwordController,
+              obscureText: _isObscure,
               decoration: InputDecoration(
                 labelText: 'Введите пароль',
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
+                  color: Colors.black,
+                  onPressed: () {
+                    setState(() {
+                      _isObscure = !_isObscure;
+                    });
+                  },
                 ),
               ),
               cursorColor: Colors.black,
@@ -63,8 +78,8 @@ class Login extends StatelessWidget
               },
               child: Text('Войти'),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
               ),
             ),
           ],
@@ -78,7 +93,7 @@ class Login extends StatelessWidget
     String username = usernameController.text;
     String password = passwordController.text;
 
-    final url = Uri.parse('http://localhost:8092/auth/sign-in');
+    final url = Uri.parse('http://192.168.0.186:8092/auth/sign-in');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'username': username,
@@ -91,14 +106,101 @@ class Login extends StatelessWidget
     {
       Map<String, dynamic> responseBody = jsonDecode(response.body);
       String token = responseBody['token'];
-
       String role = extractRoleFromToken(token);
 
-      if (role == 'ROLE_EMPLOYER')
-      {
-
-      }
+        if (role == 'ROLE_USER')
+        {
+          Navigator.push(context,MaterialPageRoute(builder: (context) => Home()));
+        }
+        if (role == 'ROLE_EMPLOYER')
+        {
+          Navigator.push(context,MaterialPageRoute(builder: (context) => Home()));
+        }
+        if (role == 'ROLE_MODER')
+        {
+          Navigator.push(context,MaterialPageRoute(builder: (context) => Home()));
+        }
+        if (role == 'ROLE_ADMIN')
+        {
+          Navigator.push(context,MaterialPageRoute(builder: (context) => Home()));
+        }
     }
+
+    if(response.statusCode == 423)
+      {
+        showDialog(
+          context: context,
+          builder: (context) =>
+              AlertDialog(
+                title: Text('Ошибка!'),
+                content: Text('Ваш аккаунт заблокирован ! Пожалуйста, создайте новый аккаунт.'),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('ОК'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => Register()));
+                    },
+                    child: Text('Создать аккаунт'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+        );
+      }
+
+    if(response.statusCode == 404)
+      {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content: Text('У Вас есть аккаунт ? Если да, то проверьте правильность введённых данных!',style: TextStyle(color: Colors.black),),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('ОК'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => Register()));
+                },
+                child: Text('Создать аккаунт'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+
+    if(response.statusCode == 400)
+      {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response.body),
+          ),
+        );
+      }
   }
 
   String extractRoleFromToken(String token)

@@ -3,7 +3,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'Home.dart';
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
+  @override
+  RegisterState createState() => RegisterState();
+}
+class RegisterState extends State<Register> {
+  bool _isObscure = true;
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -54,11 +59,21 @@ class Register extends StatelessWidget {
             SizedBox(height: 12.0),
             TextField(
               controller: passwordController,
+              obscureText: _isObscure,
               decoration: InputDecoration(
                 labelText: 'Введите пароль',
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
+                  color: Colors.black,
+                  onPressed: () {
+                    setState(() {
+                      _isObscure = !_isObscure;
+                    });
+                  },
                 ),
               ),
               cursorColor: Colors.black,
@@ -71,8 +86,8 @@ class Register extends StatelessWidget {
               },
               child: Text('Зарегистрироваться'),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
               ),
             ),
           ],
@@ -82,41 +97,82 @@ class Register extends StatelessWidget {
   }
 
   Future<void> register(BuildContext context) async{
-    String name = usernameController.text;
+    String username = usernameController.text;
     String email = emailController.text;
     String password = passwordController.text;
 
-    final url = Uri.parse('http://localhost:8092/auth/sign-up');
+    final url = Uri.parse('http://192.168.0.186:8092/auth/sign-up');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
-      'name': name,
+      'username': username,
       'email': email,
       'password': password
     });
 
     final response = await http.post(url, headers: headers, body: body);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200)
+    {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(response.body),
         ),
       );
       Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-    } else {
+    }
+    if(response.statusCode == 403)
+      {
+        showDialog(
+          context: context,
+          builder: (context) =>
+              AlertDialog(
+                title: Text('Ошибка!'),
+                content: Text('Пользователь с таким email уже существует!'),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('ОК'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+        );
+      }
+
+    if(response.statusCode == 409)
+    {
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Ошибка!'),
-          content: Text('Пользователь с таким именем уже существует!'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('OK'),
+        builder: (context) =>
+            AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Пользователь с таким именем уже существует!'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('ОК'),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                ),
+              ],
             ),
-          ],
+      );
+    }
+
+    if(response.statusCode == 400)
+    {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
         ),
       );
     }
