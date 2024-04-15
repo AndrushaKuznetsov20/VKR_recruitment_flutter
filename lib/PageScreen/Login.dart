@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:recruitment/PageScreen/Moder.dart';
 import 'dart:convert';
 
 import 'Home.dart';
@@ -118,7 +119,7 @@ class LoginState extends State<Login>
         }
         if (role == 'ROLE_MODER')
         {
-          Navigator.push(context,MaterialPageRoute(builder: (context) => Home()));
+          Navigator.push(context,MaterialPageRoute(builder: (context) => Moder(token: token)));
         }
         if (role == 'ROLE_ADMIN')
         {
