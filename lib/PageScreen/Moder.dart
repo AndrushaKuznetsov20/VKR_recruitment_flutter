@@ -62,6 +62,54 @@ class ModerState extends State<Moder>
     }
   }
 
+  Future<void> setStatusVacancyOk(int id,BuildContext context) async {
+    final response = await http.put(
+      Uri.parse('http://localhost:8092/vacancy/setStatusOk/$id'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+    }
+    listVacancy(currentPage);
+  }
+
+  Future<void> setStatusVacancyBlock(int id, BuildContext context) async {
+    final response = await http.put(
+      Uri.parse('http://localhost:8092/vacancy/setStatusBlock/$id'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+    }
+    listVacancy(currentPage);
+  }
+
     void nextPage() {
       setState(() {
         currentPage++;
@@ -127,8 +175,36 @@ class ModerState extends State<Moder>
                             ],
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  setStatusVacancyOk(data.id, context);
+                                },
+                                child: Text('Опубликовать'),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                ),
+                              ),
+                              SizedBox(width: 16),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setStatusVacancyBlock(data.id, context);
+                                },
+                                child: Text('Заблокировать'),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
-                    ),
+                    )
                   );
                 },
               ),
