@@ -4,38 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:recruitment/Models/Vacancy.dart';
 import 'package:http/http.dart' as http;
 
-class ModerPage extends StatelessWidget
-{
-  @override
-  Widget build(BuildContext context)
-  {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
-      // home: Moder(),
-    );
-  }
-}
-class Moder extends StatefulWidget {
+import 'ModerPage.dart';
+
+class ModerVacancy extends StatefulWidget {
   final String token;
-  Moder({required this.token});
+  ModerVacancy({required this.token});
 
   @override
-  ModerState createState() => ModerState();
+  ModerVacancyState createState() => ModerVacancyState();
 }
-class ModerState extends State<Moder>
+class ModerVacancyState extends State<ModerVacancy>
 {
   List<Vacancy> dataList = [];
   int currentPage = 0;
+  int countVacancy = 0;
 
   @override
   void initState() {
     super.initState();
-    listVacancy(currentPage);
+    listVacancy(currentPage, context);
   }
 
-  Future<void> listVacancy(int pageNo) async {
+  Future<void> listVacancy(int pageNo, BuildContext context) async {
     final response = await http.get(
       Uri.parse('http://192.168.0.186:8092/vacancy/list/$pageNo'),
       headers: {
@@ -55,6 +45,16 @@ class ModerState extends State<Moder>
             vacancies.add(Vacancy.fromJson(vacancyJson));
           }
         }
+        if(vacancies.isEmpty){
+          currentPage--;
+          listVacancy(currentPage,context);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Вакансий больше нет!"),
+            ),
+          );
+        }
       }
       setState(() {
         dataList = vacancies;
@@ -64,7 +64,7 @@ class ModerState extends State<Moder>
 
   Future<void> setStatusVacancyOk(int id,BuildContext context) async {
     final response = await http.put(
-      Uri.parse('http://localhost:8092/vacancy/setStatusOk/$id'),
+      Uri.parse('http://192.168.0.186:8092/vacancy/setStatusOk/$id'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -83,12 +83,12 @@ class ModerState extends State<Moder>
         ),
       );
     }
-    listVacancy(currentPage);
+    listVacancy(currentPage,context);
   }
 
   Future<void> setStatusVacancyBlock(int id, BuildContext context) async {
     final response = await http.put(
-      Uri.parse('http://localhost:8092/vacancy/setStatusBlock/$id'),
+      Uri.parse('http://192.168.0.186:8092/vacancy/setStatusBlock/$id'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -107,13 +107,13 @@ class ModerState extends State<Moder>
         ),
       );
     }
-    listVacancy(currentPage);
+    listVacancy(currentPage,context);
   }
 
     void nextPage() {
       setState(() {
         currentPage++;
-        listVacancy(currentPage);
+        listVacancy(currentPage,context);
       });
     }
 
@@ -121,7 +121,7 @@ class ModerState extends State<Moder>
       if (currentPage > 0) {
         setState(() {
           currentPage--;
-          listVacancy(currentPage);
+          listVacancy(currentPage,context);
         });
       }
   }
@@ -132,6 +132,12 @@ class ModerState extends State<Moder>
           automaticallyImplyLeading: false,
           title: Text('Модерация вакансий',style: TextStyle(color: Colors.white),),
           backgroundColor: Colors.grey.shade900,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ModerPage(token: widget.token)));
+            },
+          ),
         ),
         body: Column(
           children: [
@@ -171,7 +177,12 @@ class ModerState extends State<Moder>
                               Text(utf8.decode(data.schedule.codeUnits)),
                               Divider(),
                               Text('Статус вакансии:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(utf8.decode(data.status_vacancy.codeUnits)),
+                              Text(
+                                utf8.decode(data.status_vacancy.codeUnits),
+                                style: TextStyle(
+                                  color: utf8.decode(data.status_vacancy.codeUnits) == 'Заблокирована!' ? Colors.red : utf8.decode(data.status_vacancy.codeUnits) == 'Опубликована!' ? Colors.green : Colors.black,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -219,10 +230,10 @@ class ModerState extends State<Moder>
                 ),
               ),
               SizedBox(width: 20),
-              Text(
-                'Страница ${currentPage + 1}',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+                Text(
+                  'Страница ${currentPage + 1}',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               SizedBox(width: 20),
               Expanded(
                 child: IconButton(
