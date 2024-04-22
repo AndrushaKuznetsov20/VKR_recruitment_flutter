@@ -1,7 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:recruitment/PageScreen/ModerPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import 'Home.dart';
@@ -48,7 +51,6 @@ class LoginState extends State<Login>
               cursorColor: Colors.black,
               style: TextStyle(color: Colors.black),
             ),
-
             SizedBox(height: 12.0),
             TextField(
               controller: passwordController,
@@ -109,6 +111,14 @@ class LoginState extends State<Login>
       Map<String, dynamic> responseBody = jsonDecode(response.body);
       String token = responseBody['token'];
       String role = extractRoleFromToken(token);
+
+      int id = extractIdFromToken(token);
+
+      Future<void> saveUserId(int id) async {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('id', id);
+      }
+      saveUserId(id);
 
         if (role == 'ROLE_USER')
         {
@@ -210,6 +220,13 @@ class LoginState extends State<Login>
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
     String role = decodedToken['role'];
     return role;
+  }
+
+  int extractIdFromToken(String token)
+  {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    int id = decodedToken['id'];
+    return id;
   }
 
 }

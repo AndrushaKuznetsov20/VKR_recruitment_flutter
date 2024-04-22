@@ -8,6 +8,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Начни охоту за кадрами', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.grey.shade900,
       ),
@@ -33,7 +34,7 @@ class Home extends StatelessWidget {
                   child: Text('Авторизация'),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               SizedBox(
                 width: 200,
                 child:  ElevatedButton(
