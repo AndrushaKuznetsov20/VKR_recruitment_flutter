@@ -20,27 +20,32 @@ class Home extends StatelessWidget {
               SizedBox(height: 30.0),
               Image(image: AssetImage('lib/Images/fon.png')),
               SizedBox(height: 60.0),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              SizedBox(
+                width: 200,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                  child: Text('Авторизация'),
                 ),
-                child: Text('Авторизация'),
               ),
-
-              SizedBox(height: 10.0),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Register()));
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              SizedBox(height: 20),
+              SizedBox(
+                width: 200,
+                child:  ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Register()));
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                  child: Text('Регистрация'),
                 ),
-                child: Text('Регистрация'),
               ),
             ],
           ),

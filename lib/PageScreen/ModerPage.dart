@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'LK.dart';
 import 'ModerResume.dart';
 import 'ModerVacancy.dart';
 
@@ -15,6 +16,15 @@ class ModerPage extends StatelessWidget {
         title: Text('Модерация', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.grey.shade900,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_circle, color: Colors.white),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LK(token: token)),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(

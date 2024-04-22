@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:recruitment/PageScreen/ModerPage.dart';
-import 'package:recruitment/PageScreen/ModerVacancy.dart';
 import 'dart:convert';
 
 import 'Home.dart';
@@ -19,11 +18,10 @@ class LoginState extends State<Login>
   final TextEditingController passwordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Авторизация',style: TextStyle(color: Colors.white),),
+        title: Text('Авторизация', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.grey.shade900,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -40,6 +38,7 @@ class LoginState extends State<Login>
             TextField(
               controller: usernameController,
               decoration: InputDecoration(
+                prefixIcon: Icon(Icons.email, color: Colors.black),
                 labelText: 'Введите логин',
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
@@ -55,6 +54,7 @@ class LoginState extends State<Login>
               controller: passwordController,
               obscureText: _isObscure,
               decoration: InputDecoration(
+                prefixIcon: Icon(Icons.lock, color: Colors.black),
                 labelText: 'Введите пароль',
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(

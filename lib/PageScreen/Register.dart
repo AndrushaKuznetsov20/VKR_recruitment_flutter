@@ -35,6 +35,7 @@ class RegisterState extends State<Register> {
               controller: usernameController,
               decoration: InputDecoration(
                 labelText: 'Введите имя',
+                prefixIcon: Icon(Icons.person, color: Colors.black),
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
@@ -48,6 +49,7 @@ class RegisterState extends State<Register> {
               controller: emailController,
               decoration: InputDecoration(
                 labelText: 'Введите электронную почту',
+                prefixIcon: Icon(Icons.email, color: Colors.black),
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
@@ -62,6 +64,7 @@ class RegisterState extends State<Register> {
               obscureText: _isObscure,
               decoration: InputDecoration(
                 labelText: 'Введите пароль',
+                prefixIcon: Icon(Icons.lock, color: Colors.black),
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),

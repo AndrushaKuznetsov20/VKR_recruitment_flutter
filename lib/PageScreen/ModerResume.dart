@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../Models/Resume.dart';
+import 'LK.dart';
 import 'ModerPage.dart';
 import 'package:intl/intl.dart';
 
@@ -140,6 +141,15 @@ class ModerResumeState extends State<ModerResume>
             Navigator.push(context, MaterialPageRoute(builder: (context) => ModerPage(token: widget.token)));
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_circle, color: Colors.white),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LK(token: widget.token)),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [

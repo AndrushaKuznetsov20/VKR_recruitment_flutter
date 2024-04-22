@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:recruitment/Models/Vacancy.dart';
 import 'package:http/http.dart' as http;
 
+import 'LK.dart';
 import 'ModerPage.dart';
 
 class ModerVacancy extends StatefulWidget {
@@ -138,6 +139,15 @@ class ModerVacancyState extends State<ModerVacancy>
               Navigator.push(context, MaterialPageRoute(builder: (context) => ModerPage(token: widget.token)));
             },
           ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.account_circle, color: Colors.white),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LK(token: widget.token)),
+                );
+              },
+            ),
+          ],
         ),
         body: Column(
           children: [
