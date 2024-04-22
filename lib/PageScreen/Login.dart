@@ -7,6 +7,7 @@ import 'package:recruitment/PageScreen/ModerPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import 'AdminPage.dart';
 import 'Home.dart';
 import 'Register.dart';
 
@@ -134,7 +135,7 @@ class LoginState extends State<Login>
         }
         if (role == 'ROLE_ADMIN')
         {
-          Navigator.push(context,MaterialPageRoute(builder: (context) => Home()));
+          Navigator.push(context,MaterialPageRoute(builder: (context) => AdminPage(token: token)));
         }
     }
 

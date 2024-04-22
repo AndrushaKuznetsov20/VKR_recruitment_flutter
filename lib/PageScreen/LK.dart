@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/Role.dart';
 import '../Models/User.dart';
+import 'AdminPage.dart';
 import 'Home.dart';
 import 'ModerPage.dart';
 import 'UpdateUser.dart';
@@ -159,6 +161,13 @@ class LKstate extends State<LK> {
   //   );
   // }
 
+  String extractRoleFromToken(String token)
+  {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    String role = decodedToken['role'];
+    return role;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,7 +178,20 @@ class LKstate extends State<LK> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ModerPage(token: widget.token)));
+            String role = extractRoleFromToken(widget.token);
+
+            if (role == 'ROLE_MODER')
+            {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ModerPage(token: widget.token)));
+            }
+            else if (role == 'ROLE_ADMIN') {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(token: widget.token)));
+            } else if (role == 'ROLE_EMPLOYER'){
+              // Navigator.push(context, MaterialPageRoute(builder: (context) => EmployerP(token: widget.token)));
+            }
+            else if (role == 'ROLE_ADMIN'){
+              // Navigator.push(context, MaterialPageRoute(builder: (context) => UserPage(token: widget.token)));
+            }
           },
         ),
       ),
