@@ -9,6 +9,7 @@ import 'AdminPage.dart';
 import 'Home.dart';
 import 'ModerPage.dart';
 import 'UpdateUser.dart';
+import 'UserPage.dart';
 
 class LK extends StatefulWidget{
   final String token;
@@ -189,9 +190,10 @@ class LKstate extends State<LK> {
             } else if (role == 'ROLE_EMPLOYER'){
               // Navigator.push(context, MaterialPageRoute(builder: (context) => EmployerP(token: widget.token)));
             }
-            else if (role == 'ROLE_ADMIN'){
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => UserPage(token: widget.token)));
+            else if (role == 'ROLE_USER'){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => UserPage(token: widget.token)));
             }
+
           },
         ),
       ),

@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'AdminPage.dart';
 import 'Home.dart';
 import 'Register.dart';
+import 'UserPage.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -123,7 +124,7 @@ class LoginState extends State<Login>
 
         if (role == 'ROLE_USER')
         {
-          Navigator.push(context,MaterialPageRoute(builder: (context) => Home()));
+          Navigator.push(context,MaterialPageRoute(builder: (context) => UserPage(token: token)));
         }
         if (role == 'ROLE_EMPLOYER')
         {
