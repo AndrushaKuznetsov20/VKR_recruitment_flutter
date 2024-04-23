@@ -130,6 +130,7 @@ class UserVacancyState extends State<UserVacancy> {
         ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: ListView.builder(
@@ -200,7 +201,7 @@ class UserVacancyState extends State<UserVacancy> {
                                   fixedSize: MaterialStateProperty.all<Size>(Size(200, 25)),
                                 ),
                               ),
-                              SizedBox(width: 16),
+                              SizedBox(height: 12),
                               ElevatedButton(
                                 onPressed: () {
                                   // setStatusVacancyBlock(data.id, context);

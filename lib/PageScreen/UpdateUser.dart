@@ -84,6 +84,7 @@ class UpdateUserState extends State<UpdateUser>
         padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
@@ -96,7 +97,7 @@ class UpdateUserState extends State<UpdateUser>
                 style: TextStyle(color: Colors.black),
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 12),
             TextField(
               controller: usernameController,
               decoration: InputDecoration(
@@ -110,6 +111,7 @@ class UpdateUserState extends State<UpdateUser>
               cursorColor: Colors.black,
               style: TextStyle(color: Colors.black),
             ),
+            SizedBox(height: 12),
             TextField(
               controller: emailController,
               decoration: InputDecoration(
@@ -123,7 +125,7 @@ class UpdateUserState extends State<UpdateUser>
               cursorColor: Colors.black,
               style: TextStyle(color: Colors.black),
             ),
-            SizedBox(height: 12.0),
+            SizedBox(height: 12),
             TextField(
               controller: passwordController,
               decoration: InputDecoration(

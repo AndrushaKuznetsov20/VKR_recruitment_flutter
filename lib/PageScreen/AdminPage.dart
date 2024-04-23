@@ -154,6 +154,7 @@ class AdminPageState extends State<AdminPage> {
         ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: ListView.builder(

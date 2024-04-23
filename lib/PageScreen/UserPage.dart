@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:recruitment/PageScreen/Resume/CreateResume.dart';
 import 'package:recruitment/PageScreen/UserVacancy.dart';
 
 import 'LK.dart';
@@ -79,7 +80,7 @@ class UserPage extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ModerResume(token: token)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CreateResume(token: token)));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
