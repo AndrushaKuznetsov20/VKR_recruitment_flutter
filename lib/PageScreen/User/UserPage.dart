@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:recruitment/PageScreen/Resume/CreateResume.dart';
+import 'package:recruitment/PageScreen/User/UserVacancy.dart';
 
-import 'LK.dart';
-import 'ModerResume.dart';
-import 'ModerVacancy.dart';
+import '../LK/LK.dart';
 
-class ModerPage extends StatelessWidget {
+class UserPage extends StatelessWidget {
   final String token;
-  ModerPage({required this.token});
+  UserPage({required this.token});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Модерация', style: TextStyle(color: Colors.white)),
+        title: Text('Добро пожаловать!', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.grey.shade900,
         automaticallyImplyLeading: false,
         actions: [
@@ -44,18 +44,18 @@ class ModerPage extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ModerVacancy(token: token)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => UserVacancy(token: token)));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconTheme(
                         data: IconThemeData(size: 30),
-                        child: Icon(Icons.arrow_forward),
+                        child: Icon(Icons.search),
                       ),
                       SizedBox(width: 10),
                       Text(
-                        'Модерация вакансий',
+                        'Поиск вакансий',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -80,18 +80,18 @@ class ModerPage extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ModerResume(token: token)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CreateResume(token: token)));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconTheme(
                         data: IconThemeData(size: 30),
-                        child: Icon(Icons.arrow_forward),
+                        child: Icon(Icons.add),
                       ),
                       SizedBox(width: 10),
                       Text(
-                        'Модерация резюме',
+                        'Создание резюме',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,

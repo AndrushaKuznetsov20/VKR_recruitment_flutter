@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:recruitment/PageScreen/Resume/CreateResume.dart';
-import 'package:recruitment/PageScreen/UserVacancy.dart';
 
-import 'LK.dart';
+import '../LK/LK.dart';
+import 'CreateVacancy.dart';
 
-class UserPage extends StatelessWidget {
+class EmployerPage extends StatelessWidget {
   final String token;
-  UserPage({required this.token});
+  EmployerPage({required this.token});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Добро пожаловать!', style: TextStyle(color: Colors.white)),
+        title: Text('Добро пожаловать', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.grey.shade900,
         automaticallyImplyLeading: false,
         actions: [
@@ -44,18 +43,18 @@ class UserPage extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => UserVacancy(token: token)));
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Metrics(token: token)));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconTheme(
                         data: IconThemeData(size: 30),
-                        child: Icon(Icons.arrow_forward),
+                        child: Icon(Icons.search),
                       ),
                       SizedBox(width: 10),
                       Text(
-                        'Поиск вакансий',
+                        'Поиск резюме',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -80,18 +79,54 @@ class UserPage extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CreateResume(token: token)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CreateVacancy(token: token)));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconTheme(
                         data: IconThemeData(size: 30),
-                        child: Icon(Icons.arrow_forward),
+                        child: Icon(Icons.add),
                       ),
                       SizedBox(width: 10),
                       Text(
-                        'Создание резюме',
+                        'Создание вакансии',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: InkWell(
+                  onTap: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Metrics(token: token)));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconTheme(
+                        data: IconThemeData(size: 30),
+                        child: Icon(Icons.analytics),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Ведение аналитики',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,

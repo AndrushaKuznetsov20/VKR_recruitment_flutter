@@ -3,14 +3,15 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:recruitment/PageScreen/ModerPage.dart';
+import 'package:recruitment/PageScreen/Moder/ModerPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-import 'AdminPage.dart';
-import 'Home.dart';
+import '../Admin/AdminPage.dart';
+import '../Employer/EmployerPage.dart';
+import '../Home.dart';
 import 'Register.dart';
-import 'UserPage.dart';
+import '../User/UserPage.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -128,7 +129,7 @@ class LoginState extends State<Login>
         }
         if (role == 'ROLE_EMPLOYER')
         {
-          Navigator.push(context,MaterialPageRoute(builder: (context) => Home()));
+          Navigator.push(context,MaterialPageRoute(builder: (context) => EmployerPage(token: token)));
         }
         if (role == 'ROLE_MODER')
         {

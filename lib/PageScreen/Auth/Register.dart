@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'Home.dart';
+import '../Home.dart';
 
 class Register extends StatefulWidget {
   @override

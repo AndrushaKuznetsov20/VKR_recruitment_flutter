@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Models/Role.dart';
-import '../Models/User.dart';
-import 'AdminPage.dart';
-import 'Home.dart';
-import 'ModerPage.dart';
-import 'UpdateUser.dart';
-import 'UserPage.dart';
+import '../../Models/Role.dart';
+import '../../Models/User.dart';
+import '../Admin/AdminPage.dart';
+import '../Employer/EmployerPage.dart';
+import '../Home.dart';
+import '../Moder/ModerPage.dart';
+import '../User/UpdateUser.dart';
+import '../User/UserPage.dart';
 
 class LK extends StatefulWidget{
   final String token;
@@ -77,7 +78,7 @@ class LKstate extends State<LK> {
             else if (role == 'ROLE_ADMIN') {
               Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(token: widget.token)));
             } else if (role == 'ROLE_EMPLOYER'){
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => EmployerP(token: widget.token)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => EmployerPage(token: widget.token)));
             }
             else if (role == 'ROLE_USER'){
               Navigator.push(context, MaterialPageRoute(builder: (context) => UserPage(token: widget.token)));
@@ -139,6 +140,21 @@ class LKstate extends State<LK> {
                   ),
                   title: Text('Роль: ${user?.role == Role.ROLE_MODER ? 'Модератор' : user?.role == Role.ROLE_ADMIN ? 'Администратор' : user?.role == Role.ROLE_USER ? 'Простой пользователь' : user?.role == Role.ROLE_EMPLOYER ? 'Работодатель' : ''}'),
                 ),
+                if (user != null && user?.role == Role.ROLE_EMPLOYER) ...[
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      // createResume(context);
+                    },
+                    child: Text('Мои вакансии'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.grey.shade900),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

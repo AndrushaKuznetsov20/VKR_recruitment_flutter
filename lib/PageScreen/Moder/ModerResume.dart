@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../Models/Resume.dart';
-import 'LK.dart';
+import '../../Models/Resume.dart';
+import '../LK/LK.dart';
 import 'ModerPage.dart';
 import 'package:intl/intl.dart';
 

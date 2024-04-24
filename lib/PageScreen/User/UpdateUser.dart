@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'Home.dart';
-import 'LK.dart';
+import '../Home.dart';
+import '../LK/LK.dart';
 
 class UpdateUser extends StatefulWidget {
   final String token;

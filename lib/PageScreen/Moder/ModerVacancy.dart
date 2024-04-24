@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:recruitment/Models/Vacancy.dart';
 import 'package:http/http.dart' as http;
 
-import 'LK.dart';
+import '../LK/LK.dart';
 import 'ModerPage.dart';
 
 class ModerVacancy extends StatefulWidget {

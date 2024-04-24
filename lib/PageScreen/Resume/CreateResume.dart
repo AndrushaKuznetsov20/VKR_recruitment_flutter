@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../LK.dart';
-import '../UserPage.dart';
+import '../LK/LK.dart';
+import '../User/UserPage.dart';
 
 class CreateResume extends StatefulWidget {
 
@@ -67,7 +67,7 @@ class CreateResumeState extends State<CreateResume>
     String education = educationController.text;
     String otherInfo = otherInfoController.text;
 
-    final url = Uri.parse('http://localhost:8092/resume/create');
+    final url = Uri.parse('http://192.168.0.186:8092/resume/create');
     final headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ${widget.token}'};
     final body = jsonEncode({
       'fullName': fullName,
@@ -86,6 +86,10 @@ class CreateResumeState extends State<CreateResume>
           content: Text(response.body),
         ),
       );
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => UserPage(token: widget.token)));
     }
     if (response.statusCode == 400) {
       ScaffoldMessenger.of(context).showSnackBar(

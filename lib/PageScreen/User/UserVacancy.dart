@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:recruitment/Models/Vacancy.dart';
 import 'package:http/http.dart' as http;
-import 'package:recruitment/PageScreen/UserPage.dart';
+import 'package:recruitment/PageScreen/User/UserPage.dart';
 
-import 'LK.dart';
-import 'ModerPage.dart';
+import '../LK/LK.dart';
+import '../Moder/ModerPage.dart';
 
 class UserVacancy extends StatefulWidget {
   final String token;
