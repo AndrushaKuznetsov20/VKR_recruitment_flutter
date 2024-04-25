@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../LK/LK.dart';
 import '../User/UserPage.dart';
-import 'EmployerPage.dart';
+import '../Employer/EmployerPage.dart';
 
 class CreateVacancy extends StatefulWidget {
 

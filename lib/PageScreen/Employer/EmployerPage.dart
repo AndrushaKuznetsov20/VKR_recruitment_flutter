@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:recruitment/PageScreen/Employer/EmployerResume.dart';
 
 import '../LK/LK.dart';
-import 'CreateVacancy.dart';
+import '../Vacancy/CreateVacancy.dart';
 
 class EmployerPage extends StatelessWidget {
   final String token;
@@ -43,7 +44,7 @@ class EmployerPage extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Metrics(token: token)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EmployerResume(token: token)));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
