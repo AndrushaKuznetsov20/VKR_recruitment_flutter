@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:recruitment/Models/Vacancy.dart';
 import 'package:http/http.dart' as http;
+import '../../Models/Response.dart';
 import '../../Models/User.dart';
 import '../Employer/EmployerPage.dart';
 import '../LK/LK.dart';
+import '../LK/ProfileUser.dart';
 
 class MyVacancy extends StatefulWidget {
   final String token;
@@ -19,6 +21,7 @@ class MyVacancy extends StatefulWidget {
 class MyVacancyState extends State<MyVacancy> {
   List<Vacancy> dataList = [];
   List<User> dataListUser = [];
+  List<Response> dataListResponse = [];
   int currentPage = 0;
 
   @override
@@ -83,6 +86,28 @@ class MyVacancyState extends State<MyVacancy> {
       });
     }
   }
+
+  Future<void> listResponse(BuildContext context, int vacancyId) async {
+    final response = await http.get(
+      Uri.parse('http://192.168.0.186:8092/response/listResponse/$vacancyId'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body) as List<dynamic>;
+
+      List<Response> responses = [];
+      for (var responseJson in jsonData) {
+        responses.add(Response.fromJson(responseJson));
+      }
+
+      setState(() {
+        dataListResponse = responses;
+      });
+    }
+  }
+
 
   void nextPage() {
     setState(() {
@@ -195,15 +220,27 @@ class MyVacancyState extends State<MyVacancy> {
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
-                                  itemCount: dataListUser.length,
+                                  itemCount: dataListResponse.length,
                                   itemBuilder: (BuildContext context, int index) {
                                     return Column(
                                       children: [
                                         ListTile(
-                                          leading: Icon(Icons.person),
-                                          title: Text(dataListUser[index].username),
+                                          title: Row(
+                                            children: [
+                                              Icon(Icons.person),
+                                              SizedBox(width: 8.0),
+                                              Text(dataListResponse[index].user.username),
+                                              SizedBox(width: 8.0),
+                                              Text(utf8.decode(dataListResponse[index].statusResponse.codeUnits),style: TextStyle(
+                                                color: utf8.decode(dataListResponse[index].statusResponse.codeUnits) == 'Не обработан!' ? Colors.red : Colors.green,
+                                              ),),
+                                            ],
+                                          ),
                                           onTap: () {
-
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => ProfileUser(token: widget.token, id: dataListResponse[index].user.id, vacancyId: data.id)));
                                           },
                                         ),
                                       ],
@@ -212,7 +249,7 @@ class MyVacancyState extends State<MyVacancy> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    listResponseVacancy(context, data.id);
+                                    listResponse(context, data.id);
                                   },
                                   child: Text('Показать отклики'),
                                   style: ButtonStyle(
@@ -225,7 +262,7 @@ class MyVacancyState extends State<MyVacancy> {
                                 ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      dataListUser = [];
+                                      dataListResponse = [];
                                     });
                                   },
                                   child: Text('Скрыть отклики'),
