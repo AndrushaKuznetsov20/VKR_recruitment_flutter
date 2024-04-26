@@ -4,12 +4,15 @@ import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:recruitment/PageScreen/Vacancy/MyVacancy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../Models/Resume.dart';
 import '../../Models/Role.dart';
 import '../../Models/User.dart';
 import '../Admin/AdminPage.dart';
 import '../Employer/EmployerPage.dart';
 import '../Home.dart';
 import '../Moder/ModerPage.dart';
+import '../Resume/CreateResume.dart';
+import '../Resume/ReadResume.dart';
 import '../User/UpdateUser.dart';
 import '../User/UserPage.dart';
 
@@ -23,6 +26,7 @@ class LK extends StatefulWidget{
 class LKstate extends State<LK> {
 
   User? user;
+  Resume? resume;
 
   Future<int?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
@@ -51,6 +55,7 @@ class LKstate extends State<LK> {
   void initState() {
     super.initState();
     fingByUser();
+    findByUserResume();
   }
 
   String extractRoleFromToken(String token)
@@ -60,6 +65,20 @@ class LKstate extends State<LK> {
     return role;
   }
 
+  Future<Resume?> findByUserResume() async
+  {
+    final response = await http.get(
+      Uri.parse('http://192.168.0.186:8092/resume/myResume'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },);
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      setState(() {
+        resume = Resume.fromJson(jsonData);
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +142,7 @@ class LKstate extends State<LK> {
                     backgroundColor: Colors.black,
                     child: Icon(Icons.person, color: Colors.white),
                   ),
-                  title: Text('Логин: ${user?.username}'),
+                  title: Text('Логин: ${utf8.decode(user?.username.codeUnits ?? [])}'),
                 ),
                 Divider(),
                 ListTile(
@@ -131,7 +150,7 @@ class LKstate extends State<LK> {
                     backgroundColor: Colors.black,
                     child: Icon(Icons.email, color: Colors.white),
                   ),
-                  title: Text('Email: ${user?.email}'),
+                  title: Text('Email: ${utf8.decode(user?.email.codeUnits ?? [])}'),
                 ),
                 Divider(),
                 ListTile(
@@ -153,6 +172,66 @@ class LKstate extends State<LK> {
                           Colors.grey.shade900),
                       foregroundColor:
                           MaterialStateProperty.all<Color>(Colors.white),
+                    ),
+                  ),
+                ],
+                if (user != null && user?.role == Role.ROLE_USER) ...[
+                  ElevatedButton(
+                    onPressed: () async{
+                      if (resume != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReadResume(token: widget.token, resume: resume),
+                          ),
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Ошибка!'),
+                            content: Text('У вас нет резюме, хотите его создать ?'),
+                            actions: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CreateResume(token: widget.token)));
+                                },
+                                child: Text('Создать'),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 12.0,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Нет'),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    child: Text('Ваше резюме'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.grey.shade900),
+                      foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
                     ),
                   ),
                 ],

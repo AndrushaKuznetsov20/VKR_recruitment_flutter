@@ -10,6 +10,7 @@ import '../Admin/AdminPage.dart';
 import '../Employer/EmployerPage.dart';
 import '../Home.dart';
 import '../Moder/ModerPage.dart';
+import '../Resume/ReadResume.dart';
 import '../User/UpdateUser.dart';
 import '../User/UserPage.dart';
 
@@ -161,7 +162,7 @@ class ProfileUserstate extends State<ProfileUser> {
                     backgroundColor: Colors.black,
                     child: Icon(Icons.person, color: Colors.white),
                   ),
-                  title: Text('Логин: ${user?.username}'),
+                  title: Text('Логин: ${utf8.decode(user?.username.codeUnits ?? [])}'),
                 ),
                 Divider(),
                 ListTile(
@@ -169,7 +170,7 @@ class ProfileUserstate extends State<ProfileUser> {
                     backgroundColor: Colors.black,
                     child: Icon(Icons.email, color: Colors.white),
                   ),
-                  title: Text('Email: ${user?.email}'),
+                  title: Text('Email: ${utf8.decode(user?.email.codeUnits ?? [])}'),
                 ),
                 Divider(),
                 ListTile(
@@ -180,6 +181,20 @@ class ProfileUserstate extends State<ProfileUser> {
                   title: Text('Роль: ${user?.role == Role.ROLE_MODER ? 'Модератор' : user?.role == Role.ROLE_ADMIN ? 'Администратор' : user?.role == Role.ROLE_USER ? 'Простой пользователь' : user?.role == Role.ROLE_EMPLOYER ? 'Работодатель' : ''}'),
                 ),
                 SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    // Navigator.push(context, MaterialPageRoute(
+                    //     builder: (context) => ReadResume(token: widget.token), id: user?.id));
+                  },
+                  child: Text('Просмотр резюме'),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Colors.grey.shade900),
+                    foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                ),
+                SizedBox(height: 12.0),
                 ElevatedButton(
                   onPressed: () {
                     // Navigator.push(context, MaterialPageRoute(
