@@ -28,7 +28,7 @@ class UpdateUserState extends State<UpdateUser>
     String email = emailController.text;
     String password = passwordController.text;
 
-    final url = Uri.parse('http://192.168.0.186:8092/user/update');
+    final url = Uri.parse('http://172.20.10.3:8092/user/update');
     final headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ${widget.token}'};
     final body = jsonEncode({
       'username': username,
@@ -88,10 +88,10 @@ class UpdateUserState extends State<UpdateUser>
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.black), // Цвет рамки
-                borderRadius: BorderRadius.circular(8.0), // Закругленные углы рамки
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(8.0),
               ),
-              padding: EdgeInsets.all(16.0), // Отступы внутри контейнера
+              padding: EdgeInsets.all(16.0),
               child: Text(
                 'Внимание! После обновления данных\nнеобходимо перезайти в аккаунт!',
                 style: TextStyle(color: Colors.black),

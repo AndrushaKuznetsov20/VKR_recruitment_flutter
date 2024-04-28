@@ -30,7 +30,7 @@ class ProfileUserstate extends State<ProfileUser> {
   Future<void> fingByUser() async
   {
     int userId = widget.id;
-    final response = await http.get(Uri.parse('http://192.168.0.186:8092/user/findByUser/$userId'),
+    final response = await http.get(Uri.parse('http://172.20.10.3:8092/user/findByUser/$userId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },);
@@ -47,7 +47,7 @@ class ProfileUserstate extends State<ProfileUser> {
 
   Future<void> setStatusSelfDenial(int vacancyId, int userId, BuildContext buildContext) async
   {
-    final response = await http.put(Uri.parse('http://192.168.0.186:8092/response/setStatusSelfDenial/$userId/$vacancyId'),
+    final response = await http.put(Uri.parse('http://172.20.10.3:8092/response/setStatusSelfDenial/$userId/$vacancyId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },);
@@ -62,7 +62,7 @@ class ProfileUserstate extends State<ProfileUser> {
 
   Future<void> setStatusRefusalEmployer(int vacancyId, int userId, BuildContext buildContext) async
   {
-    final response = await http.put(Uri.parse('http://192.168.0.186:8092/response/setStatusRefusalEmployer/$userId/$vacancyId'),
+    final response = await http.put(Uri.parse('http://172.20.10.3:8092/response/setStatusRefusalEmployer/$userId/$vacancyId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },);
@@ -76,7 +76,7 @@ class ProfileUserstate extends State<ProfileUser> {
   }
   Future<void> setStatusRelevant(int vacancyId, int userId, BuildContext buildContext) async
   {
-    final response = await http.put(Uri.parse('http://192.168.0.186:8092/response/setStatusRelevant/$userId/$vacancyId'),
+    final response = await http.put(Uri.parse('http://172.20.10.3:8092/response/setStatusRelevant/$userId/$vacancyId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },);
@@ -90,7 +90,7 @@ class ProfileUserstate extends State<ProfileUser> {
   }
   Future<void> setStatusInvitation(int vacancyId, int userId, BuildContext buildContext) async
   {
-    final response = await http.put(Uri.parse('http://192.168.0.186:8092/response/setStatusInvitation/$userId/$vacancyId'),
+    final response = await http.put(Uri.parse('http://172.20.10.3:8092/response/setStatusInvitation/$userId/$vacancyId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },);

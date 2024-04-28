@@ -1,28 +1,38 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../Models/Resume.dart';
+import '../Home.dart';
 import '../LK/LK.dart';
-import '../User/UserPage.dart';
+import 'ReadResume.dart';
 
-class CreateResume extends StatefulWidget {
-
+class UpdateResume extends StatefulWidget {
   final String token;
-  CreateResume ({required this.token});
+  final int id;
+  final String fullName;
+  final DateTime birthDate;
+  final String city;
+  final String skills;
+  final String education;
+  final String otherInfo;
+
+  UpdateResume({required this.token, required this.id,
+    required this.fullName, required this.birthDate, required this.city,
+    required this.skills, required this.education, required this.otherInfo});
 
   @override
-  CreateResumeState createState() => CreateResumeState();
+  UpdateResumeState createState() => UpdateResumeState();
 }
-class CreateResumeState extends State<CreateResume>
-{
+class UpdateResumeState extends State<UpdateResume> {
+  late TextEditingController fullNameController;
+  late TextEditingController birthDateController;
+  late TextEditingController cityController;
+  late TextEditingController skillsController;
+  late TextEditingController educationController;
+  late TextEditingController otherInfoController;
 
-  final TextEditingController fullNameController = TextEditingController();
-  final TextEditingController birthDateController = TextEditingController();
-  final TextEditingController cityController = TextEditingController();
-  final TextEditingController skillsController = TextEditingController();
-  final TextEditingController educationController = TextEditingController();
-  final TextEditingController otherInfoController = TextEditingController();
+  Resume? resume;
 
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
@@ -35,7 +45,6 @@ class CreateResumeState extends State<CreateResume>
       helpText: 'Выберите дату',
       cancelText: 'Отмена',
       confirmText: 'Выбрать',
-      // locale: const Locale('ru'),
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
@@ -59,16 +68,20 @@ class CreateResumeState extends State<CreateResume>
     }
   }
 
-  Future<void> createResume(BuildContext context) async {
-    String fullName =fullNameController.text;
+  Future<void> updateDataResume(BuildContext context) async
+  {
+    String fullName = fullNameController.text;
     String birthDate = birthDateController.text;
     String city = cityController.text;
     String skills = skillsController.text;
     String education = educationController.text;
     String otherInfo = otherInfoController.text;
 
-    final url = Uri.parse('http://172.20.10.3:8092/resume/create');
-    final headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ${widget.token}'};
+    final url = Uri.parse('http://172.20.10.3:8092/resume/update/${widget.id}');
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${widget.token}'
+    };
     final body = jsonEncode({
       'fullName': fullName,
       'birthDate': birthDate,
@@ -78,7 +91,7 @@ class CreateResumeState extends State<CreateResume>
       'otherInfo': otherInfo,
     });
 
-    final response = await http.post(url, headers: headers, body: body);
+    final response = await http.put(url, headers: headers, body: body);
 
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -86,29 +99,54 @@ class CreateResumeState extends State<CreateResume>
           content: Text(response.body),
         ),
       );
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => UserPage(token: widget.token)));
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) => LK(token: widget.token)));
     }
-    if (response.statusCode == 400) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(response.body),
-        ),
-      );
+    else {
+      if (response.statusCode == 400) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response.body),
+          ),
+        );
+        Navigator.of(context).pop();
+      }
     }
+  }
+
+  Future<Resume?> findByUserResume() async
+  {
+    final response = await http.get(
+      Uri.parse('http://192.168.0.186:8092/resume/myResume'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },);
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      setState(() {
+        resume = Resume.fromJson(jsonData);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fullNameController = TextEditingController(text: utf8.decode(widget.fullName.codeUnits));
+    birthDateController = TextEditingController(text: dateFormat.format(widget.birthDate));
+    cityController = TextEditingController(text: utf8.decode(widget.city.codeUnits));
+    skillsController = TextEditingController(text: utf8.decode(widget.skills.codeUnits));
+    educationController = TextEditingController(text: utf8.decode(widget.education.codeUnits));
+    otherInfoController = TextEditingController(text: utf8.decode(widget.otherInfo.codeUnits));
+    findByUserResume();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Создание резюме',
-          style: TextStyle(color: Colors.white),
-        ),
+        title: Text('Редактирование резюме',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.grey.shade900,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -116,49 +154,42 @@ class CreateResumeState extends State<CreateResume>
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => UserPage(token: widget.token)));
+                    builder: (context) => LK(token: widget.token)));
           },
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.account_circle, color: Colors.white),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => LK(token: widget.token)),
-              );
-            },
-          ),
-        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
+        child: ListView(
+          children: <Widget>[
+        Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              SizedBox(height: 12),
               TextField(
                 controller: fullNameController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.person, color: Colors.black),
-                  labelText: 'Введите ФИО:',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelText: 'Введите новое ФИО',
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
                 cursorColor: Colors.black,
                 style: TextStyle(color: Colors.black),
+                maxLines: null,
               ),
-              SizedBox(height: 12.0),
+              SizedBox(height: 12),
               TextField(
                 controller: birthDateController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.calendar_today, color: Colors.black),
-                  labelText: 'Выберите дату:',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelText: 'Выберите новую дату рождения:',
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
@@ -177,72 +208,81 @@ class CreateResumeState extends State<CreateResume>
                 controller: cityController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.location_city, color: Colors.black),
-                  labelText: 'Введите город:',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelText: 'Введите новый город:',
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
                 cursorColor: Colors.black,
                 style: TextStyle(color: Colors.black),
+                maxLines: null,
               ),
               SizedBox(height: 12.0),
               TextField(
                 controller: skillsController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.work, color: Colors.black),
-                  labelText: 'Введите навыки:',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelText: 'Введите новые навыки:',
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
                 cursorColor: Colors.black,
                 style: TextStyle(color: Colors.black),
+                maxLines: null,
               ),
               SizedBox(height: 12.0),
               TextField(
                 controller: educationController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.school, color: Colors.black),
-                  labelText: 'Введите образование:',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelText: 'Введите новое образование:',
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
                 cursorColor: Colors.black,
                 style: TextStyle(color: Colors.black),
+                maxLines: null,
               ),
               SizedBox(height: 12.0),
               TextField(
                 controller: otherInfoController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.info, color: Colors.black),
-                  labelText: 'Введите доп. информацию:',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelText: 'Введите новую доп. информацию:',
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
                 cursorColor: Colors.black,
                 style: TextStyle(color: Colors.black),
+                maxLines: null,
               ),
               SizedBox(height: 24.0),
               ElevatedButton(
                 onPressed: () {
-                  createResume(context);
+                  updateDataResume(context);
                 },
-                child: Text('Создать'),
+                child: Text('Обновить данные'),
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.grey.shade900),
                   foregroundColor:
                       MaterialStateProperty.all<Color>(Colors.white),
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
     );

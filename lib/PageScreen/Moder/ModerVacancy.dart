@@ -28,7 +28,7 @@ class ModerVacancyState extends State<ModerVacancy>
 
   Future<void> listVacancy(int pageNo, BuildContext context) async {
     final response = await http.get(
-      Uri.parse('http://192.168.0.186:8092/vacancy/list/$pageNo'),
+      Uri.parse('http://172.20.10.3:8092/vacancy/list/$pageNo'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -65,7 +65,7 @@ class ModerVacancyState extends State<ModerVacancy>
 
   Future<void> setStatusVacancyOk(int id,BuildContext context) async {
     final response = await http.put(
-      Uri.parse('http://192.168.0.186:8092/vacancy/setStatusOk/$id'),
+      Uri.parse('http://172.20.10.3:8092/vacancy/setStatusOk/$id'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -89,7 +89,7 @@ class ModerVacancyState extends State<ModerVacancy>
 
   Future<void> setStatusVacancyBlock(int id, BuildContext context) async {
     final response = await http.put(
-      Uri.parse('http://192.168.0.186:8092/vacancy/setStatusBlock/$id'),
+      Uri.parse('http://172.20.10.3:8092/vacancy/setStatusBlock/$id'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },

@@ -66,7 +66,7 @@ class LoginState extends State<Login>
                   borderSide: BorderSide(color: Colors.black),
                 ),
                 suffixIcon: IconButton(
-                  icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
+                  icon: Icon(_isObscure ? Icons.visibility_off : Icons.visibility),
                   color: Colors.black,
                   onPressed: () {
                     setState(() {
@@ -100,7 +100,7 @@ class LoginState extends State<Login>
     String username = usernameController.text;
     String password = passwordController.text;
 
-    final url = Uri.parse('http://192.168.0.186:8092/auth/sign-in');
+    final url = Uri.parse('http://172.20.10.3:8092/auth/sign-in');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'username': username,

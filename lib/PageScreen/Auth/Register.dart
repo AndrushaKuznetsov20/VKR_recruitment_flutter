@@ -104,7 +104,7 @@ class RegisterState extends State<Register> {
     String email = emailController.text;
     String password = passwordController.text;
 
-    final url = Uri.parse('http://192.168.0.186:8092/auth/sign-up');
+    final url = Uri.parse('http://172.20.10.3:8092/auth/sign-up');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'username': username,

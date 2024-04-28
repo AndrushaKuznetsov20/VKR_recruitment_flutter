@@ -33,7 +33,7 @@ class MyVacancyState extends State<MyVacancy> {
   Future<void> listMyVacancies(int pageNo, BuildContext context) async {
     final response = await http.get(
       Uri.parse(
-          'http://192.168.0.186:8092/vacancy/listMyVacancies/$pageNo'),
+          'http://172.20.10.3:8092/vacancy/listMyVacancies/$pageNo'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -70,7 +70,7 @@ class MyVacancyState extends State<MyVacancy> {
 
   Future<void> listResponseVacancy(BuildContext context, int vacancyId) async {
     final response = await http.get(
-      Uri.parse('http://192.168.0.186:8092/response/listUsers/$vacancyId'),
+      Uri.parse('http://172.20.10.3:8092/response/listUsers/$vacancyId'),
       headers: {'Authorization': 'Bearer ${widget.token}'},
     );
     if (response.statusCode == 200) {
@@ -89,7 +89,7 @@ class MyVacancyState extends State<MyVacancy> {
 
   Future<void> listResponse(BuildContext context, int vacancyId) async {
     final response = await http.get(
-      Uri.parse('http://192.168.0.186:8092/response/listResponse/$vacancyId'),
+      Uri.parse('http://172.20.10.3:8092/response/listResponse/$vacancyId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },

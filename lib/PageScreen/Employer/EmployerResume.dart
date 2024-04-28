@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../Models/Resume.dart';
 import '../LK/LK.dart';
+import '../LK/ProfileUser.dart';
 import 'EmployerPage.dart';
 
 class EmployerResume extends StatefulWidget {
@@ -32,7 +33,7 @@ class EmployerResumeState extends State<EmployerResume> {
   Future<void> listResumeSetStatusOk(int pageNo, BuildContext context) async {
     final response = await http.get(
       Uri.parse(
-          'http://192.168.0.186:8092/resume/listResumeStatusOk/$pageNo'),
+          'http://172.20.10.3:8092/resume/listResumeStatusOk/$pageNo'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -188,7 +189,7 @@ class EmployerResumeState extends State<EmployerResume> {
                                   //   context,
                                   //   MaterialPageRoute(
                                   //       builder: (context) =>
-                                  //           Profile(token: widget.token)),
+                                  //           ProfileUser(token: widget.token)),
                                   // );
                                 },
                               ),

@@ -30,7 +30,7 @@ class ModerResumeState extends State<ModerResume>
 
   Future<void> listResume(int pageNo, BuildContext context) async {
     final response = await http.get(
-      Uri.parse('http://192.168.0.186:8092/resume/list/$pageNo'),
+      Uri.parse('http://172.20.10.3:8092/resume/list/$pageNo'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -67,7 +67,7 @@ class ModerResumeState extends State<ModerResume>
 
   Future<void> setStatusResumeOk(int id,BuildContext context) async {
     final response = await http.put(
-      Uri.parse('http://192.168.0.186:8092/resume/setStatusOk/$id'),
+      Uri.parse('http://172.20.10.3:8092/resume/setStatusOk/$id'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -91,7 +91,7 @@ class ModerResumeState extends State<ModerResume>
 
   Future<void> setStatusResumeBlock(int id, BuildContext context) async {
     final response = await http.put(
-      Uri.parse('http://192.168.0.186:8092/resume/setStatusBlock/$id'),
+      Uri.parse('http://172.20.10.3:8092/resume/setStatusBlock/$id'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },

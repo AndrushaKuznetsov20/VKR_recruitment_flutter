@@ -26,7 +26,7 @@ class AdminPageState extends State<AdminPage> {
 
   Future<void> listUsers(int pageNo, BuildContext context) async {
     final response = await http.get(
-      Uri.parse('http://192.168.0.186:8092/user/list/$pageNo'),
+      Uri.parse('http://172.20.10.3:8092/user/list/$pageNo'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -63,7 +63,7 @@ class AdminPageState extends State<AdminPage> {
 
   Future<void> blockUser(int id, BuildContext context) async {
     final response = await http.put(
-      Uri.parse('http://192.168.0.186:8092/user/block/$id'),
+      Uri.parse('http://172.20.10.3:8092/user/block/$id'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -81,7 +81,7 @@ class AdminPageState extends State<AdminPage> {
 
   Future<void> inBlockUser(int id, BuildContext context) async {
     final response = await http.put(
-      Uri.parse('http://192.168.0.186:8092/user/inBlock/$id'),
+      Uri.parse('http://172.20.10.3:8092/user/inBlock/$id'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -98,7 +98,7 @@ class AdminPageState extends State<AdminPage> {
   }
   Future<void> changeRole(int id, String? role) async {
     final response = await http.put(
-      Uri.parse('http://192.168.0.186:8092/user/changeRole/$id/$role'),
+      Uri.parse('http://172.20.10.3:8092/user/changeRole/$id/$role'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },

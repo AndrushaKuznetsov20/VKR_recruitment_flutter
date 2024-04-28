@@ -32,7 +32,7 @@ class CreateVacancyState extends State<CreateVacancy>
     String wage = wageController.text;
     String schedule = scheduleController.text;
 
-    final url = Uri.parse('http://192.168.0.186:8092/vacancy/create');
+    final url = Uri.parse('http://172.20.10.3:8092/vacancy/create');
     final headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ${widget.token}'};
     final body = jsonEncode({
       'name_vacancy': name_vacancy,

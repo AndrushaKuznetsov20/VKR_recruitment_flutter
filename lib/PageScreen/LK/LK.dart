@@ -36,7 +36,7 @@ class LKstate extends State<LK> {
   Future<void> fingByUser() async
   {
     int? userId = await getUserId();
-    final response = await http.get(Uri.parse('http://192.168.0.186:8092/user/findByUser/$userId'),
+    final response = await http.get(Uri.parse('http://172.20.10.3:8092/user/findByUser/$userId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },);
@@ -68,7 +68,7 @@ class LKstate extends State<LK> {
   Future<Resume?> findByUserResume() async
   {
     final response = await http.get(
-      Uri.parse('http://192.168.0.186:8092/resume/myResume'),
+      Uri.parse('http://172.20.10.3:8092/resume/myResume'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },);
