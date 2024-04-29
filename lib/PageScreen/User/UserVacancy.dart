@@ -186,35 +186,31 @@ class UserVacancyState extends State<UserVacancy> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              ElevatedButton(
+                              ElevatedButton.icon(
                                 onPressed: () {
                                   createResponse(data.id, context);
                                 },
-                                child: Text('Оставть отклик'),
+                                icon: Icon(Icons.star_outlined, color: Colors.yellow),
+                                label: Text('Оставть отклик'),
                                 style: ButtonStyle(
                                   backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.grey.shade900),
+                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
                                   foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  fixedSize: MaterialStateProperty.all<Size>(Size(200, 25)),
+                                  MaterialStateProperty.all<Color>(Colors.white),
                                 ),
                               ),
                               SizedBox(height: 12),
-                              ElevatedButton(
+                              ElevatedButton.icon(
                                 onPressed: () {
                                   // setStatusVacancyBlock(data.id, context);
                                 },
-                                child: Text('Написать работодателю'),
+                                icon: Icon(Icons.message, color: Colors.blue),
+                                label: Text('Написать работодателю'),
                                 style: ButtonStyle(
                                   backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.grey.shade900),
+                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
                                   foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  fixedSize: MaterialStateProperty.all<Size>(Size(200, 25)),
+                                  MaterialStateProperty.all<Color>(Colors.white),
                                 ),
                               ),
                             ],

@@ -229,16 +229,17 @@ class CreateResumeState extends State<CreateResume>
                 style: TextStyle(color: Colors.black),
               ),
               SizedBox(height: 24.0),
-              ElevatedButton(
+              ElevatedButton.icon(
                 onPressed: () {
                   createResume(context);
                 },
-                child: Text('Создать'),
+                icon: Icon(Icons.add),
+                label: Text('Создать'),
                 style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
                   foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
+                  MaterialStateProperty.all<Color>(Colors.white),
                 ),
               ),
             ],

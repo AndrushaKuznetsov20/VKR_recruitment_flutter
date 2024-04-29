@@ -128,6 +128,7 @@ class CreateVacancyState extends State<CreateVacancy>
                 ),
                 cursorColor: Colors.black,
                 style: TextStyle(color: Colors.black),
+                maxLines: null
               ),
               SizedBox(height: 12.0),
               TextField(
@@ -142,9 +143,9 @@ class CreateVacancyState extends State<CreateVacancy>
                 ),
                 cursorColor: Colors.black,
                 style: TextStyle(color: Colors.black),
+                maxLines: null
               ),
               SizedBox(height: 12.0),
-
               TextField(
                 controller: conditions_and_requirementsController,
                 decoration: InputDecoration(
@@ -157,6 +158,7 @@ class CreateVacancyState extends State<CreateVacancy>
                 ),
                 cursorColor: Colors.black,
                 style: TextStyle(color: Colors.black),
+                maxLines: null
               ),
               SizedBox(height: 12.0),
               TextField(
@@ -171,7 +173,9 @@ class CreateVacancyState extends State<CreateVacancy>
                 ),
                   cursorColor: Colors.black,
                   style: TextStyle(color: Colors.black),
-                  keyboardType: TextInputType.number),
+                  keyboardType: TextInputType.number,
+                  maxLines: null
+              ),
               SizedBox(height: 12.0),
               TextField(
                 controller: scheduleController,
@@ -185,13 +189,15 @@ class CreateVacancyState extends State<CreateVacancy>
                 ),
                 cursorColor: Colors.black,
                 style: TextStyle(color: Colors.black),
+                maxLines: null
               ),
               SizedBox(height: 24.0),
-              ElevatedButton(
+              ElevatedButton.icon(
                 onPressed: () {
                   createVacancy(context);
                 },
-                child: Text('Создать'),
+                icon: Icon(Icons.add),
+                label: Text('Создать'),
                 style: ButtonStyle(
                   backgroundColor:
                   MaterialStateProperty.all<Color>(Colors.grey.shade900),

@@ -70,8 +70,13 @@ class UpdateVacancyState extends State<UpdateVacancy> {
         Navigator.of(context).pop();
       }
     }
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ReadMyVacancy(token: widget.token)));
   }
 
+  final RegExp numRegExp = RegExp(r'^[0-9]*$');
   @override
   void initState() {
     super.initState();
@@ -80,6 +85,16 @@ class UpdateVacancyState extends State<UpdateVacancy> {
     conditions_and_requirementsController = TextEditingController(text: utf8.decode(widget.conditions_and_requirements.codeUnits));
     wageController = TextEditingController(text: widget.wage.toString());
     scheduleController = TextEditingController(text: utf8.decode(widget.schedule.codeUnits));
+
+    wageController.addListener(() {
+      if (!numRegExp.hasMatch(wageController.text)) {
+        int selectionStart = wageController.selection.baseOffset - 1;
+        wageController.text = wageController.text.replaceAll(RegExp(r'\D'), '');
+        wageController.selection =
+            TextSelection.fromPosition(TextPosition(offset: selectionStart));
+      }
+    });
+
   }
 
   @override
@@ -170,6 +185,7 @@ class UpdateVacancyState extends State<UpdateVacancy> {
                   cursorColor: Colors.black,
                   style: TextStyle(color: Colors.black),
                   maxLines: null,
+                  keyboardType: TextInputType.number
                 ),
                 SizedBox(height: 12.0),
                 TextField(

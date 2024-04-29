@@ -58,24 +58,30 @@ class ReadResumestate extends State<ReadResume> {
           title: Text('Удалить резюме?'),
           content: Text('Вы действительно хотите удалить это резюме?'),
           actions: [
-            ElevatedButton(
+            ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Нет'),
+              icon: Icon(Icons.not_interested, color: Colors.red),
+              label: Text('Нет'),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                foregroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
               ),
             ),
-            ElevatedButton(
+            ElevatedButton.icon(
               onPressed: () {
                 deleteResume(widget.resume!.id, context);
               },
-              child: Text('Да'),
+              icon: Icon(Icons.check, color: Colors.green),
+              label: Text('Да'),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                foregroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
               ),
             ),
           ],

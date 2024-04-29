@@ -265,29 +265,33 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
                                     );
                                   },
                                 ),
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: () {
                                     listResponse(context, data.id);
                                   },
-                                  child: Text('Показать отклики'),
+                                  icon: Icon(Icons.visibility),
+                                  label: Text('Показать отклики'),
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                    fixedSize: MaterialStateProperty.all<Size>(Size(200, 25)),
+                                    backgroundColor:
+                                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                    foregroundColor:
+                                    MaterialStateProperty.all<Color>(Colors.white),
                                   ),
                                 ),
                                 SizedBox(height: 12.0,),
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: () {
                                     setState(() {
                                       dataListResponse = [];
                                     });
                                   },
-                                  child: Text('Скрыть отклики'),
+                                  icon: Icon(Icons.visibility_off),
+                                  label: Text('Скрыть отклики'),
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                    fixedSize: MaterialStateProperty.all<Size>(Size(200, 25)),
+                                    backgroundColor:
+                                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                    foregroundColor:
+                                    MaterialStateProperty.all<Color>(Colors.white),
                                   ),
                                 ),
                                 SizedBox(height: 12.0),

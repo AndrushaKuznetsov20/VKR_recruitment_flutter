@@ -208,25 +208,31 @@ class ModerResumeState extends State<ModerResume>
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              ElevatedButton(
+                              ElevatedButton.icon(
                                 onPressed: () {
                                   setStatusResumeOk(data.id, context);
                                 },
-                                child: Text('Опубликовать'),
+                                icon: Icon(Icons.done, color: Colors.green),
+                                label: Text('Опубликовать'),
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                  foregroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.white),
                                 ),
                               ),
                               SizedBox(width: 16),
-                              ElevatedButton(
+                              ElevatedButton.icon(
                                 onPressed: () {
                                   setStatusResumeBlock(data.id, context);
                                 },
-                                child: Text('Заблокировать'),
+                                icon: Icon(Icons.block_outlined, color: Colors.red),
+                                label: Text('Заблокировать'),
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                  foregroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.white),
                                 ),
                               ),
                             ],

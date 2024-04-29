@@ -210,39 +210,35 @@ class AdminPageState extends State<AdminPage> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              ElevatedButton(
+
+                              ElevatedButton.icon(
                                 onPressed: () {
                                   blockUser(data.id, context);
                                 },
-                                child: Text('Заблокировать'),
+                                icon: Icon(Icons.block_outlined, color: Colors.red),
+                                label: Text('Заблокировать'),
                                 style: ButtonStyle(
                                   backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.grey.shade900),
+                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
                                   foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  fixedSize: MaterialStateProperty.all<Size>(Size(200, 25)),
+                                  MaterialStateProperty.all<Color>(Colors.white),
                                 ),
                               ),
                               SizedBox(height: 8),
-                              ElevatedButton(
+                              ElevatedButton.icon(
                                 onPressed: () {
                                   inBlockUser(data.id, context);
                                 },
-                                child: Text('Разблокировать'),
+                                icon: Icon(Icons.done, color: Colors.green),
+                                label: Text('Разблокировать'),
                                 style: ButtonStyle(
                                   backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.grey.shade900),
+                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
                                   foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                    fixedSize: MaterialStateProperty.all<Size>(Size(200, 25)),
+                                  MaterialStateProperty.all<Color>(Colors.white),
                                 ),
                               ),
                               SizedBox(height: 8),
-                              SizedBox(width: 20),
                               ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:

@@ -195,15 +195,16 @@ class ProfileUserstate extends State<ProfileUser> {
                   ),
                 ),
                 SizedBox(height: 12.0),
-                ElevatedButton(
+                ElevatedButton.icon(
                   onPressed: () {
                     // Navigator.push(context, MaterialPageRoute(
                     //     builder: (context) => MyVacancy(token: widget.token)));
                   },
-                  child: Text('Написать пользователю'),
+                  icon: Icon(Icons.message, color: Colors.blue),
+                  label: Text('Написать пользователю'),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Colors.grey.shade900),
+                    backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
                     foregroundColor:
                     MaterialStateProperty.all<Color>(Colors.white),
                   ),
