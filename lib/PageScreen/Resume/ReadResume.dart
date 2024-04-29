@@ -100,7 +100,7 @@ class ReadResumestate extends State<ReadResume> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Ваше резюме', style: TextStyle(color: Colors.white)),
+        title: Text('Резюме', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.grey.shade900,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),

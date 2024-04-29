@@ -157,7 +157,7 @@ class CreateResumeState extends State<CreateResume>
                 controller: birthDateController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.calendar_today, color: Colors.black),
-                  labelText: 'Выберите дату:',
+                  labelText: 'Выберите дату рождения:',
                   labelStyle: TextStyle(color: Colors.black),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),

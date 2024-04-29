@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:recruitment/PageScreen/Response/ReadMyResponses.dart';
 import 'package:recruitment/PageScreen/Vacancy/ReadMyVacancy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Models/Resume.dart';
@@ -227,6 +228,19 @@ class LKstate extends State<LK> {
                       }
                     },
                     child: Text('Ваше резюме'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.grey.shade900),
+                      foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                    ),
+                  ),
+                  SizedBox(height: 12.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context,MaterialPageRoute(builder: (context) =>ReadMyResponses(token: widget.token)));
+                    },
+                    child: Text('Перейти в избранное'),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Colors.grey.shade900),

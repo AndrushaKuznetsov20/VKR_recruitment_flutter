@@ -207,6 +207,7 @@ class ModerResumeState extends State<ModerResume>
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ElevatedButton.icon(
                                 onPressed: () {
@@ -221,7 +222,7 @@ class ModerResumeState extends State<ModerResume>
                                   MaterialStateProperty.all<Color>(Colors.white),
                                 ),
                               ),
-                              SizedBox(width: 16),
+                              SizedBox(width: 5),
                               ElevatedButton.icon(
                                 onPressed: () {
                                   setStatusResumeBlock(data.id, context);
