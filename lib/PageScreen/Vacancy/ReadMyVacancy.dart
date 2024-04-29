@@ -8,17 +8,18 @@ import '../../Models/User.dart';
 import '../Employer/EmployerPage.dart';
 import '../LK/LK.dart';
 import '../LK/ProfileUser.dart';
+import 'UpdateVacancy.dart';
 
-class MyVacancy extends StatefulWidget {
+class ReadMyVacancy extends StatefulWidget {
   final String token;
 
-  MyVacancy({required this.token});
+  ReadMyVacancy({required this.token});
 
   @override
-  MyVacancyState createState() => MyVacancyState();
+  ReadMyVacancyState createState() => ReadMyVacancyState();
 }
 
-class MyVacancyState extends State<MyVacancy> {
+class ReadMyVacancyState extends State<ReadMyVacancy> {
   List<Vacancy> dataList = [];
   List<User> dataListUser = [];
   List<Response> dataListResponse = [];
@@ -108,6 +109,23 @@ class MyVacancyState extends State<MyVacancy> {
     }
   }
 
+  Future<void> deleteVacancy(BuildContext context,int vacancyId) async {
+    final response = await http.delete(
+      Uri.parse(
+          'http://172.20.10.3:8092/vacancy/delete/$vacancyId'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+    }
+    Navigator.of(context).pop();
+  }
 
   void nextPage() {
     setState(() {
@@ -271,6 +289,39 @@ class MyVacancyState extends State<MyVacancy> {
                                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                                     fixedSize: MaterialStateProperty.all<Size>(Size(200, 25)),
                                   ),
+                                ),
+                                SizedBox(height: 12.0),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: dataList.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Row(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.delete_forever,
+                                              color: Colors.black),
+                                          onPressed: () {
+                                              deleteVacancy(context, data.id);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.edit,
+                                              color: Colors.black),
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        UpdateVacancy(token: widget.token, id: data.id, name_vacancy: data.name_vacancy,
+                                                        description_vacancy: data.description_vacancy, conditions_and_requirements: data.conditions_and_requirements,
+                                                        wage: data.wage, schedule: data.schedule)));
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
                               ],
                             ),

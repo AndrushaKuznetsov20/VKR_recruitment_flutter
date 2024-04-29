@@ -268,16 +268,17 @@ class UpdateResumeState extends State<UpdateResume> {
                 maxLines: null,
               ),
               SizedBox(height: 24.0),
-              ElevatedButton(
-                onPressed: () {
-                  updateDataResume(context);
-                },
-                child: Text('Обновить данные'),
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    updateDataResume(context);
+                  },
+                  icon: Icon(Icons.refresh),
+                  label: Text('Обновить данные'),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
                   ),
                 ),
               ],

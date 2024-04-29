@@ -140,11 +140,12 @@ class UpdateUserState extends State<UpdateUser>
               style: TextStyle(color: Colors.black),
             ),
             SizedBox(height: 24.0),
-            ElevatedButton(
+            ElevatedButton.icon(
               onPressed: () {
                 updateDataUser(context);
               },
-              child: Text('Обновить данные'),
+              icon: Icon(Icons.refresh),
+              label: Text('Обновить данные'),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.white),

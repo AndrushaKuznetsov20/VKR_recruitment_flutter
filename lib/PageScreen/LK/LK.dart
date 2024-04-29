@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:recruitment/PageScreen/Vacancy/MyVacancy.dart';
+import 'package:recruitment/PageScreen/Vacancy/ReadMyVacancy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Models/Resume.dart';
 import '../../Models/Role.dart';
@@ -164,7 +164,7 @@ class LKstate extends State<LK> {
                   SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => MyVacancy(token: widget.token)));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => ReadMyVacancy(token: widget.token)));
                     },
                     child: Text('Мои вакансии'),
                     style: ButtonStyle(

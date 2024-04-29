@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:recruitment/PageScreen/Vacancy/MyVacancy.dart';
+import 'package:recruitment/PageScreen/Vacancy/ReadMyVacancy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Models/Role.dart';
 import '../../Models/User.dart';
@@ -127,7 +127,7 @@ class ProfileUserstate extends State<ProfileUser> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MyVacancy(token: widget.token)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ReadMyVacancy(token: widget.token)));
           },
         ),
         actions: [
