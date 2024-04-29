@@ -186,36 +186,42 @@ class UserVacancyState extends State<UserVacancy> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  createResponse(data.id, context);
-                                },
-                                icon: Icon(Icons.star_outlined, color: Colors.yellow),
-                                label: Text('Оставть отклик'),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                  foregroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.white),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    createResponse(data.id, context);
+                                  },
+                                  icon: Icon(Icons.star_outlined, color: Colors.yellow),
+                                  label: Text('Оставть отклик'),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                    foregroundColor:
+                                    MaterialStateProperty.all<Color>(Colors.white),
+                                  ),
                                 ),
                               ),
                               SizedBox(height: 12),
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  // setStatusVacancyBlock(data.id, context);
-                                },
-                                icon: Icon(Icons.message, color: Colors.blue),
-                                label: Text('Написать работодателю'),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                  foregroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.white),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    // setStatusVacancyBlock(data.id, context);
+                                  },
+                                  icon: Icon(Icons.message, color: Colors.blue),
+                                  label: Text('Написать работодателю'),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                    foregroundColor:
+                                    MaterialStateProperty.all<Color>(Colors.white),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
+                        )
                       ],
                     ));
               },

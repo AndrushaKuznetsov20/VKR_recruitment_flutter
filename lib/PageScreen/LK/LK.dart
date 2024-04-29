@@ -238,7 +238,7 @@ class LKstate extends State<LK> {
                   SizedBox(height: 12.0),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) =>ReadMyResponses(token: widget.token)));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => ReadMyResponses(token: widget.token)));
                     },
                     child: Text('Перейти в избранное'),
                     style: ButtonStyle(

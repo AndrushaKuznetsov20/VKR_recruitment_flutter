@@ -124,7 +124,50 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
         ),
       );
     }
-    Navigator.of(context).pop();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ReadMyVacancy(token: widget.token)));
+  }
+
+  void showDeleteConfirmationDialog(BuildContext context, int vacancyId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Удалить вакансию?'),
+          content: Text('Вы действительно хотите удалить эту вакансию?'),
+          actions: [
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(Icons.not_interested, color: Colors.red),
+              label: Text('Нет'),
+              style: ButtonStyle(
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                foregroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                deleteVacancy(context, vacancyId);
+              },
+              icon: Icon(Icons.check, color: Colors.green),
+              label: Text('Да'),
+              style: ButtonStyle(
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                foregroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void nextPage() {
@@ -307,7 +350,7 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
                                           icon: Icon(Icons.delete_forever,
                                               color: Colors.black),
                                           onPressed: () {
-                                              deleteVacancy(context, data.id);
+                                              showDeleteConfirmationDialog(context, data.id);
                                           },
                                         ),
                                         IconButton(

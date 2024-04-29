@@ -199,6 +199,7 @@ class ModerVacancyState extends State<ModerVacancy>
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ElevatedButton.icon(
                                 onPressed: () {
@@ -213,7 +214,7 @@ class ModerVacancyState extends State<ModerVacancy>
                                   MaterialStateProperty.all<Color>(Colors.white),
                                 ),
                               ),
-                              SizedBox(width: 16),
+                              SizedBox(width: 5),
                               ElevatedButton.icon(
                                 onPressed: () {
                                   setStatusVacancyBlock(data.id, context);
