@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:recruitment/PageScreen/Employer/EmployerResume.dart';
 
 import '../LK/LK.dart';
+import '../Metrics/MetricsPage.dart';
 import '../Vacancy/CreateVacancy.dart';
 
 class EmployerPage extends StatelessWidget {
@@ -116,7 +117,7 @@ class EmployerPage extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Metrics(token: token)));
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => MetricsPage(token: token)));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

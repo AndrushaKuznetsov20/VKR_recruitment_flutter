@@ -35,7 +35,6 @@ class CreateResumeState extends State<CreateResume>
       helpText: 'Выберите дату',
       cancelText: 'Отмена',
       confirmText: 'Выбрать',
-      // locale: const Locale('ru'),
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(

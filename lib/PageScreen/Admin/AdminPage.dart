@@ -189,11 +189,13 @@ class AdminPageState extends State<AdminPage> {
                               Divider(),
                               Text('Активность:',
                                   style:
-                                  TextStyle(fontWeight: FontWeight.bold)),
+                                      TextStyle(fontWeight: FontWeight.bold)),
                               Text(
                                 data.active.toString(),
                                 style: TextStyle(
-                                  color: data.active.toString() == 'false' ? Colors.red : Colors.green,
+                                  color: data.active.toString() == 'false'
+                                      ? Colors.red
+                                      : Colors.green,
                                 ),
                               ),
                               Divider(),
@@ -210,94 +212,114 @@ class AdminPageState extends State<AdminPage> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  blockUser(data.id, context);
-                                },
-                                icon: Icon(Icons.block_outlined, color: Colors.red),
-                                label: Text('Заблокировать'),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                  foregroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.white),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    blockUser(data.id, context);
+                                  },
+                                  icon: Icon(Icons.block_outlined,
+                                      color: Colors.red),
+                                  label: Text('Заблокировать'),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.grey.shade900),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                  ),
                                 ),
                               ),
                               SizedBox(height: 8),
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  inBlockUser(data.id, context);
-                                },
-                                icon: Icon(Icons.done, color: Colors.green),
-                                label: Text('Разблокировать'),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                  foregroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.white),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    inBlockUser(data.id, context);
+                                  },
+                                  icon: Icon(Icons.done, color: Colors.green),
+                                  label: Text('Разблокировать'),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.grey.shade900),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                  ),
                                 ),
                               ),
                               SizedBox(height: 8),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all<Color>(
-                                      Colors.grey.shade900),
-                                  foregroundColor:
-                                  MaterialStateProperty.all<Color>(
-                                      Colors.white),
-                                  fixedSize: MaterialStateProperty.all<Size>(Size(200, 25)),
-                                ),
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return StatefulBuilder(
-                                        builder: (BuildContext context,
-                                            StateSetter setState) {
-                                          return AlertDialog(
-                                            title: Text('Выберите роль:'),
-                                            content: DropdownButton<String>(
-                                              value: selectedRole,
-                                              onChanged: (String? newValue) {
-                                                setState(() {
-                                                  selectedRole = newValue;
-                                                });
-                                              },
-                                              items: <String>[
-                                                'USER',
-                                                'MODER',
-                                                'ADMIN',
-                                                'EMPLOYER'
-                                              ].map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
-                                            ),
-                                            actions: <Widget>[
-                                              ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.grey.shade900,
-                                                ),
-                                                onPressed: () {
-                                                  changeRole(data.id, selectedRole);
-                                                  Navigator.of(context).pop();
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton.icon(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.grey.shade900),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                    fixedSize: MaterialStateProperty.all<Size>(
+                                        Size(200, 25)),
+                                  ),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return StatefulBuilder(
+                                          builder: (BuildContext context,
+                                              StateSetter setState) {
+                                            return AlertDialog(
+                                              title: Text('Выберите роль:'),
+                                              content: DropdownButton<String>(
+                                                value: selectedRole,
+                                                onChanged: (String? newValue) {
+                                                  setState(() {
+                                                    selectedRole = newValue;
+                                                  });
                                                 },
-                                                child: Text('OK', style: TextStyle(color: Colors.white)),
+                                                items: <String>[
+                                                  'USER',
+                                                  'MODER',
+                                                  'ADMIN',
+                                                  'EMPLOYER'
+                                                ].map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                                  return DropdownMenuItem<
+                                                      String>(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  );
+                                                }).toList(),
                                               ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-
-                                child: Text('Назначить роль', style: TextStyle(color: Colors.white)),
+                                              actions: <Widget>[
+                                                ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.grey.shade900,
+                                                  ),
+                                                  onPressed: () {
+                                                    changeRole(
+                                                        data.id, selectedRole);
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('OK',
+                                                      style: TextStyle(
+                                                          color: Colors.white)),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(Icons.account_box, color: Colors.blue),
+                                  label: Text('Назначить роль'),
+                                ),
                               ),
                             ],
                           ),
