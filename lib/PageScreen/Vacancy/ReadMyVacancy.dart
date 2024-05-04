@@ -192,7 +192,7 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Актуальные вакансии',
+          'Мои вакансии',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.grey.shade900,
@@ -308,67 +308,77 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
                                     );
                                   },
                                 ),
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    listResponse(context, data.id);
-                                  },
-                                  icon: Icon(Icons.visibility),
-                                  label: Text('Показать отклики'),
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                    foregroundColor:
-                                    MaterialStateProperty.all<Color>(Colors.white),
+                                SizedBox(
+                                  width: 200,
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      listResponse(context, data.id);
+                                    },
+                                    icon: Icon(Icons.visibility),
+                                    label: Text('Показать отклики'),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.grey.shade900),
+                                      foregroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                    ),
                                   ),
                                 ),
                                 SizedBox(height: 12.0,),
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    setState(() {
-                                      dataListResponse = [];
-                                    });
-                                  },
-                                  icon: Icon(Icons.visibility_off),
-                                  label: Text('Скрыть отклики'),
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                    foregroundColor:
-                                    MaterialStateProperty.all<Color>(Colors.white),
+                                SizedBox(
+                                  width: 200,
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      setState(() {
+                                        dataListResponse = [];
+                                      });
+                                    },
+                                    icon: Icon(Icons.visibility_off),
+                                    label: Text('Скрыть отклики'),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.grey.shade900),
+                                      foregroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                    ),
                                   ),
                                 ),
                                 SizedBox(height: 12.0),
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: dataList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Row(
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.delete_forever,
-                                              color: Colors.black),
-                                          onPressed: () {
-                                              showDeleteConfirmationDialog(context, data.id);
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.edit,
-                                              color: Colors.black),
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        UpdateVacancy(token: widget.token, id: data.id, name_vacancy: data.name_vacancy,
-                                                        description_vacancy: data.description_vacancy, conditions_and_requirements: data.conditions_and_requirements,
-                                                        wage: data.wage, schedule: data.schedule)));
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.delete_forever,
+                                          color: Colors.black),
+                                      onPressed: () {
+                                        showDeleteConfirmationDialog(
+                                            context, data.id);
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon:
+                                          Icon(Icons.edit, color: Colors.black),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => UpdateVacancy(
+                                                    token: widget.token,
+                                                    id: data.id,
+                                                    name_vacancy:
+                                                        data.name_vacancy,
+                                                    description_vacancy: data
+                                                        .description_vacancy,
+                                                    conditions_and_requirements:
+                                                        data.conditions_and_requirements,
+                                                    wage: data.wage,
+                                                    schedule: data.schedule)));
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
