@@ -24,6 +24,8 @@ class DetailsMyVacancyState extends State<DetailsMyVacancy> {
   List<Response> dataListResponse = [];
   int currentPage = 0;
 
+  Map<int, Map<String, String>> metricsMap = {};
+
   String resultCountResponses = '';
   String resultCountSelfDanial = '';
   String resultCountRelevantResponse = '';
@@ -74,14 +76,11 @@ class DetailsMyVacancyState extends State<DetailsMyVacancy> {
     }
   }
 
-  Future<void> calculateCountResponses(DateTime startDate, DateTime endDate) async {
-    final formatter = DateFormat('yyyy-MM-dd');
-    final startDateTimeFormatted = formatter.format(startDate);
-    final endDateTimeFormatted = formatter.format(endDate);
+  Future<void> calculateCountResponses(int vacancyId) async {
 
     final response = await http.get(
       Uri.parse(
-          'http://172.20.10.3:8092/metrics/vacancyResponseCount/$startDateTimeFormatted/$endDateTimeFormatted'),
+          'http://172.20.10.3:8092/metrics/vacancyResponseCount/$vacancyId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -89,9 +88,92 @@ class DetailsMyVacancyState extends State<DetailsMyVacancy> {
 
     if (response.statusCode == 200) {
       setState(() {
-          resultCountResponses = response.body;
+        metricsMap[vacancyId]?['countResponses'] = response.body;
       });
     }
+  }
+
+  Future<void>  calculateCountSelfDanial(int vacancyId) async {
+
+    final response = await http.get(
+      Uri.parse(
+          'http://172.20.10.3:8092/metrics/vacancySelfDanialCount/$vacancyId'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        metricsMap[vacancyId]?['countSelfDanial'] = response.body;
+      });
+    }
+  }
+
+  Future<void>  calculateCountRelevantResponse(int vacancyId) async {
+
+    final response = await http.get(
+      Uri.parse(
+          'http://172.20.10.3:8092/metrics/vacancyRelevantResponsesCount/$vacancyId'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        metricsMap[vacancyId]?['countRelevantResponse'] = response.body;
+      });
+    }
+  }
+
+  Future<void>  calculateCountRefusalEmployer(int vacancyId) async {
+
+    final response = await http.get(
+      Uri.parse(
+          'http://172.20.10.3:8092/metrics/vacancyRefusalEmployerCount/$vacancyId'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        metricsMap[vacancyId]?['countRefusalEmployer'] = response.body;
+      });
+    }
+  }
+
+  Future<void> calculateCountInvitation(int vacancyId) async {
+    final response = await http.get(
+      Uri.parse(
+          'http://172.20.10.3:8092/metrics/countInvitation/$vacancyId'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        metricsMap[vacancyId]?['countInvitation'] = response.body;
+      });
+    }
+  }
+
+  Future<void> calculateAllMetrics(BuildContext context, int vacancyId) async {
+    metricsMap[vacancyId] = {};
+
+    await calculateCountResponses(vacancyId);
+    await calculateCountRelevantResponse(vacancyId);
+    await calculateCountSelfDanial(vacancyId);
+    await calculateCountRefusalEmployer(vacancyId);
+    await calculateCountInvitation(vacancyId);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Метрики успешно рассчитаны!"),
+      ),
+    );
   }
 
   void nextPage() {
@@ -116,7 +198,7 @@ class DetailsMyVacancyState extends State<DetailsMyVacancy> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Cтатистика',
+          'Статистика',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.grey.shade900,
@@ -211,8 +293,116 @@ class DetailsMyVacancyState extends State<DetailsMyVacancy> {
                                 ),
                               ),
                               Divider(),
-                              Text('Метрики вакансии:', style: TextStyle(fontWeight: FontWeight.bold)),
-
+                              SizedBox(
+                                width: 200,
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    calculateAllMetrics(context,data.id);
+                                  },
+                                  icon: Icon(Icons.calculate_outlined),
+                                  label: Text('Рассчитать метрики'),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.grey.shade900),
+                                    foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.white),
+                                  ),
+                                ),
+                              ),
+                              Divider(),
+                              Text('Метрики вакансии:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Row(
+                                  children: [
+                                    Text('Количество откликов: ',
+                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blueGrey.shade500)),
+                                    Text(
+                                      '${metricsMap[data.id]?['countResponses']}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Row(
+                                  children: [
+                                    Text('Количество релевантных откликов: ',
+                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blueGrey.shade500)),
+                                    Text(
+                                      '${metricsMap[data.id]?['countRelevantResponse']}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Row(
+                                  children: [
+                                    Text('Количество самоотказов: ',
+                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blueGrey.shade500)),
+                                    Text(
+                                      '${metricsMap[data.id]?['countSelfDanial']}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Row(
+                                  children: [
+                                    Text('Количество отказов работодателя: ',
+                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blueGrey.shade500)),
+                                    Text(
+                                      '${metricsMap[data.id]?['countRefusalEmployer']}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Row(
+                                  children: [
+                                    Text('Количество приглашений: ',
+                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blueGrey.shade500)),
+                                    Text(
+                                      '${metricsMap[data.id]?['countInvitation']}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),

@@ -198,6 +198,47 @@ class _MetricsPageState extends State<MetricsPage> {
     }
   }
 
+  Future<void> calculateAllMetrics(BuildContext context, DateTime startDate, DateTime endDate) async {
+    calculateCountVacancies(startDate, endDate);
+    calculateCountResponses(startDate, endDate);
+    calculateCountRelevantResponse(startDate, endDate);
+    calculateCountSelfDanial(startDate, endDate);
+    calculateCountRefusalEmployer(startDate, endDate);
+    calculateCountInvitation(startDate, endDate);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Метрики успешно рассчитаны!"),
+      ),
+    );
+  }
+
+  Future<void> register(BuildContext context) async {
+    final response = await http.post(
+      Uri.parse('http://172.20.10.3:8092/metricsReportingHistory/create'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+    // final body = jsonEncode({
+    //   'username':,
+    //   'email':,
+    //   'password':
+    // });
+
+    // final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+    }
+
+  }
+
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -300,11 +341,9 @@ class _MetricsPageState extends State<MetricsPage> {
                 ),
               ),
               Divider(),
-              SizedBox(height: 8),
               Text(startDate != null
                   ? 'Дата начала: ${dateFormat.format(startDate)}'
-                  : 'Выберите дату начала',  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
+                  : 'Выберите дату начала',  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue)),
               Divider(),
               SizedBox(
                 width: 300,
@@ -326,17 +365,130 @@ class _MetricsPageState extends State<MetricsPage> {
               SizedBox(height: 8),
               Text(endDate != null
                   ? 'Дата окончания: ${dateFormat.format(endDate)}'
-                  : 'Выберите дату окончания',  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  : 'Выберите дату окончания',  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red)),
               SizedBox(height: 8),
-              Divider(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Divider(),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Row(
+                      children: [
+                        Text('Количество вакансий: ',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          '$resultCountInvitation',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Row(
+                      children: [
+                        Text('Количество откликов: ',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          '$resultCountResponses',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Row(
+                      children: [
+                        Text('Количество релевантных откликов: ',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          '$resultCountRelevantResponse',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Row(
+                      children: [
+                        Text('Количество самоотказов: ',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          '$resultCountSelfDanial',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Row(
+                      children: [
+                        Text('Количество отказов работодателя: ',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          '$resultCountRefusalEmployer',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Row(
+                      children: [
+                        Text('Количество приглашений: ',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          '$resultCountInvitation',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                ],
+              ),
               SizedBox(
                 width: 300,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    calculateCountVacancies(startDate, endDate);
+                    calculateAllMetrics(context, startDate, endDate);
                   },
-                  icon: Icon(Icons.work),
-                  label: Text('Рассчитать количество вакансий'),
+                  icon: Icon(Icons.calculate_outlined),
+                  label: Text('Рассчитать метрики'),
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.grey.shade900),
@@ -345,122 +497,22 @@ class _MetricsPageState extends State<MetricsPage> {
                   ),
                 ),
               ),
-              Divider(),
-              SizedBox(height: 8),
-              Text('Количество вакансий: $resultCountVacancies',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Divider(),
               SizedBox(
                 width: 300,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    calculateCountResponses(startDate, endDate);
+                    // saveMetricsReporting()
                   },
-                  icon: Icon(Icons.bar_chart),
-                  label: Text('Рассчитать количество откликов'),
+                  icon: Icon(Icons.save),
+                  label: Text('Сохранить отчёт'),
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
                     foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
+                    MaterialStateProperty.all<Color>(Colors.white),
                   ),
                 ),
               ),
-              Divider(),
-              SizedBox(height: 8),
-              Text('Количество откликов: $resultCountResponses',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Divider(),
-              SizedBox(
-                width: 300,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    calculateCountRelevantResponse(startDate, endDate);
-                  },
-                  icon: Icon(Icons.check_circle_outline),
-                  label: Text('Рассчитать количество релевантных откликов'),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                  ),
-                ),
-              ),
-              Divider(),
-              SizedBox(height: 8),
-              Text('Количество релевантных откликов: $resultCountRelevantResponse',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Divider(),
-              SizedBox(
-                width: 300,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    calculateCountSelfDanial(startDate, endDate);
-                  },
-                  icon: Icon(Icons.cancel_outlined),
-                  label: Text('Рассчитать количество самоотказов'),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                  ),
-                ),
-              ),
-              Divider(),
-              SizedBox(height: 12),
-              Text('Количество самоотказов: $resultCountSelfDanial',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 12),
-              Divider(),
-              SizedBox(
-                width: 300,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    calculateCountRefusalEmployer(startDate, endDate);
-                  },
-                  icon: Icon(Icons.person_off_outlined),
-                  label: Text('Рассчитать количество отказов работодателя'),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                  ),
-                ),
-              ),
-              Divider(),
-              SizedBox(height: 12),
-              Text('Количество отказов работодателя: $resultCountRefusalEmployer',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 12),
-              Divider(),
-              SizedBox(
-                width: 300,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    calculateCountInvitation(startDate, endDate);
-                  },
-                  icon: Icon(Icons.send),
-                  label: Text('Рассчитать количество приглашений'),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                  ),
-                ),
-              ),
-              Divider(),
-              SizedBox(height: 12),
-              Text('Количество приглашений: $resultCountInvitation',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 12),
-              Divider(),
               SizedBox(
                 width: 300,
                 child: ElevatedButton.icon(
