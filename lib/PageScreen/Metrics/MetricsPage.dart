@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
-
 import '../../Models/Vacancy.dart';
 import '../Employer/EmployerPage.dart';
 import '../Home.dart';
 import '../LK/LK.dart';
+import '../Vacancy/DetailsMyVacancy.dart';
 class MetricsPage extends StatefulWidget {
   final String token;
   MetricsPage({required this.token});
@@ -461,6 +460,26 @@ class _MetricsPageState extends State<MetricsPage> {
               Text('Количество приглашений: $resultCountInvitation',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               SizedBox(height: 12),
+              Divider(),
+              SizedBox(
+                width: 300,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailsMyVacancy(token: widget.token)));
+                  },
+                  icon: Icon(Icons.arrow_forward),
+                  label: Text('Перейти к своим вакансиям'),
+                  style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                    foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                ),
+              ),
               Divider(),
               Container(
                 height: 400,
