@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:recruitment/PageScreen/Metrics/MetricsReportingHistoryPage.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,6 +29,13 @@ class _MetricsPageState extends State<MetricsPage> {
   String resultCountRelevantResponse = '';
   String resultCountRefusalEmployer = '';
   String resultCountInvitation = '';
+
+  int countVacancies = 0;
+  int countResponses = 0;
+  int countSelfDanial = 0;
+  int countRelevantResponse = 0;
+  int countRefusalEmployer = 0;
+  int countInvitation = 0;
 
   List<Map<String, dynamic>> chartData = [];
   List<String> columnNames = [
@@ -58,6 +67,7 @@ class _MetricsPageState extends State<MetricsPage> {
     if (response.statusCode == 200) {
       int newValue = int.parse(response.body);
       setState(() {
+        countVacancies = int.parse(response.body);
         resultCountVacancies = response.body;
         columnValues[0] = newValue;
         chartData[0] = {
@@ -84,6 +94,7 @@ class _MetricsPageState extends State<MetricsPage> {
     if (response.statusCode == 200) {
       int newValue = int.parse(response.body);
       setState(() {
+        countResponses = int.parse(response.body);
         resultCountResponses = response.body;
         columnValues[1] = newValue;
         chartData[1] = {
@@ -110,6 +121,7 @@ class _MetricsPageState extends State<MetricsPage> {
     if (response.statusCode == 200) {
       int newValue = int.parse(response.body);
       setState(() {
+        countSelfDanial = int.parse(response.body);
         resultCountSelfDanial = response.body;
         columnValues[2] = newValue;
         chartData[2] = {
@@ -136,6 +148,7 @@ class _MetricsPageState extends State<MetricsPage> {
     if (response.statusCode == 200) {
       int newValue = int.parse(response.body);
       setState(() {
+        countRelevantResponse = int.parse(response.body);
         resultCountRelevantResponse = response.body;
         columnValues[3] = newValue;
         chartData[3] = {
@@ -162,6 +175,7 @@ class _MetricsPageState extends State<MetricsPage> {
     if (response.statusCode == 200) {
       int newValue = int.parse(response.body);
       setState(() {
+        countRefusalEmployer = int.parse(response.body);
         resultCountRefusalEmployer = response.body;
         columnValues[4] = newValue;
         chartData[4] = {
@@ -188,6 +202,7 @@ class _MetricsPageState extends State<MetricsPage> {
     if (response.statusCode == 200) {
       int newValue = int.parse(response.body);
       setState(() {
+        countInvitation = int.parse(response.body);
         resultCountInvitation = response.body;
         columnValues[5] = newValue;
         chartData[5] = {
@@ -213,20 +228,28 @@ class _MetricsPageState extends State<MetricsPage> {
     );
   }
 
-  Future<void> register(BuildContext context) async {
-    final response = await http.post(
-      Uri.parse('http://172.20.10.3:8092/metricsReportingHistory/create'),
-      headers: {
-        'Authorization': 'Bearer ${widget.token}',
-      },
-    );
-    // final body = jsonEncode({
-    //   'username':,
-    //   'email':,
-    //   'password':
-    // });
+  Future<void> createMetricsReporting(BuildContext context, DateTime startDate, DateTime endDate) async {
 
-    // final response = await http.post(url, headers: headers, body: body);
+    int userId = extractIdFromToken(widget.token);
+    final formatter = DateFormat('yyyy-MM-dd');
+    final startDateTimeFormatted = formatter.format(startDate);
+    final endDateTimeFormatted = formatter.format(endDate);
+
+    final url = Uri.parse('http://172.20.10.3:8092/metricsReportingHistory/create');
+    final headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ${widget.token}'};
+    final body = jsonEncode({
+      'startDate':startDateTimeFormatted,
+      'endDate':endDateTimeFormatted,
+      'countVacancies':countVacancies,
+      'countResponses':countResponses,
+      'countSelfDanial':countSelfDanial,
+      'countRelevantResponse':countRelevantResponse,
+      'countRefusalEmployer':countRefusalEmployer,
+      'countInvitation':countInvitation,
+      'userId':userId
+    });
+
+    final response = await http.post(url, headers: headers, body: body);
 
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -234,9 +257,15 @@ class _MetricsPageState extends State<MetricsPage> {
           content: Text(response.body),
         ),
       );
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
     }
 
+  }
+
+  int extractIdFromToken(String token)
+  {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    int id = decodedToken['id'];
+    return id;
   }
 
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
@@ -501,10 +530,29 @@ class _MetricsPageState extends State<MetricsPage> {
                 width: 300,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // saveMetricsReporting()
+                    createMetricsReporting(context, startDate, endDate);
                   },
                   icon: Icon(Icons.save),
                   label: Text('Сохранить отчёт'),
+                  style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                    foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 300,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MetricsReportingHistoryPage(token: widget.token)));
+                  },
+                  icon: Icon(Icons.arrow_forward),
+                  label: Text('Перейти к истории отчётов'),
                   style: ButtonStyle(
                     backgroundColor:
                     MaterialStateProperty.all<Color>(Colors.grey.shade900),
