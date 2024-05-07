@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
 import '../../Models/Resume.dart';
 import '../LK/LK.dart';
 import '../LK/ProfileUser.dart';
@@ -185,12 +184,12 @@ class EmployerResumeState extends State<EmployerResume> {
                                 icon: Icon(Icons.account_circle,
                                     color: Colors.black),
                                 onPressed: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) =>
-                                  //           ProfileUser(token: widget.token)),
-                                  // );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProfileUser(token: widget.token, id: data.user.id, vacancyId: 0)),
+                                  );
                                 },
                               ),
                             ],

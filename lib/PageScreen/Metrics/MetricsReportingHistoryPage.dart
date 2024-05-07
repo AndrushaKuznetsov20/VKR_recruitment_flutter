@@ -43,6 +43,64 @@ class MetricsReportingHistoryPageState extends State<MetricsReportingHistoryPage
     }
   }
 
+  Future<void> deleteMetricsReportingHistory(BuildContext context, int metricsReportingId) async {
+    final response = await http.delete(
+      Uri.parse(
+          'http://172.20.10.3:8092/metricsReportingHistory/delete/$metricsReportingId'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+    }
+  }
+
+  void showDeleteConfirmationDialog(BuildContext context, int metricsReportingId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Удалить отчёт?'),
+          content: Text('Вы действительно хотите удалить этот отчёт?'),
+          actions: [
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(Icons.not_interested, color: Colors.red),
+              label: Text('Нет'),
+              style: ButtonStyle(
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                foregroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                deleteMetricsReportingHistory(context, metricsReportingId);
+              },
+              icon: Icon(Icons.check, color: Colors.green),
+              label: Text('Да'),
+              style: ButtonStyle(
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                foregroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -147,6 +205,14 @@ class MetricsReportingHistoryPageState extends State<MetricsReportingHistoryPage
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
                               Text(data.countInvitation.toString()),
+                              SizedBox(height: 4),
+                              IconButton(
+                                icon: Icon(Icons.delete_forever, color: Colors.black),
+                                onPressed: () {
+                                  showDeleteConfirmationDialog(context, data.id);
+                                  deleteMetricsReportingHistory(context, data.id);
+                                },
+                              ),
                             ],
                           ),
                         ),

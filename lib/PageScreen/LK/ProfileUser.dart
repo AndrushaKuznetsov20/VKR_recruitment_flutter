@@ -127,7 +127,7 @@ class ProfileUserstate extends State<ProfileUser> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ReadMyVacancy(token: widget.token)));
+            Navigator.of(context).pop();
           },
         ),
         actions: [
@@ -210,83 +210,90 @@ class ProfileUserstate extends State<ProfileUser> {
                   ),
                 ),
                 SizedBox(height: 12.0),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(
-                        Colors.grey.shade900),
-                    foregroundColor:
-                    MaterialStateProperty.all<Color>(
-                        Colors.white),
-                    fixedSize: MaterialStateProperty.all<Size>(Size(200, 25)),
-                  ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return StatefulBuilder(
-                          builder: (BuildContext context,
-                              StateSetter setState) {
-                            return AlertDialog(
-                              title: Text('Выберите статус:'),
-                              content: DropdownButton<String>(
-                                value: selectedStatus,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedStatus = newValue;
-                                  });
-                                },
-                                items: <String>[
-                                  'Релевантный отклик',
-                                  'Кандидат приглашён',
-                                  'Отказ работодателя',
-                                  'Самоотказ'
-                                ].map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                              ),
-                              actions: <Widget>[
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.grey.shade900,
-                                  ),
-                                  onPressed: () {
-                                    if(selectedStatus == 'Самоотказ')
-                                      {
-                                        setStatusSelfDenial(widget.vacancyId, widget.id, context);
+                if (widget.vacancyId == 0) ...[
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.grey.shade900),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      fixedSize: MaterialStateProperty.all<Size>(Size(200, 25)),
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return StatefulBuilder(
+                            builder:
+                                (BuildContext context, StateSetter setState) {
+                              return AlertDialog(
+                                title: Text('Выберите статус:'),
+                                content: DropdownButton<String>(
+                                  value: selectedStatus,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      selectedStatus = newValue;
+                                    });
+                                  },
+                                  items: <String>[
+                                    'Релевантный отклик',
+                                    'Кандидат приглашён',
+                                    'Отказ работодателя',
+                                    'Самоотказ'
+                                  ].map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                                actions: <Widget>[
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey.shade900,
+                                    ),
+                                    onPressed: () {
+                                      if (selectedStatus == 'Самоотказ') {
+                                        setStatusSelfDenial(widget.vacancyId,
+                                            widget.id, context);
                                         Navigator.of(context).pop();
                                       }
-                                    if(selectedStatus == 'Отказ работодателя')
-                                    {
-                                      setStatusRefusalEmployer(widget.vacancyId, widget.id, context);
-                                      Navigator.of(context).pop();
-                                    }
-                                    if(selectedStatus == 'Релевантный отклик')
-                                    {
-                                      setStatusRelevant(widget.vacancyId, widget.id, context);
-                                      Navigator.of(context).pop();
-                                    }
-                                    if(selectedStatus == 'Кандидат приглашён')
-                                    {
-                                      setStatusInvitation(widget.vacancyId, widget.id, context);
-                                      Navigator.of(context).pop();
-                                    }
-                                  },
-                                  child: Text('OK', style: TextStyle(color: Colors.white)),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: Text('Обработать отклик', style: TextStyle(color: Colors.white)),
-                ),
+                                      if (selectedStatus ==
+                                          'Отказ работодателя') {
+                                        setStatusRefusalEmployer(
+                                            widget.vacancyId,
+                                            widget.id,
+                                            context);
+                                        Navigator.of(context).pop();
+                                      }
+                                      if (selectedStatus ==
+                                          'Релевантный отклик') {
+                                        setStatusRelevant(widget.vacancyId,
+                                            widget.id, context);
+                                        Navigator.of(context).pop();
+                                      }
+                                      if (selectedStatus ==
+                                          'Кандидат приглашён') {
+                                        setStatusInvitation(widget.vacancyId,
+                                            widget.id, context);
+                                        Navigator.of(context).pop();
+                                      }
+                                    },
+                                    child: Text('OK',
+                                        style: TextStyle(color: Colors.white)),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child: Text('Обработать отклик',
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                ],
               ],
             ),
           ),
