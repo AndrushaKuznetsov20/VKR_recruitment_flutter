@@ -58,7 +58,48 @@ class ReadMyResponsesState extends State<ReadMyResponses>
         ),
       );
     }
+    listMyResponses(currentPage,context);
     Navigator.of(context).pop();
+  }
+
+  void showDeleteConfirmationDialog(BuildContext context, int vacancyId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Удалить отклик?'),
+          content: Text('Вы действительно хотите удалить этот отклик ?'),
+          actions: [
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(Icons.not_interested, color: Colors.red),
+              label: Text('Нет'),
+              style: ButtonStyle(
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                foregroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                deleteResponse(context, vacancyId);
+              },
+              icon: Icon(Icons.check, color: Colors.green),
+              label: Text('Да'),
+              style: ButtonStyle(
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                foregroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void nextPage() {
@@ -148,10 +189,9 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                                       TextStyle(fontWeight: FontWeight.bold)),
                               Text(utf8.decode(data.schedule.codeUnits)),
                               Divider(),
-
                               ElevatedButton.icon(
                                 onPressed: () {
-                                  deleteResponse(context, data.id);
+                                  showDeleteConfirmationDialog(context, data.id);
                                 },
                                 icon: Icon(Icons.delete_forever),
                                 label: Text('Удалить отклик'),

@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import '../../Models/Resume.dart';
 import '../Home.dart';
 import '../LK/LK.dart';
-import 'ReadResume.dart';
+import 'ReadMyResume.dart';
 
 class UpdateResume extends StatefulWidget {
   final String token;

@@ -4,13 +4,15 @@ import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:recruitment/PageScreen/Vacancy/ReadMyVacancy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../Models/Resume.dart';
 import '../../Models/Role.dart';
 import '../../Models/User.dart';
 import '../Admin/AdminPage.dart';
 import '../Employer/EmployerPage.dart';
 import '../Home.dart';
 import '../Moder/ModerPage.dart';
-import '../Resume/ReadResume.dart';
+import '../Resume/ReadMyResume.dart';
+import '../Resume/ReadUserResume.dart';
 import '../User/UpdateUser.dart';
 import '../User/UserPage.dart';
 
@@ -25,6 +27,7 @@ class ProfileUser extends StatefulWidget{
 }
 class ProfileUserstate extends State<ProfileUser> {
 
+  Resume? resume;
   User? user;
 
   Future<void> fingByUser() async
@@ -103,10 +106,86 @@ class ProfileUserstate extends State<ProfileUser> {
     }
   }
 
+  Future<Resume?> findByUserResume(int userId, BuildContext context) async
+  {
+    final response = await http.get(
+      Uri.parse(
+          'http://172.20.10.3:8092/resume/getResumeById/$userId'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      setState(() {
+        resume = Resume.fromJson(jsonData);
+      });
+    }
+  }
+
+  //   // if(utf8.decode(resume!.statusResume.codeUnits) == "Не модерировано!" || utf8.decode(resume!.statusResume.codeUnits) == "Заблокировано!")
+  //     // {
+  //     //   showDialog(
+  //     //     context: context,
+  //     //     builder: (BuildContext context) {
+  //     //       return AlertDialog(
+  //     //         title: Text('Внимание?'),
+  //     //         content: Text('Резюме пользователя заблокировано или не модерировано!'),
+  //     //         actions: [
+  //     //           ElevatedButton.icon(
+  //     //             onPressed: () {
+  //     //               Navigator.push(
+  //     //                   context, MaterialPageRoute(builder: (context) => ProfileUser(token: widget.token, id: widget.userId, vacancyId: 0)));
+  //     //             },
+  //     //             icon: Icon(Icons.check, color: Colors.green),
+  //     //             label: Text('ОК'),
+  //     //             style: ButtonStyle(
+  //     //               backgroundColor:
+  //     //                   MaterialStateProperty.all<Color>(Colors.grey.shade900),
+  //     //               foregroundColor:
+  //     //                   MaterialStateProperty.all<Color>(Colors.white),
+  //     //             ),
+  //     //           ),
+  //     //         ],
+  //     //       );
+  //     //     },
+  //     //   );
+  //     // }
+  //
+  //   // if(response.statusCode == 204){
+  //   //   showDialog(
+  //   //     context: context,
+  //   //     builder: (BuildContext context) {
+  //   //       return AlertDialog(
+  //   //         title: Text('Внимание?'),
+  //   //         content: Text('Резюме пользователя не существует'),
+  //   //         actions: [
+  //   //           ElevatedButton.icon(
+  //   //             onPressed: () {
+  //   //               Navigator.push(
+  //   //                   context, MaterialPageRoute(builder: (context) => ProfileUser(token: widget.token, id: widget.userId, vacancyId: 0)));
+  //   //             },
+  //   //             icon: Icon(Icons.check, color: Colors.green),
+  //   //             label: Text('ОК'),
+  //   //             style: ButtonStyle(
+  //   //               backgroundColor:
+  //   //               MaterialStateProperty.all<Color>(Colors.grey.shade900),
+  //   //               foregroundColor:
+  //   //               MaterialStateProperty.all<Color>(Colors.white),
+  //   //             ),
+  //   //           ),
+  //   //         ],
+  //   //       );
+  //   //     },
+  //   //   );
+  //   // }
+  // }
+
   @override
   void initState() {
     super.initState();
     fingByUser();
+    findByUserResume(widget.id, context);
   }
 
   String extractRoleFromToken(String token)
@@ -122,7 +201,7 @@ class ProfileUserstate extends State<ProfileUser> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Личный кабинет', style: TextStyle(color: Colors.white)),
+        title: Text('Профиль', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.grey.shade900,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -183,8 +262,13 @@ class ProfileUserstate extends State<ProfileUser> {
                 SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    // Navigator.push(context, MaterialPageRoute(
-                    //     builder: (context) => ReadResume(token: widget.token), id: user?.id));
+                    if (resume != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReadUserResume(
+                                  token: widget.token, resume: resume!)));
+                    }
                   },
                   child: Text('Просмотр резюме'),
                   style: ButtonStyle(
@@ -210,7 +294,7 @@ class ProfileUserstate extends State<ProfileUser> {
                   ),
                 ),
                 SizedBox(height: 12.0),
-                if (widget.vacancyId == 0) ...[
+                if (widget.vacancyId != 0) ...[
                   ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(

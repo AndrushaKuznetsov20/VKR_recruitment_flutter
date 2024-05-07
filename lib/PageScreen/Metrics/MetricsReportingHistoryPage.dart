@@ -59,6 +59,8 @@ class MetricsReportingHistoryPageState extends State<MetricsReportingHistoryPage
         ),
       );
     }
+    getAllMetricsReportingHistory();
+    Navigator.of(context).pop();
   }
 
   void showDeleteConfirmationDialog(BuildContext context, int metricsReportingId) {
@@ -210,7 +212,6 @@ class MetricsReportingHistoryPageState extends State<MetricsReportingHistoryPage
                                 icon: Icon(Icons.delete_forever, color: Colors.black),
                                 onPressed: () {
                                   showDeleteConfirmationDialog(context, data.id);
-                                  deleteMetricsReportingHistory(context, data.id);
                                 },
                               ),
                             ],
