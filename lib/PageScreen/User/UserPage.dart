@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:recruitment/PageScreen/Resume/CreateResume.dart';
 import 'package:recruitment/PageScreen/User/UserVacancy.dart';
 
+import '../Chat/ListUserChats.dart';
 import '../LK/LK.dart';
 
 class UserPage extends StatelessWidget {
@@ -17,6 +18,13 @@ class UserPage extends StatelessWidget {
         backgroundColor: Colors.grey.shade900,
         automaticallyImplyLeading: false,
         actions: [
+          IconButton(
+            icon: Icon(Icons.chat, color: Colors.white),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ListUserChats(token: token)),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(Icons.account_circle, color: Colors.white),
             onPressed: () {

@@ -20,6 +20,7 @@ class ChatPageState extends State<ChatPage> {
   final TextEditingController messageController = TextEditingController();
   DateFormat dateFormat = DateFormat('dd.MM.yyyy');
   List<Message> messages = [];
+  final String currentUsername = "Вы";
 
   Future<void> sendMessage(BuildContext context) async {
 
@@ -99,15 +100,24 @@ class ChatPageState extends State<ChatPage> {
               itemBuilder: (context, index) {
                 final message = messages[index];
                 final isOwnMessage = message.sender == widget.senderId;
-                return Align(
-                  alignment: isOwnMessage ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Card(
-                    color: isOwnMessage ? Colors.green[100] : Colors.blue[100],
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(utf8.decode(message.content.codeUnits)),
+                return Column(
+                  crossAxisAlignment: isOwnMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: isOwnMessage ? Alignment.centerRight : Alignment.centerLeft,
+                      child: Card(
+                        color: isOwnMessage ? Colors.green[100] : Colors.blue[100],
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(utf8.decode(message.content.codeUnits)),
+                        ),
+                      ),
                     ),
-                  ),
+                    Text(
+                      isOwnMessage ? "Вы" : "",
+                      style: TextStyle(fontSize: 14, color: Colors.black),
+                    ),
+                  ],
                 );
               },
             ),

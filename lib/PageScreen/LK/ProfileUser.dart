@@ -257,7 +257,7 @@ class ProfileUserstate extends State<ProfileUser> {
                 ),
                 SizedBox(height: 12.0),
                 if (widget.vacancyId != 0) ...[
-                  ElevatedButton(
+                  ElevatedButton.icon(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Colors.grey.shade900),
@@ -336,8 +336,8 @@ class ProfileUserstate extends State<ProfileUser> {
                         },
                       );
                     },
-                    child: Text('Обработать отклик',
-                        style: TextStyle(color: Colors.white)),
+                    icon: Icon(Icons.hourglass_empty, color: Colors.red),
+                    label: Text('Обработать отклик'),
                   ),
                 ],
               ],

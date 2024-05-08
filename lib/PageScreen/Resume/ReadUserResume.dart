@@ -30,6 +30,56 @@ class ReadUserResumestate extends State<ReadUserResume> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.resume.statusResume == "Не модерировано!"){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Внимание!'),
+            content: Text('Резюме находиться на модерации и недоступно для просмотра!'),
+            actions: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.check, color: Colors.green),
+                label: Text('ОК'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+    if(widget.resume.statusResume == "Заблокировано!"){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Внимание!'),
+            content: Text('Резюме заблокировано и недоступно для просмотра!'),
+            actions: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.check, color: Colors.green),
+                label: Text('ОК'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
