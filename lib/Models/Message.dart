@@ -3,10 +3,10 @@ class Message {
   final String content;
   final int sender;
   final int receiver;
-  final DateTime currentDate;
+  final DateTime currentDateTime;
 
   Message({required this.id,required this.content,
-    required this.sender, required this.receiver,required this.currentDate});
+    required this.sender, required this.receiver,required this.currentDateTime});
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
@@ -14,7 +14,7 @@ class Message {
       content: json['content'],
       sender: json['sender'],
       receiver: json['receiver'],
-      currentDate: DateTime.parse(json['currentDate']),
+      currentDateTime: DateTime.parse(json['currentDateTime']),
     );
   }
 }

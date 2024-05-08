@@ -80,7 +80,15 @@ class ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Чат'),
+        automaticallyImplyLeading: false,
+        title: Text('Чат', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.grey.shade900,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Column(
         children: [
@@ -91,14 +99,13 @@ class ChatPageState extends State<ChatPage> {
               itemBuilder: (context, index) {
                 final message = messages[index];
                 final isOwnMessage = message.sender == widget.senderId;
-
                 return Align(
                   alignment: isOwnMessage ? Alignment.centerRight : Alignment.centerLeft,
                   child: Card(
                     color: isOwnMessage ? Colors.green[100] : Colors.blue[100],
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(message.content),
+                      child: Text(utf8.decode(message.content.codeUnits)),
                     ),
                   ),
                 );

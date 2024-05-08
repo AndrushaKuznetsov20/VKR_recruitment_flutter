@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:recruitment/PageScreen/Employer/EmployerResume.dart';
 import 'package:recruitment/PageScreen/Vacancy/ReadMyVacancy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Models/Resume.dart';
@@ -131,67 +132,6 @@ class ProfileUserstate extends State<ProfileUser> {
         resume = Resume.fromJson(jsonData);
       });
     }
-    if (utf8.decode(resume!.statusResume.codeUnits) == "Не модерировано!" ||
-        utf8.decode(resume!.statusResume.codeUnits) == "Заблокировано!") {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Внимание!'),
-            content:
-                Text('Резюме пользователя заблокировано или не модерировано!'),
-            actions: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileUser(token: widget.token, id: widget.id, vacancyId: 0)));
-                },
-                icon: Icon(Icons.check, color: Colors.green),
-                label: Text('ОК'),
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    if (response.statusCode == 204) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Внимание!'),
-            content: Text('Резюме пользователя не существует!'),
-            actions: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileUser(token: widget.token, id: widget.id, vacancyId: 0)));
-                },
-                icon: Icon(Icons.check, color: Colors.green),
-                label: Text('ОК'),
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
   }
 
   @override
@@ -226,7 +166,8 @@ class ProfileUserstate extends State<ProfileUser> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => EmployerResume(token: widget.token)));
           },
         ),
         actions: [
@@ -280,7 +221,7 @@ class ProfileUserstate extends State<ProfileUser> {
                   title: Text('Роль: ${user?.role == Role.ROLE_MODER ? 'Модератор' : user?.role == Role.ROLE_ADMIN ? 'Администратор' : user?.role == Role.ROLE_USER ? 'Простой пользователь' : user?.role == Role.ROLE_EMPLOYER ? 'Работодатель' : ''}'),
                 ),
                 SizedBox(height: 16),
-                ElevatedButton(
+                ElevatedButton.icon(
                   onPressed: () {
                     if (resume != null) {
                       Navigator.push(
@@ -290,7 +231,8 @@ class ProfileUserstate extends State<ProfileUser> {
                                   token: widget.token, resume: resume!)));
                     }
                   },
-                  child: Text('Просмотр резюме'),
+                  icon: Icon(Icons.description, color: Colors.yellow),
+                  label: Text('Просмотр резюме'),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
                         Colors.grey.shade900),

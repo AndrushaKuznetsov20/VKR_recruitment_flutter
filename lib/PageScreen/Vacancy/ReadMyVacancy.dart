@@ -20,6 +20,8 @@ class ReadMyVacancy extends StatefulWidget {
 }
 
 class ReadMyVacancyState extends State<ReadMyVacancy> {
+
+  Map<int, List<Response>> vacanciesResponsesMap = {};
   List<Vacancy> dataList = [];
   List<User> dataListUser = [];
   List<Response> dataListResponse = [];
@@ -104,7 +106,7 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
       }
 
       setState(() {
-        dataListResponse = responses;
+        vacanciesResponsesMap[vacancyId] = responses;
       });
     }
   }
@@ -281,30 +283,31 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
-                                  itemCount: dataListResponse.length,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return Column(
-                                      children: [
-                                        ListTile(
-                                          title: Row(
-                                            children: [
-                                              Icon(Icons.person),
-                                              SizedBox(width: 8.0),
-                                              Text(dataListResponse[index].user.username),
-                                              SizedBox(width: 8.0),
-                                              Text(utf8.decode(dataListResponse[index].statusResponse.codeUnits),style: TextStyle(
-                                                color: utf8.decode(dataListResponse[index].statusResponse.codeUnits) == 'Не обработан!' ? Colors.red : Colors.green,
-                                              ),),
-                                            ],
+                                  itemCount: vacanciesResponsesMap[data.id]?.length ?? 0,
+                                  itemBuilder: (BuildContext context, int indexResponse) {
+                                    final response = vacanciesResponsesMap[data.id]?[indexResponse];
+                                    return ListTile(
+                                      title: Row(
+                                        children: [
+                                          Icon(Icons.person),
+                                          SizedBox(width: 8.0),
+                                          Text(response!.user.username),
+                                          SizedBox(width: 8.0),
+                                          Text(utf8.decode(response.statusResponse.codeUnits),
+                                            style: TextStyle(
+                                              color: utf8.decode(response.statusResponse.codeUnits) == 'Не обработан!' ? Colors.red : Colors.green,
+                                            ),
                                           ),
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => ProfileUser(token: widget.token, id: dataListResponse[index].user.id, vacancyId: data.id)));
-                                          },
-                                        ),
-                                      ],
+                                        ],
+                                      ),
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ProfileUser(token: widget.token, id: response.user.id, vacancyId: data.id),
+                                          ),
+                                        );
+                                      },
                                     );
                                   },
                                 ),
