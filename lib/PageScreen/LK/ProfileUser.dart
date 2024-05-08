@@ -8,6 +8,7 @@ import '../../Models/Resume.dart';
 import '../../Models/Role.dart';
 import '../../Models/User.dart';
 import '../Admin/AdminPage.dart';
+import '../Chat/ChatPage.dart';
 import '../Employer/EmployerPage.dart';
 import '../Home.dart';
 import '../Moder/ModerPage.dart';
@@ -33,7 +34,8 @@ class ProfileUserstate extends State<ProfileUser> {
   Future<void> fingByUser() async
   {
     int userId = widget.id;
-    final response = await http.get(Uri.parse('http://172.20.10.3:8092/user/findByUser/$userId'),
+    final response = await http.get(
+      Uri.parse('http://172.20.10.3:8092/user/findByUser/$userId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },);
@@ -48,9 +50,11 @@ class ProfileUserstate extends State<ProfileUser> {
     }
   }
 
-  Future<void> setStatusSelfDenial(int vacancyId, int userId, BuildContext buildContext) async
+  Future<void> setStatusSelfDenial(int vacancyId, int userId,
+      BuildContext buildContext) async
   {
-    final response = await http.put(Uri.parse('http://172.20.10.3:8092/response/setStatusSelfDenial/$userId/$vacancyId'),
+    final response = await http.put(Uri.parse(
+        'http://172.20.10.3:8092/response/setStatusSelfDenial/$userId/$vacancyId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },);
@@ -63,37 +67,11 @@ class ProfileUserstate extends State<ProfileUser> {
     }
   }
 
-  Future<void> setStatusRefusalEmployer(int vacancyId, int userId, BuildContext buildContext) async
+  Future<void> setStatusRefusalEmployer(int vacancyId, int userId,
+      BuildContext buildContext) async
   {
-    final response = await http.put(Uri.parse('http://172.20.10.3:8092/response/setStatusRefusalEmployer/$userId/$vacancyId'),
-      headers: {
-        'Authorization': 'Bearer ${widget.token}',
-      },);
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(response.body),
-        ),
-      );
-    }
-  }
-  Future<void> setStatusRelevant(int vacancyId, int userId, BuildContext buildContext) async
-  {
-    final response = await http.put(Uri.parse('http://172.20.10.3:8092/response/setStatusRelevant/$userId/$vacancyId'),
-      headers: {
-        'Authorization': 'Bearer ${widget.token}',
-      },);
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(response.body),
-        ),
-      );
-    }
-  }
-  Future<void> setStatusInvitation(int vacancyId, int userId, BuildContext buildContext) async
-  {
-    final response = await http.put(Uri.parse('http://172.20.10.3:8092/response/setStatusInvitation/$userId/$vacancyId'),
+    final response = await http.put(Uri.parse(
+        'http://172.20.10.3:8092/response/setStatusRefusalEmployer/$userId/$vacancyId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },);
@@ -106,11 +84,43 @@ class ProfileUserstate extends State<ProfileUser> {
     }
   }
 
-  Future<Resume?> findByUserResume(int userId, BuildContext context) async
+  Future<void> setStatusRelevant(int vacancyId, int userId,
+      BuildContext buildContext) async
   {
+    final response = await http.put(Uri.parse(
+        'http://172.20.10.3:8092/response/setStatusRelevant/$userId/$vacancyId'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },);
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+    }
+  }
+
+  Future<void> setStatusInvitation(int vacancyId, int userId,
+      BuildContext buildContext) async
+  {
+    final response = await http.put(Uri.parse(
+        'http://172.20.10.3:8092/response/setStatusInvitation/$userId/$vacancyId'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },);
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+    }
+  }
+
+  Future<Resume?> findByUserResume(int userId, BuildContext context) async {
     final response = await http.get(
-      Uri.parse(
-          'http://172.20.10.3:8092/resume/getResumeById/$userId'),
+      Uri.parse('http://172.20.10.3:8092/resume/getResumeById/$userId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -121,65 +131,68 @@ class ProfileUserstate extends State<ProfileUser> {
         resume = Resume.fromJson(jsonData);
       });
     }
-  }
+    if (utf8.decode(resume!.statusResume.codeUnits) == "Не модерировано!" ||
+        utf8.decode(resume!.statusResume.codeUnits) == "Заблокировано!") {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Внимание!'),
+            content:
+                Text('Резюме пользователя заблокировано или не модерировано!'),
+            actions: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfileUser(token: widget.token, id: widget.id, vacancyId: 0)));
+                },
+                icon: Icon(Icons.check, color: Colors.green),
+                label: Text('ОК'),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
 
-  //   // if(utf8.decode(resume!.statusResume.codeUnits) == "Не модерировано!" || utf8.decode(resume!.statusResume.codeUnits) == "Заблокировано!")
-  //     // {
-  //     //   showDialog(
-  //     //     context: context,
-  //     //     builder: (BuildContext context) {
-  //     //       return AlertDialog(
-  //     //         title: Text('Внимание?'),
-  //     //         content: Text('Резюме пользователя заблокировано или не модерировано!'),
-  //     //         actions: [
-  //     //           ElevatedButton.icon(
-  //     //             onPressed: () {
-  //     //               Navigator.push(
-  //     //                   context, MaterialPageRoute(builder: (context) => ProfileUser(token: widget.token, id: widget.userId, vacancyId: 0)));
-  //     //             },
-  //     //             icon: Icon(Icons.check, color: Colors.green),
-  //     //             label: Text('ОК'),
-  //     //             style: ButtonStyle(
-  //     //               backgroundColor:
-  //     //                   MaterialStateProperty.all<Color>(Colors.grey.shade900),
-  //     //               foregroundColor:
-  //     //                   MaterialStateProperty.all<Color>(Colors.white),
-  //     //             ),
-  //     //           ),
-  //     //         ],
-  //     //       );
-  //     //     },
-  //     //   );
-  //     // }
-  //
-  //   // if(response.statusCode == 204){
-  //   //   showDialog(
-  //   //     context: context,
-  //   //     builder: (BuildContext context) {
-  //   //       return AlertDialog(
-  //   //         title: Text('Внимание?'),
-  //   //         content: Text('Резюме пользователя не существует'),
-  //   //         actions: [
-  //   //           ElevatedButton.icon(
-  //   //             onPressed: () {
-  //   //               Navigator.push(
-  //   //                   context, MaterialPageRoute(builder: (context) => ProfileUser(token: widget.token, id: widget.userId, vacancyId: 0)));
-  //   //             },
-  //   //             icon: Icon(Icons.check, color: Colors.green),
-  //   //             label: Text('ОК'),
-  //   //             style: ButtonStyle(
-  //   //               backgroundColor:
-  //   //               MaterialStateProperty.all<Color>(Colors.grey.shade900),
-  //   //               foregroundColor:
-  //   //               MaterialStateProperty.all<Color>(Colors.white),
-  //   //             ),
-  //   //           ),
-  //   //         ],
-  //   //       );
-  //   //     },
-  //   //   );
-  //   // }
-  // }
+    if (response.statusCode == 204) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Внимание!'),
+            content: Text('Резюме пользователя не существует!'),
+            actions: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfileUser(token: widget.token, id: widget.id, vacancyId: 0)));
+                },
+                icon: Icon(Icons.check, color: Colors.green),
+                label: Text('ОК'),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -193,6 +206,13 @@ class ProfileUserstate extends State<ProfileUser> {
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
     String role = decodedToken['role'];
     return role;
+  }
+
+  int extractIdFromToken(String token)
+  {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    int id = decodedToken['id'];
+    return id;
   }
 
   @override
@@ -281,8 +301,8 @@ class ProfileUserstate extends State<ProfileUser> {
                 SizedBox(height: 12.0),
                 ElevatedButton.icon(
                   onPressed: () {
-                    // Navigator.push(context, MaterialPageRoute(
-                    //     builder: (context) => MyVacancy(token: widget.token)));
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => ChatPage(token: widget.token, senderId: extractIdFromToken(widget.token), receiverId: widget.id)));
                   },
                   icon: Icon(Icons.message, color: Colors.blue),
                   label: Text('Написать пользователю'),

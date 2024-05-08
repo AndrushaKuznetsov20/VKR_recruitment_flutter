@@ -15,6 +15,96 @@ class RegisterState extends State<Register> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  Future<void> register(BuildContext context) async{
+    String selectedRole = '';
+
+    if (_isEmployerChecked) {
+      selectedRole = 'EMPLOYER';
+    } else if (_isUserChecked) {
+      selectedRole = 'USER';
+    }
+
+    String username = usernameController.text;
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    final url = Uri.parse('http://172.20.10.3:8092/auth/sign-up/$selectedRole');
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({
+      'username': username,
+      'email': email,
+      'password': password
+    });
+
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200)
+    {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Вы успешно зарегистрировались!"),
+        ),
+      );
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+    }
+    if(response.statusCode == 403)
+    {
+      showDialog(
+        context: context,
+        builder: (context) =>
+            AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Пользователь с таким email уже существует!'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('ОК'),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                ),
+              ],
+            ),
+      );
+    }
+
+    if(response.statusCode == 409)
+    {
+      showDialog(
+        context: context,
+        builder: (context) =>
+            AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Пользователь с таким именем уже существует!'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('ОК'),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                ),
+              ],
+            ),
+      );
+    }
+
+    if(response.statusCode == 400)
+    {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,95 +221,5 @@ class RegisterState extends State<Register> {
         ),
       ),
     );
-  }
-
-  Future<void> register(BuildContext context) async{
-    String selectedRole = '';
-
-    if (_isEmployerChecked) {
-      selectedRole = 'EMPLOYER';
-    } else if (_isUserChecked) {
-      selectedRole = 'USER';
-    }
-
-    String username = usernameController.text;
-    String email = emailController.text;
-    String password = passwordController.text;
-
-    final url = Uri.parse('http://172.20.10.3:8092/auth/sign-up/$selectedRole');
-    final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode({
-      'username': username,
-      'email': email,
-      'password': password
-    });
-
-    final response = await http.post(url, headers: headers, body: body);
-
-    if (response.statusCode == 200)
-    {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Вы успешно зарегистрировались!"),
-        ),
-      );
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-    }
-    if(response.statusCode == 403)
-      {
-        showDialog(
-          context: context,
-          builder: (context) =>
-              AlertDialog(
-                title: Text('Ошибка!'),
-                content: Text('Пользователь с таким email уже существует!'),
-                actions: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('ОК'),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-        );
-      }
-
-    if(response.statusCode == 409)
-    {
-      showDialog(
-        context: context,
-        builder: (context) =>
-            AlertDialog(
-              title: Text('Ошибка!'),
-              content: Text('Пользователь с таким именем уже существует!'),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('ОК'),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                  ),
-                ),
-              ],
-            ),
-      );
-    }
-
-    if(response.statusCode == 400)
-    {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(response.body),
-        ),
-      );
-    }
   }
 }
