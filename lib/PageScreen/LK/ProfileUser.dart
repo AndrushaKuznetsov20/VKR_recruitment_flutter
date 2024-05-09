@@ -221,25 +221,27 @@ class ProfileUserstate extends State<ProfileUser> {
                   title: Text('Роль: ${user?.role == Role.ROLE_MODER ? 'Модератор' : user?.role == Role.ROLE_ADMIN ? 'Администратор' : user?.role == Role.ROLE_USER ? 'Простой пользователь' : user?.role == Role.ROLE_EMPLOYER ? 'Работодатель' : ''}'),
                 ),
                 SizedBox(height: 16),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    if (resume != null) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReadUserResume(
-                                  token: widget.token, resume: resume!)));
-                    }
-                  },
-                  icon: Icon(Icons.description, color: Colors.yellow),
-                  label: Text('Просмотр резюме'),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Colors.grey.shade900),
-                    foregroundColor:
-                    MaterialStateProperty.all<Color>(Colors.white),
+                if (widget.vacancyId != 0) ...[
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      if (resume != null) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ReadUserResume(
+                                    token: widget.token, resume: resume!)));
+                      }
+                    },
+                    icon: Icon(Icons.description, color: Colors.yellow),
+                    label: Text('Просмотр резюме'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.grey.shade900),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                    ),
                   ),
-                ),
+                ],
                 SizedBox(height: 12.0),
                 ElevatedButton.icon(
                   onPressed: () {

@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../Models/Role.dart';
 import '../../Models/User.dart';
+import '../Chat/ListUserChats.dart';
 import '../LK/LK.dart';
 
 class AdminPage extends StatefulWidget {
@@ -141,6 +142,13 @@ class AdminPageState extends State<AdminPage> {
         ),
         backgroundColor: Colors.grey.shade900,
         actions: [
+          IconButton(
+            icon: Icon(Icons.chat, color: Colors.white),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ListUserChats(token: widget.token)),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(Icons.account_circle, color: Colors.white),
             onPressed: () {

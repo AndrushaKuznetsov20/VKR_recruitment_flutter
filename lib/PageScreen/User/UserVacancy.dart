@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:recruitment/Models/Vacancy.dart';
 import 'package:http/http.dart' as http;
 import 'package:recruitment/PageScreen/User/UserPage.dart';
 
+import '../Chat/ChatPage.dart';
 import '../LK/LK.dart';
 import '../Moder/ModerPage.dart';
 
@@ -95,6 +97,13 @@ class UserVacancyState extends State<UserVacancy> {
         listVacancySetStatusOk(currentPage, context);
       });
     }
+  }
+
+  int extractIdFromToken(String token)
+  {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    int id = decodedToken['id'];
+    return id;
   }
 
   @override
@@ -207,7 +216,10 @@ class UserVacancyState extends State<UserVacancy> {
                                 width: double.infinity,
                                 child: ElevatedButton.icon(
                                   onPressed: () {
-                                    // setStatusVacancyBlock(data.id, context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ChatPage(token: widget.token, senderId: extractIdFromToken(widget.token), receiverId: data.user.id)));
                                   },
                                   icon: Icon(Icons.message, color: Colors.blue),
                                   label: Text('Написать работодателю'),

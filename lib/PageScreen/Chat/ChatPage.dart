@@ -103,6 +103,10 @@ class ChatPageState extends State<ChatPage> {
                 return Column(
                   crossAxisAlignment: isOwnMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      DateFormat('yyyy-MM-dd HH:mm').format(message.currentDateTime),
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
                     Align(
                       alignment: isOwnMessage ? Alignment.centerRight : Alignment.centerLeft,
                       child: Card(

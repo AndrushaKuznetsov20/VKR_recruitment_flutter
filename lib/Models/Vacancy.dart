@@ -8,11 +8,11 @@ class Vacancy {
   final int wage;
   final String schedule;
   final String status_vacancy;
-  // User? user;
+  final User user;
 
   Vacancy({required this.id,required this.name_vacancy,
     required this.description_vacancy, required this.conditions_and_requirements,required this.wage,
-    required this.schedule,required this.status_vacancy});
+    required this.schedule,required this.status_vacancy, required this.user});
 
   factory Vacancy.fromJson(Map<String, dynamic> json) {
     return Vacancy(
@@ -23,7 +23,7 @@ class Vacancy {
       wage: json['wage'],
       schedule: json['schedule'],
       status_vacancy: json['status_vacancy'],
-      // user: User.fromJson(json['user']),
+      user: User.fromJson(json['user']),
     );
   }
 }
