@@ -137,7 +137,7 @@ class AdminPageState extends State<AdminPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Список пользователей',
+          'Работа с пользователями',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.grey.shade900,
@@ -194,6 +194,11 @@ class AdminPageState extends State<AdminPage> {
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
                               Text(utf8.decode(data.email.codeUnits)),
+                              Divider(),
+                              Text('Номер телефона:',
+                                  style:
+                                  TextStyle(fontWeight: FontWeight.bold)),
+                              Text(utf8.decode(data.number.codeUnits)),
                               Divider(),
                               Text('Активность:',
                                   style:

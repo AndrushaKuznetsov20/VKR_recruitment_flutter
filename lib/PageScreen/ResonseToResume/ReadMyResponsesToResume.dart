@@ -2,44 +2,46 @@ import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../../Models/Vacancy.dart';
+import '../../Models/Resume.dart';
+import 'package:intl/intl.dart';
 import '../LK/LK.dart';
 
-class ReadMyResponses extends StatefulWidget {
+class ReadMyResponsesToResume extends StatefulWidget {
   final String token;
-  ReadMyResponses({required this.token});
+  ReadMyResponsesToResume({required this.token});
 
   @override
-  ReadMyResponsesState createState() => ReadMyResponsesState();
+  ReadMyResponsesToResumeState createState() => ReadMyResponsesToResumeState();
 }
 
-class ReadMyResponsesState extends State<ReadMyResponses>
+class ReadMyResponsesToResumeState extends State<ReadMyResponsesToResume>
 {
-  List<Vacancy> dataListVacancy = [];
+  DateFormat dateFormat = DateFormat('dd.MM.yyyy');
+  List<Resume> dataListResume= [];
   int currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-    listMyResponses(currentPage, context);
+    listMyResponsesToResume(currentPage, context);
   }
 
-  Future<void> listMyResponses(int pageNo, BuildContext context) async {
+  Future<void> listMyResponsesToResume(int pageNo, BuildContext context) async {
     final response = await http.get(
-      Uri.parse('http://172.20.10.3:8092/response/listVacancy/$pageNo'),
+      Uri.parse('http://172.20.10.3:8092/responseToResume/listMyResponsesToResume/$pageNo'),
       headers: {'Authorization': 'Bearer ${widget.token}'},
     );
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
 
-      List<Vacancy> responses = [];
+      List<Resume> resumes = [];
       for (var responseJson in jsonData) {
-        responses.add(Vacancy.fromJson(responseJson));
+        resumes.add(Resume.fromJson(responseJson));
       }
 
-      if (responses.isEmpty) {
+      if (resumes.isEmpty) {
         currentPage--;
-        listMyResponses(currentPage, context);
+        listMyResponsesToResume(currentPage, context);
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -49,15 +51,15 @@ class ReadMyResponsesState extends State<ReadMyResponses>
       }
 
       setState(() {
-        dataListVacancy = responses;
+        dataListResume = resumes;
       });
     }
   }
 
-  Future<void> deleteResponse(BuildContext context, int vacancyId) async {
+  Future<void> deleteResponseToResume(BuildContext context, int responseToResumeId) async {
     final response = await http.delete(
       Uri.parse(
-          'http://172.20.10.3:8092/response/delete/$vacancyId'),
+          'http://172.20.10.3:8092/responseToResume/delete/$responseToResumeId'),
       headers: {
         'Authorization': 'Bearer ${widget.token}',
       },
@@ -69,11 +71,11 @@ class ReadMyResponsesState extends State<ReadMyResponses>
         ),
       );
     }
-    listMyResponses(currentPage,context);
+    listMyResponsesToResume(currentPage,context);
     Navigator.of(context).pop();
   }
 
-  void showDeleteConfirmationDialog(BuildContext context, int vacancyId) {
+  void showDeleteConfirmationDialog(BuildContext context, int responseToResumeId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -96,7 +98,7 @@ class ReadMyResponsesState extends State<ReadMyResponses>
             ),
             ElevatedButton.icon(
               onPressed: () {
-                deleteResponse(context, vacancyId);
+                deleteResponseToResume(context, responseToResumeId);
               },
               icon: Icon(Icons.check, color: Colors.green),
               label: Text('Да'),
@@ -116,7 +118,7 @@ class ReadMyResponsesState extends State<ReadMyResponses>
   void nextPage() {
     setState(() {
       currentPage++;
-      listMyResponses(currentPage, context);
+      listMyResponsesToResume(currentPage, context);
     });
   }
 
@@ -124,7 +126,7 @@ class ReadMyResponsesState extends State<ReadMyResponses>
     if (currentPage > 0) {
       setState(() {
         currentPage--;
-        listMyResponses(currentPage, context);
+        listMyResponsesToResume(currentPage, context);
       });
     }
   }
@@ -154,9 +156,9 @@ class ReadMyResponsesState extends State<ReadMyResponses>
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: dataListVacancy.length,
+              itemCount: dataListResume.length,
               itemBuilder: (context, index) {
-                final data = dataListVacancy[index];
+                final data = dataListResume[index];
                 return Card(
                     margin: EdgeInsets.all(8),
                     elevation: 4,
@@ -167,7 +169,7 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                           SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              '${utf8.decode(data.name_vacancy.codeUnits)}',
+                              '${utf8.decode(data.fullName.codeUnits)}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey.shade900,
@@ -189,7 +191,7 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                                   backgroundColor: Colors.black,
                                   radius: 18,
                                   child: Icon(
-                                    Icons.description,
+                                    Icons.calendar_month,
                                     color: Colors.white,
                                     size: 18,
                                   ),
@@ -198,16 +200,14 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Описание вакансии:',
+                                      'Дата рождения:',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14,
                                       ),
                                     ),
-                                    Text(
-                                      utf8.decode(
-                                          data.description_vacancy.codeUnits),
+                                    Text(dateFormat.format(data.birthDate),
                                       style: TextStyle(
                                         fontSize: 14,
                                       ),
@@ -221,7 +221,7 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                                   backgroundColor: Colors.black,
                                   radius: 18,
                                   child: Icon(
-                                    Icons.assignment_turned_in,
+                                    Icons.cake,
                                     color: Colors.white,
                                     size: 18,
                                   ),
@@ -230,17 +230,14 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Условия и требования:',
+                                      'Возраст:',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14,
                                       ),
                                     ),
-                                    Text(
-                                      utf8.decode(data
-                                          .conditions_and_requirements
-                                          .codeUnits),
+                                    Text(data.age.toString(),
                                       style: TextStyle(
                                         fontSize: 14,
                                       ),
@@ -254,7 +251,7 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                                   backgroundColor: Colors.black,
                                   radius: 18,
                                   child: Icon(
-                                    Icons.attach_money,
+                                    Icons.location_city,
                                     color: Colors.white,
                                     size: 18,
                                   ),
@@ -263,14 +260,14 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Заработная плата:',
+                                      'Город:',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14,
                                       ),
                                     ),
-                                    Text(data.wage.toString(),
+                                    Text(utf8.decode(data.city.codeUnits),
                                       style: TextStyle(
                                         fontSize: 14,
                                       ),
@@ -284,7 +281,7 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                                   backgroundColor: Colors.black,
                                   radius: 18,
                                   child: Icon(
-                                    Icons.schedule,
+                                    Icons.work,
                                     color: Colors.white,
                                     size: 18,
                                   ),
@@ -293,14 +290,74 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'График:',
+                                      'Навыки:',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14,
                                       ),
                                     ),
-                                    Text(utf8.decode(data.schedule.codeUnits),
+                                    Text(utf8.decode(data.skills.codeUnits),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 18,
+                                  child: Icon(
+                                    Icons.school,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Образование:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(utf8.decode(data.education.codeUnits),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 18,
+                                  child: Icon(
+                                    Icons.info,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Другая информация:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(utf8.decode(data.otherInfo.codeUnits),
                                       style: TextStyle(
                                         fontSize: 14,
                                       ),
@@ -312,7 +369,7 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                               IconButton(
                                 iconSize: 30.0,
                                 icon: Icon(Icons.delete_forever,
-                                    color: Colors.black),
+                                    color: Colors.black, ),
                                 onPressed: () {
                                   showDeleteConfirmationDialog(context, data.id);
                                 },

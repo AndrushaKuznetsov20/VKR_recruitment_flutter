@@ -13,6 +13,7 @@ class RegisterState extends State<Register> {
   bool _isObscure = true;
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController numberController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   Future<void> register(BuildContext context) async{
@@ -26,6 +27,7 @@ class RegisterState extends State<Register> {
 
     String username = usernameController.text;
     String email = emailController.text;
+    String number = numberController.text;
     String password = passwordController.text;
 
     final url = Uri.parse('http://172.20.10.3:8092/auth/sign-up/$selectedRole');
@@ -33,6 +35,7 @@ class RegisterState extends State<Register> {
     final body = jsonEncode({
       'username': username,
       'email': email,
+      'number': number,
       'password': password
     });
 
@@ -105,6 +108,20 @@ class RegisterState extends State<Register> {
     }
   }
 
+  final RegExp numRegExp = RegExp(r'^[0-9]*$');
+  @override
+  void initState() {
+    super.initState();
+    numberController.addListener(() {
+      if (!numRegExp.hasMatch(numberController.text)) {
+        int selectionStart = numberController.selection.baseOffset - 1;
+        numberController.text = numberController.text.replaceAll(RegExp(r'\D'), '');
+        numberController.selection =
+            TextSelection.fromPosition(TextPosition(offset: selectionStart));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,9 +151,9 @@ class RegisterState extends State<Register> {
                     borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
-                cursorColor: Colors.black,
-                style: TextStyle(color: Colors.black),
-              ),
+                  cursorColor: Colors.black,
+                  style: TextStyle(color: Colors.black),
+                  maxLines: null),
               SizedBox(height: 12.0),
               TextField(
                 controller: emailController,
@@ -148,8 +165,24 @@ class RegisterState extends State<Register> {
                     borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
-                cursorColor: Colors.black,
-                style: TextStyle(color: Colors.black),
+                  cursorColor: Colors.black,
+                  style: TextStyle(color: Colors.black),
+                  maxLines: null),
+              SizedBox(height: 12.0),
+              TextField(
+                  controller: numberController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.phone, color: Colors.black),
+                    labelText: 'Введите номер телефона:',
+                    labelStyle: TextStyle(color: Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  cursorColor: Colors.black,
+                  style: TextStyle(color: Colors.black),
+                  keyboardType: TextInputType.number,
+                  maxLines: null
               ),
               SizedBox(height: 12.0),
               TextField(

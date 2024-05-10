@@ -67,6 +67,22 @@ class EmployerResumeState extends State<EmployerResume> {
     }
   }
 
+  Future<void> createResponseToResume(int resumeId, BuildContext context) async {
+    final response = await http.post(
+      Uri.parse('http://172.20.10.3:8092/responseToResume/create/$resumeId'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+    }
+  }
+
   void nextPage() {
     setState(() {
       currentPage++;
@@ -190,6 +206,13 @@ class EmployerResumeState extends State<EmployerResume> {
                                         builder: (context) =>
                                             ProfileUser(token: widget.token, id: data.user.id, vacancyId: 0)),
                                   );
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.thumb_up,
+                                    color: Colors.black),
+                                onPressed: () {
+                                  createResponseToResume(data.id, context);
                                 },
                               ),
                             ],

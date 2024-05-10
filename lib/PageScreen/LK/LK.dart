@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:recruitment/PageScreen/ResonseToResume/ReadMyResponsesToResume.dart';
 import 'package:recruitment/PageScreen/Response/ReadMyResponses.dart';
 import 'package:recruitment/PageScreen/Vacancy/ReadMyVacancy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -156,6 +157,14 @@ class LKstate extends State<LK> {
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.black,
+                    child: Icon(Icons.phone, color: Colors.white),
+                  ),
+                  title: Text('Номер телефона: ${utf8.decode(user?.number.codeUnits ?? [])}'),
+                ),
+                Divider(),
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.black,
                     child: Icon(Icons.tag_faces, color: Colors.white),
                   ),
                   title: Text('Роль: ${user?.role == Role.ROLE_MODER ? 'Модератор' : user?.role == Role.ROLE_ADMIN ? 'Администратор' : user?.role == Role.ROLE_USER ? 'Простой пользователь' : user?.role == Role.ROLE_EMPLOYER ? 'Работодатель' : ''}'),
@@ -172,6 +181,19 @@ class LKstate extends State<LK> {
                           Colors.grey.shade900),
                       foregroundColor:
                           MaterialStateProperty.all<Color>(Colors.white),
+                    ),
+                  ),
+                  SizedBox(height: 12.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => ReadMyResponsesToResume(token: widget.token)));
+                    },
+                    child: Text('Перейти в избранное'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.grey.shade900),
+                      foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
                     ),
                   ),
                 ],

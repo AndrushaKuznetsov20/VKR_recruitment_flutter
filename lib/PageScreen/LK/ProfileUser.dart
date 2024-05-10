@@ -216,6 +216,14 @@ class ProfileUserstate extends State<ProfileUser> {
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.black,
+                    child: Icon(Icons.phone, color: Colors.white),
+                  ),
+                  title: Text('Номер телефона: ${utf8.decode(user?.number.codeUnits ?? [])}'),
+                ),
+                Divider(),
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.black,
                     child: Icon(Icons.tag_faces, color: Colors.white),
                   ),
                   title: Text('Роль: ${user?.role == Role.ROLE_MODER ? 'Модератор' : user?.role == Role.ROLE_ADMIN ? 'Администратор' : user?.role == Role.ROLE_USER ? 'Простой пользователь' : user?.role == Role.ROLE_EMPLOYER ? 'Работодатель' : ''}'),
