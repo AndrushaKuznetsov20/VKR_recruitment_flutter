@@ -166,7 +166,16 @@ class ModerResumeState extends State<ModerResume>
                         children: [
                           Icon(Icons.menu, color: Colors.grey.shade900),
                           SizedBox(width: 8),
-                          Text('${utf8.decode(data.fullName.codeUnits)}',style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.shade900)),
+                          Expanded(
+                            child: Text(
+                              '${utf8.decode(data.fullName.codeUnits)}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade900,
+                              ),
+                              maxLines: null,
+                            ),
+                          ),
                         ],
                       ),
                       iconColor: Colors.grey.shade900,
@@ -176,29 +185,214 @@ class ModerResumeState extends State<ModerResume>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Дата рождения:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(dateFormat.format(data.birthDate)),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.calendar_month,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Дата рождения:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(dateFormat.format(data.birthDate),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Divider(),
-                              Text('Возраст:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(data.age.toString()),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.cake,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Возраст:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(data.age.toString(),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Divider(),
-                              Text('Город:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(utf8.decode(data.city.codeUnits)),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.location_city,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Город:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(utf8.decode(data.city.codeUnits),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Divider(),
-                              Text('Навыки:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(utf8.decode(data.skills.codeUnits)),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.work,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Навыки:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(utf8.decode(data.skills.codeUnits),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Divider(),
-                              Text('Образование:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(utf8.decode(data.education.codeUnits)),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.school,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Образование:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(utf8.decode(data.education.codeUnits),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Divider(),
-                              Text('Другая информация:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(utf8.decode(data.otherInfo.codeUnits)),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.info,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Другая информация:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(utf8.decode(data.otherInfo.codeUnits),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Divider(),
-                              Text('Статус резюме:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(
-                                utf8.decode(data.statusResume.codeUnits),
-                                style: TextStyle(
-                                  color: utf8.decode(data.statusResume.codeUnits) == 'Заблокировано!' ? Colors.red : utf8.decode(data.statusResume.codeUnits) == 'Опубликовано!' ? Colors.green : Colors.black,
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Статус резюме:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      utf8.decode(data.statusResume.codeUnits),
+                                      style: TextStyle(
+                                        color: utf8.decode(data.statusResume.codeUnits) == 'Заблокировано!' ? Colors.red : utf8.decode(data.statusResume.codeUnits) == 'Опубликовано!' ? Colors.green : Colors.black,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],

@@ -57,7 +57,9 @@ class LKstate extends State<LK> {
   void initState() {
     super.initState();
     fingByUser();
-    findByUserResume();
+    if(extractRoleFromToken(widget.token) == 'ROLE_USER' || extractRoleFromToken(widget.token) == 'ROLE_EMPLOYER') {
+        findByUserResume();
+      }
   }
 
   String extractRoleFromToken(String token)
@@ -110,7 +112,7 @@ class LKstate extends State<LK> {
           IconButton(
             icon: Icon(Icons.edit, color: Colors.white),
             onPressed: () {
-              Navigator.push(context,MaterialPageRoute(builder: (context) => UpdateUser(token: widget.token, username: user!.username, email: user!.email, password: user!.password)));
+              Navigator.push(context,MaterialPageRoute(builder: (context) => UpdateUser(token: widget.token, username: user!.username, email: user!.email, number: user!.number, password: user!.password)));
             },
           ),
           IconButton(
@@ -126,151 +128,177 @@ class LKstate extends State<LK> {
           margin: EdgeInsets.all(16),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    child: Icon(Icons.token_outlined, color: Colors.white),
-                  ),
-                  title: Text('Личный идентификатор: ${user?.id}'),
-                ),
-                Divider(),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    child: Icon(Icons.person, color: Colors.white),
-                  ),
-                  title: Text('Логин: ${utf8.decode(user?.username.codeUnits ?? [])}'),
-                ),
-                Divider(),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    child: Icon(Icons.email, color: Colors.white),
-                  ),
-                  title: Text('Email: ${utf8.decode(user?.email.codeUnits ?? [])}'),
-                ),
-                Divider(),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    child: Icon(Icons.phone, color: Colors.white),
-                  ),
-                  title: Text('Номер телефона: ${utf8.decode(user?.number.codeUnits ?? [])}'),
-                ),
-                Divider(),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    child: Icon(Icons.tag_faces, color: Colors.white),
-                  ),
-                  title: Text('Роль: ${user?.role == Role.ROLE_MODER ? 'Модератор' : user?.role == Role.ROLE_ADMIN ? 'Администратор' : user?.role == Role.ROLE_USER ? 'Простой пользователь' : user?.role == Role.ROLE_EMPLOYER ? 'Работодатель' : ''}'),
-                ),
-                if (user != null && user?.role == Role.ROLE_EMPLOYER) ...[
-                  SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => ReadMyVacancy(token: widget.token)));
-                    },
-                    child: Text('Мои вакансии'),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.grey.shade900),
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      child: Icon(Icons.token_outlined, color: Colors.white),
                     ),
+                    title: Text('Личный идентификатор: ${user?.id}'),
                   ),
-                  SizedBox(height: 12.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => ReadMyResponsesToResume(token: widget.token)));
-                    },
-                    child: Text('Перейти в избранное'),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.grey.shade900),
-                      foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
+                  Divider(),
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      child: Icon(Icons.person, color: Colors.white),
                     ),
+                    title: Text(
+                        'Логин: ${utf8.decode(user?.username.codeUnits ?? [])}'),
                   ),
-                ],
-                if (user != null && user?.role == Role.ROLE_USER) ...[
-                  ElevatedButton(
-                    onPressed: () async{
-                      if (resume != null) {
+                  Divider(),
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      child: Icon(Icons.email, color: Colors.white),
+                    ),
+                    title: Text(
+                        'Email: ${utf8.decode(user?.email.codeUnits ?? [])}'),
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      child: Icon(Icons.phone, color: Colors.white),
+                    ),
+                    title: Text(
+                        'Номер телефона: ${utf8.decode(user?.number.codeUnits ?? [])}'),
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      child: Icon(Icons.tag_faces, color: Colors.white),
+                    ),
+                    title: Text(
+                        'Роль: ${user?.role == Role.ROLE_MODER ? 'Модератор' : user?.role == Role.ROLE_ADMIN ? 'Администратор' : user?.role == Role.ROLE_USER ? 'Простой пользователь' : user?.role == Role.ROLE_EMPLOYER ? 'Работодатель' : ''}'),
+                  ),
+                  if (user != null && user?.role == Role.ROLE_EMPLOYER) ...[
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ReadResume(token: widget.token, resume: resume),
-                          ),
-                        );
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text('Ошибка!'),
-                            content: Text('У вас нет резюме, хотите его создать ?'),
-                            actions: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CreateResume(token: widget.token)));
-                                },
-                                child: Text('Создать'),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 12.0,
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Нет'),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    },
-                    child: Text('Ваше резюме'),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.grey.shade900),
-                      foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ReadMyVacancy(token: widget.token)));
+                      },
+                      child: Text('Мои вакансии'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.grey.shade900),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 12.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => ReadMyResponses(token: widget.token)));
-                    },
-                    child: Text('Перейти в избранное'),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.grey.shade900),
-                      foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
+                    SizedBox(height: 12.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ReadMyResponsesToResume(
+                                    token: widget.token)));
+                      },
+                      child: Text('Перейти в избранное'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.grey.shade900),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                      ),
                     ),
-                  ),
+                  ],
+                  if (user != null && user?.role == Role.ROLE_USER) ...[
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (resume != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReadResume(
+                                  token: widget.token, resume: resume),
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Ошибка!'),
+                              content: Text(
+                                  'У вас нет резюме, хотите его создать ?'),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => CreateResume(
+                                                token: widget.token)));
+                                  },
+                                  child: Text('Создать'),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.grey.shade900),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 12.0,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Нет'),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.grey.shade900),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                      child: Text('Ваше резюме'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.grey.shade900),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ReadMyResponses(token: widget.token)));
+                      },
+                      child: Text('Перейти в избранное'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.grey.shade900),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                      ),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),

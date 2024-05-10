@@ -19,6 +19,7 @@ class ChatPage extends StatefulWidget {
 class ChatPageState extends State<ChatPage> {
 
   final TextEditingController messageController = TextEditingController();
+  late Timer timer;
   DateFormat dateFormat = DateFormat('dd.MM.yyyy');
   List<Message> messages = [];
   final String currentUsername = "Вы";
@@ -78,9 +79,17 @@ class ChatPageState extends State<ChatPage> {
     startTimer();
   }
 
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
   void startTimer() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      outputMessages(context);
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (mounted) {
+        outputMessages(context);
+      }
     });
   }
 

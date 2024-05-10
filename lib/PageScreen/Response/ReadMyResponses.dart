@@ -187,11 +187,11 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.black,
-                                  radius: 18,
+                                  radius: 21,
                                   child: Icon(
                                     Icons.description,
                                     color: Colors.white,
-                                    size: 18,
+                                    size: 21,
                                   ),
                                 ),
                                 title: Column(
@@ -219,11 +219,11 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.black,
-                                  radius: 18,
+                                  radius: 21,
                                   child: Icon(
                                     Icons.assignment_turned_in,
                                     color: Colors.white,
-                                    size: 18,
+                                    size: 21,
                                   ),
                                 ),
                                 title: Column(
@@ -252,11 +252,11 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.black,
-                                  radius: 18,
+                                  radius: 21,
                                   child: Icon(
                                     Icons.attach_money,
                                     color: Colors.white,
-                                    size: 18,
+                                    size: 21,
                                   ),
                                 ),
                                 title: Column(
@@ -282,11 +282,11 @@ class ReadMyResponsesState extends State<ReadMyResponses>
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.black,
-                                  radius: 18,
+                                  radius: 21,
                                   child: Icon(
                                     Icons.schedule,
                                     color: Colors.white,
-                                    size: 18,
+                                    size: 21,
                                   ),
                                 ),
                                 title: Column(

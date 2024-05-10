@@ -236,10 +236,16 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
                         children: [
                           Icon(Icons.menu, color: Colors.grey.shade900),
                           SizedBox(width: 8),
-                          Text('${utf8.decode(data.name_vacancy.codeUnits)}',
+                          Expanded(
+                            child: Text(
+                              '${utf8.decode(data.name_vacancy.codeUnits)}',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade900)),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade900,
+                              ),
+                              maxLines: null,
+                            ),
+                          ),
                         ],
                       ),
                       iconColor: Colors.grey.shade900,
@@ -249,27 +255,159 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Описание вакансии:',
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(utf8.decode(data.description_vacancy.codeUnits)),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.description,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Описание вакансии:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      utf8.decode(
+                                          data.description_vacancy.codeUnits),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Divider(),
-                              Text('Условия и требования:',
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(utf8.decode(data.conditions_and_requirements.codeUnits)),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.assignment_turned_in,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Условия и требования:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      utf8.decode(data
+                                          .conditions_and_requirements
+                                          .codeUnits),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Divider(),
-                              Text('Заработная плата:',
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(data.wage.toString()),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.attach_money,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Заработная плата:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(data.wage.toString(),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Divider(),
-                              Text('График:',
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(utf8.decode(data.schedule.codeUnits)),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.schedule,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'График:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(utf8.decode(data.schedule.codeUnits),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Divider(),
-                              Text('Статус вакансии:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(
-                                utf8.decode(data.status_vacancy.codeUnits),
-                                style: TextStyle(
-                                  color: utf8.decode(data.status_vacancy.codeUnits) == 'Заблокирована!' ? Colors.red : utf8.decode(data.status_vacancy.codeUnits) == 'Опубликована!' ? Colors.green : Colors.black,
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Статус вакансии:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      utf8.decode(data.status_vacancy.codeUnits),
+                                      style: TextStyle(
+                                        color: utf8.decode(data.status_vacancy.codeUnits) == 'Заблокирована!' ? Colors.red : utf8.decode(data.status_vacancy.codeUnits) == 'Опубликована!' ? Colors.green : Colors.black,
+                                     fontSize: 14),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -335,7 +473,9 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
                                   child: ElevatedButton.icon(
                                     onPressed: () {
                                       setState(() {
-                                        dataListResponse = [];
+                                        if(vacanciesResponsesMap.containsKey(data.id)) {
+                                          vacanciesResponsesMap.remove(data.id);
+                                          }
                                       });
                                     },
                                     icon: Icon(Icons.visibility_off),
@@ -354,6 +494,7 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
                                 Row(
                                   children: [
                                     IconButton(
+                                      iconSize: 30.0,
                                       icon: Icon(Icons.delete_forever,
                                           color: Colors.black),
                                       onPressed: () {
@@ -362,6 +503,7 @@ class ReadMyVacancyState extends State<ReadMyVacancy> {
                                       },
                                     ),
                                     IconButton(
+                                      iconSize: 30.0,
                                       icon:
                                           Icon(Icons.edit, color: Colors.black),
                                       onPressed: () {

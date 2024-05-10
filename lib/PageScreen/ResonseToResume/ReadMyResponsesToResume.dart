@@ -189,11 +189,11 @@ class ReadMyResponsesToResumeState extends State<ReadMyResponsesToResume>
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.black,
-                                  radius: 18,
+                                  radius: 21,
                                   child: Icon(
                                     Icons.calendar_month,
                                     color: Colors.white,
-                                    size: 18,
+                                    size: 21,
                                   ),
                                 ),
                                 title: Column(
@@ -219,11 +219,11 @@ class ReadMyResponsesToResumeState extends State<ReadMyResponsesToResume>
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.black,
-                                  radius: 18,
+                                  radius: 21,
                                   child: Icon(
                                     Icons.cake,
                                     color: Colors.white,
-                                    size: 18,
+                                    size: 21,
                                   ),
                                 ),
                                 title: Column(
@@ -249,11 +249,11 @@ class ReadMyResponsesToResumeState extends State<ReadMyResponsesToResume>
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.black,
-                                  radius: 18,
+                                  radius: 21,
                                   child: Icon(
                                     Icons.location_city,
                                     color: Colors.white,
-                                    size: 18,
+                                    size: 21,
                                   ),
                                 ),
                                 title: Column(
@@ -279,11 +279,11 @@ class ReadMyResponsesToResumeState extends State<ReadMyResponsesToResume>
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.black,
-                                  radius: 18,
+                                  radius: 21,
                                   child: Icon(
                                     Icons.work,
                                     color: Colors.white,
-                                    size: 18,
+                                    size: 21,
                                   ),
                                 ),
                                 title: Column(
@@ -309,11 +309,11 @@ class ReadMyResponsesToResumeState extends State<ReadMyResponsesToResume>
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.black,
-                                  radius: 18,
+                                  radius: 21,
                                   child: Icon(
                                     Icons.school,
                                     color: Colors.white,
-                                    size: 18,
+                                    size: 21,
                                   ),
                                 ),
                                 title: Column(
@@ -339,11 +339,11 @@ class ReadMyResponsesToResumeState extends State<ReadMyResponsesToResume>
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.black,
-                                  radius: 18,
+                                  radius: 21,
                                   child: Icon(
                                     Icons.info,
                                     color: Colors.white,
-                                    size: 18,
+                                    size: 21,
                                   ),
                                 ),
                                 title: Column(

@@ -190,33 +190,131 @@ class AdminPageState extends State<AdminPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Email:',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(utf8.decode(data.email.codeUnits)),
-                              Divider(),
-                              Text('Номер телефона:',
-                                  style:
-                                  TextStyle(fontWeight: FontWeight.bold)),
-                              Text(utf8.decode(data.number.codeUnits)),
-                              Divider(),
-                              Text('Активность:',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(
-                                data.active.toString(),
-                                style: TextStyle(
-                                  color: data.active.toString() == 'false'
-                                      ? Colors.red
-                                      : Colors.green,
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.email,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Email:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      utf8.decode(
+                                          data.email.codeUnits),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               Divider(),
-                              Text('Роль:',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(
-                                  '${data.role == Role.ROLE_MODER ? 'Модератор' : data.role == Role.ROLE_ADMIN ? 'Администратор' : data.role == Role.ROLE_USER ? 'Простой пользователь' : data.role == Role.ROLE_EMPLOYER ? 'Работодатель' : ''}'),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.phone,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Номер телефона:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      utf8.decode(
+                                          data.number.codeUnits),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Активность:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text('${data.active.toString() == 'false' ? 'Заблокирован' : 'Разблокирован'}',
+                                      style:
+                                      TextStyle(
+                                        color: data.active.toString() == 'false'
+                                            ? Colors.red
+                                            : Colors.green,
+                                        fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 21,
+                                  child: Icon(
+                                    Icons.tag_faces,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Роль:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                        '${data.role == Role.ROLE_MODER ? 'Модератор' : data.role == Role.ROLE_ADMIN ? 'Администратор' : data.role == Role.ROLE_USER ? 'Простой пользователь' : data.role == Role.ROLE_EMPLOYER ? 'Работодатель' : ''}',
+                                      style:
+                                      TextStyle(fontSize: 14)),
+                                  ],
+                                ),
+                              ),
                               Divider(),
                             ],
                           ),

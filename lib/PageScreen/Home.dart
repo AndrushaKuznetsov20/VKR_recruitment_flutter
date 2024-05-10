@@ -23,7 +23,7 @@ class Home extends StatelessWidget {
               SizedBox(height: 60.0),
               SizedBox(
                 width: 200,
-                child: ElevatedButton(
+                child: ElevatedButton.icon(
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
                   },
@@ -31,13 +31,14 @@ class Home extends StatelessWidget {
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                   ),
-                  child: Text('Авторизация'),
+                  label: Text('Авторизация'),
+                  icon: Icon(Icons.account_circle),
                 ),
               ),
               SizedBox(height: 10),
               SizedBox(
                 width: 200,
-                child:  ElevatedButton(
+                child:  ElevatedButton.icon(
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Register()));
                   },
@@ -45,7 +46,8 @@ class Home extends StatelessWidget {
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                   ),
-                  child: Text('Регистрация'),
+                  label: Text('Регистрация'),
+                  icon: Icon(Icons.app_registration),
                 ),
               ),
             ],
