@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:recruitment/PageScreen/Metrics/MetricsPage.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../Models/MetricsReportingHistory.dart';
 import '../LK/LK.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,9 @@ class MetricsReportingHistoryPage extends StatefulWidget {
 class MetricsReportingHistoryPageState extends State<MetricsReportingHistoryPage> {
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   List<MetricsReportingHistory> dataListMetricsReportingHistory = [];
+
+  Map<int, Map<String, dynamic>> periodsWithMetrics = {};
+  List<Map<String, dynamic>> chartData = [];
 
   Future<void> getAllMetricsReportingHistory() async {
 
@@ -41,6 +45,55 @@ class MetricsReportingHistoryPageState extends State<MetricsReportingHistoryPage
         dataListMetricsReportingHistory = metricsReportingHistoryList;
       });
     }
+    Map<int, Map<String, dynamic>> periodsWithMetrics = {};
+
+    for (MetricsReportingHistory metrics in dataListMetricsReportingHistory) {
+      periodsWithMetrics[metrics.id] = {
+        'countVacancies': metrics.countVacancies,
+        'countResponses': metrics.countResponses,
+        'countRelevantResponse': metrics.countRelevantResponse,
+        'countSelfDanial': metrics.countSelfDanial,
+        'countRefusalEmployer': metrics.countRefusalEmployer,
+        'countInvitation': metrics.countInvitation,
+        'countFoundResume': metrics.countFoundResume,
+      };
+    }
+    List<String> columnNames = [
+      'Кол-во вакансий',
+      'Кол-во откликов',
+      'Кол-во релевантных откликов',
+      'Кол-во самоотказов',
+      'Кол-во отказов работодателя',
+      'Кол-во приглашений',
+      'Кол-во найденных резюме'
+    ];
+
+    periodsWithMetrics.forEach((id, metrics) {
+      List<int> columnValues = [
+        metrics['countVacancies'],
+        metrics['countResponses'],
+        metrics['countRelevantResponse'],
+        metrics['countSelfDanial'],
+        metrics['countRefusalEmployer'],
+        metrics['countInvitation'],
+        metrics['countFoundResume']
+      ];
+
+      List<Map<String, dynamic>> periodChartData = [];
+
+      for (int i = 0; i < columnNames.length; i++) {
+        periodChartData.add({
+          'columnName': columnNames[i],
+          'columnValue': columnValues[i],
+        });
+      }
+
+      chartData.add({
+        'id': id,
+        'data': periodChartData,
+      });
+    });
+
   }
 
   Future<void> deleteMetricsReportingHistory(BuildContext context, int metricsReportingId) async {
@@ -213,6 +266,48 @@ class MetricsReportingHistoryPageState extends State<MetricsReportingHistoryPage
                                 onPressed: () {
                                   showDeleteConfirmationDialog(context, data.id);
                                 },
+                              ),
+                              Container(
+                                height: 400,
+                                width: double.infinity,
+                                child: SfCartesianChart(
+                                  title: ChartTitle(text: 'Рассчитанные метрики'),
+                                  primaryXAxis: CategoryAxis(
+                                    labelRotation: 90,
+                                  ),
+                                  series: <ChartSeries>[
+                                    ColumnSeries<Map<String, dynamic>, String>(
+                                      dataSource: chartData[index]['data'],
+                                      xValueMapper: (Map<String, dynamic> data, _) => data['columnName'],
+                                      yValueMapper: (Map<String, dynamic> data, _) => data['columnValue'],
+                                      width: 0.8,
+                                      dataLabelSettings: const DataLabelSettings(
+                                        isVisible: true,
+                                        labelAlignment: ChartDataLabelAlignment.top,
+                                        textStyle: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      pointColorMapper: (Map<String, dynamic> data, _) {
+                                        if (data['columnName'] == 'Кол-во вакансий') {
+                                          return Colors.green.shade500;
+                                        } else if (data['columnName'] == 'Кол-во откликов') {
+                                          return Colors.red.shade500;
+                                        } else if (data['columnName'] == 'Кол-во релевантных откликов') {
+                                          return Colors.blue.shade500;
+                                        } else if (data['columnName'] == 'Кол-во самоотказов') {
+                                          return Colors.purple.shade500;
+                                        } else if (data['columnName'] == 'Кол-во отказов работодателя') {
+                                          return Colors.yellow.shade700;
+                                        } else if (data['columnName'] == 'Кол-во найденных резюме') {
+                                          return Colors.blueGrey.shade700;
+                                        }
+                                        return Colors.grey.shade500;
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),

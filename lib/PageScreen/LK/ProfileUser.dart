@@ -239,6 +239,13 @@ class ProfileUserstate extends State<ProfileUser> {
                                 builder: (context) => ReadUserResume(
                                     token: widget.token, resume: resume!)));
                       }
+                      else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("У данного пользователя нет резюме!"),
+                          ),
+                        );
+                      }
                     },
                     icon: Icon(Icons.description, color: Colors.yellow),
                     label: Text('Просмотр резюме'),

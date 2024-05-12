@@ -29,6 +29,7 @@ class _MetricsPageState extends State<MetricsPage> {
   String resultCountRelevantResponse = '';
   String resultCountRefusalEmployer = '';
   String resultCountInvitation = '';
+  String resultCountFoundResume = '';
 
   int countVacancies = 0;
   int countResponses = 0;
@@ -36,6 +37,7 @@ class _MetricsPageState extends State<MetricsPage> {
   int countRelevantResponse = 0;
   int countRefusalEmployer = 0;
   int countInvitation = 0;
+  int countFoundResume = 0;
 
   List<Map<String, dynamic>> chartData = [];
   List<String> columnNames = [
@@ -44,10 +46,11 @@ class _MetricsPageState extends State<MetricsPage> {
     'Кол-во релевантных откликов',
     'Кол-во самоотказов',
     'Кол-во отказов работодателя',
-    'Кол-во приглашений'
+    'Кол-во приглашений',
+    'Кол-во найденных резюме'
   ];
 
-  List<int> columnValues = [0, 0, 0, 0, 0, 0];
+  List<int> columnValues = [0, 0, 0, 0, 0, 0, 0];
 
   List<Vacancy> dataList = [];
 
@@ -213,6 +216,33 @@ class _MetricsPageState extends State<MetricsPage> {
     }
   }
 
+  Future<void>  calculateCountAllFoundResume(DateTime startDate, DateTime endDate) async {
+    final formatter = DateFormat('yyyy-MM-dd');
+    final startDateTimeFormatted = formatter.format(startDate);
+    final endDateTimeFormatted = formatter.format(endDate);
+
+    final response = await http.get(
+      Uri.parse(
+          'http://172.20.10.3:8092/metrics/countAllFoundResume/$startDateTimeFormatted/$endDateTimeFormatted'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      int newValue = int.parse(response.body);
+      setState(() {
+        countFoundResume = int.parse(response.body);
+        resultCountFoundResume = response.body;
+        columnValues[6] = newValue;
+        chartData[6] = {
+          'columnName': columnNames[6],
+          'columnValue': newValue,
+        };
+      });
+    }
+  }
+
   Future<void> calculateAllMetrics(BuildContext context, DateTime startDate, DateTime endDate) async {
     calculateCountVacancies(startDate, endDate);
     calculateCountResponses(startDate, endDate);
@@ -220,6 +250,7 @@ class _MetricsPageState extends State<MetricsPage> {
     calculateCountSelfDanial(startDate, endDate);
     calculateCountRefusalEmployer(startDate, endDate);
     calculateCountInvitation(startDate, endDate);
+    calculateCountAllFoundResume(startDate, endDate);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -246,6 +277,7 @@ class _MetricsPageState extends State<MetricsPage> {
       'countRelevantResponse':countRelevantResponse,
       'countRefusalEmployer':countRefusalEmployer,
       'countInvitation':countInvitation,
+      'countFoundResume':countFoundResume,
       'userId':userId
     });
 
@@ -508,8 +540,26 @@ class _MetricsPageState extends State<MetricsPage> {
                     ),
                   ),
                   Divider(),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Row(
+                      children: [
+                        Text('Количество найденных резюме: ',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          '$resultCountFoundResume',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
+              Divider(),
               SizedBox(
                 width: 300,
                 child: ElevatedButton.icon(
@@ -614,6 +664,8 @@ class _MetricsPageState extends State<MetricsPage> {
                           return Colors.purple.shade500;
                         } else if (data['columnName'] == 'Кол-во отказов работодателя') {
                           return Colors.yellow.shade700;
+                        } else if (data['columnName'] == 'Кол-во найденных резюме') {
+                          return Colors.blueGrey.shade700;
                         }
                         return Colors.grey.shade500;
                       },

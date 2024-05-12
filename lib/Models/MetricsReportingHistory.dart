@@ -8,12 +8,13 @@ class MetricsReportingHistory {
   final int countRelevantResponse;
   final int countRefusalEmployer;
   final int countInvitation;
+  final int countFoundResume;
   final int userId;
 
   MetricsReportingHistory({required this.id,required this.startDate,
     required this.endDate, required this.countVacancies,required this.countResponses,
     required this.countSelfDanial,required this.countRelevantResponse,required this.countRefusalEmployer,required this.countInvitation,
-    required this.userId});
+    required this.countFoundResume, required this.userId});
 
   factory MetricsReportingHistory.fromJson(Map<String, dynamic> json) {
     return MetricsReportingHistory(
@@ -26,6 +27,7 @@ class MetricsReportingHistory {
       countRelevantResponse: json['countRelevantResponse'],
       countRefusalEmployer: json['countRefusalEmployer'],
       countInvitation: json['countInvitation'],
+      countFoundResume: json['countFoundResume'],
       userId: json['userId'],
     );
   }
