@@ -166,8 +166,7 @@ class ProfileUserstate extends State<ProfileUser> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => EmployerResume(token: widget.token)));
+            Navigator.of(context).pop();
           },
         ),
         actions: [

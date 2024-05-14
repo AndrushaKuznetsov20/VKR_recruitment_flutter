@@ -23,6 +23,12 @@ class UserVacancyState extends State<UserVacancy> {
   List<Vacancy> dataList = [];
   int currentPage = 0;
 
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController scheduleController = TextEditingController();
+  TextEditingController conditionsController = TextEditingController();
+  RangeValues currentRangeValues = const RangeValues(0, 1000000);
+
   @override
   void initState() {
     super.initState();
@@ -106,6 +112,73 @@ class UserVacancyState extends State<UserVacancy> {
     return id;
   }
 
+  void searchVacancies() {
+    String? nameVacancy = nameController.text.isNotEmpty ? nameController.text : null;
+    String? description = descriptionController.text.isNotEmpty ? descriptionController.text : null;
+    String? schedule = scheduleController.text.isNotEmpty ? scheduleController.text : null;
+    String? conditions = conditionsController.text.isNotEmpty ? conditionsController.text : null;
+    int? minWage = currentRangeValues.start.round();
+    int? maxWage = currentRangeValues.end.round();
+
+    foundVacancies(nameVacancy, description, schedule, conditions, minWage, maxWage);
+  }
+
+  Future<void> foundVacancies(String? nameVacancy, String? description, String? schedule, String? conditions, int? minWage, int? maxWage) async {
+    final queryParameters = {
+      'nameVacancy': nameVacancy,
+      'description': description,
+      'schedule': schedule,
+      'conditions_and_requirements': conditions,
+      'minWage': minWage?.toString(),
+      'maxWage': maxWage?.toString(),
+    };
+
+    final queryString = queryParameters.entries
+        .where((entry) => entry.value != null)
+        .map((entry) => '${entry.key}=${entry.value}')
+        .join('&');
+
+    final response = await http.get(
+      Uri.parse('http://172.20.10.3:8092/vacancy/searchVacancies?$queryString'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body) as List<dynamic>;
+
+      List<Vacancy> vacancies = [];
+      for (var responseJson in jsonData) {
+        vacancies.add(Vacancy.fromJson(responseJson));
+      }
+
+      setState(() {
+        dataList = vacancies;
+      });
+    }
+
+    // if (response.statusCode == 200) {
+    //   final jsonData = json.decode(response.body);
+    //
+    //   List<Vacancy> vacancies = [];
+    //   if (jsonData is List) {
+    //     for (var vacancyJson in jsonData) {
+    //       if (vacancyJson is Map && vacancyJson.containsKey('vacancies')) {
+    //         for (var vacancy in vacancyJson['vacancies']) {
+    //           vacancies.add(Vacancy.fromJson(vacancy));
+    //         }
+    //       }
+    //     }
+    //   }
+    //
+    //   setState(() {
+    //     dataList = vacancies;
+    //   });
+    // }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,6 +214,236 @@ class UserVacancyState extends State<UserVacancy> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                SizedBox(width: 8),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (BuildContext context) {
+                        return StatefulBuilder(
+                          builder:
+                              (BuildContext context, StateSetter setState) {
+                            return MediaQuery(
+                              data: MediaQuery.of(context)
+                                  .copyWith(textScaleFactor: 1.0),
+                              child: SingleChildScrollView(
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom,
+                                    top: 16.0,
+                                    left: 16.0,
+                                    right: 16.0,
+                                  ),
+                                child: SingleChildScrollView(
+                                child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextField(
+                                          controller: nameController,
+                                          decoration: InputDecoration(
+                                            hintText:
+                                                'Поиск по названию вакансии',
+                                            prefixIcon: Icon(Icons.title,
+                                              color: Colors.black,),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            errorBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.red),
+                                            ),
+                                          ),
+                                          cursorColor: Colors.black,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextField(
+                                          controller: descriptionController,
+                                          decoration: InputDecoration(
+                                            hintText:
+                                                'Поиск по описанию вакансии',
+                                            prefixIcon: Icon(Icons.description,
+                                              color: Colors.black,),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            errorBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.red),
+                                            ),
+                                          ),
+                                          cursorColor: Colors.black,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextField(
+                                          controller: scheduleController,
+                                          decoration: InputDecoration(
+                                            hintText:
+                                                'Поиск по графику вакансии',
+                                            prefixIcon: Icon(Icons.schedule,
+                                              color: Colors.black,),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            errorBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.red),
+                                            ),
+                                          ),
+                                          cursorColor: Colors.black,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextField(
+                                          controller: conditionsController,
+                                          decoration: InputDecoration(
+                                            hintText: 'Поиск по требованиям',
+                                            prefixIcon: Icon(
+                                              Icons.assignment_turned_in,
+                                              color: Colors.black,
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.black),
+                                            ),
+                                            errorBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.red),
+                                            ),
+                                          ),
+                                          cursorColor: Colors.black,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Выберите размер ЗП',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8.0),
+                                            RangeSlider(
+                                              values: currentRangeValues,
+                                              min: 0,
+                                              max: 1000000,
+                                              divisions: 30,
+                                              labels: RangeLabels(
+                                                currentRangeValues.start.round().toString(),
+                                                currentRangeValues.end.round().toString(),
+                                              ),
+                                              activeColor: Colors.black,
+                                              inactiveColor: Colors.grey,
+                                              onChanged: (RangeValues values) {
+                                                setState(() {
+                                                  currentRangeValues = values;
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 16),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          foundVacancies(
+                                              nameController.text,
+                                              descriptionController.text,
+                                              scheduleController.text,
+                                              conditionsController.text,
+                                              currentRangeValues.start.round(),
+                                              currentRangeValues.end.round());
+                                          Navigator.pop(context);
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                          MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                          foregroundColor:
+                                          MaterialStateProperty.all<Color>(Colors.white),
+                                        ),
+                                        child: Text('Применить фильтры'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                                  ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                  icon: Icon(Icons.filter_alt),
+                  label: Text('Фильтры'),
+                  style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                    foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                ),
+                SizedBox(width: 10,),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    listVacancySetStatusOk(currentPage, context);
+                    nameController.clear();
+                    descriptionController.clear();
+                    conditionsController.clear();
+                    scheduleController.clear();
+                    currentRangeValues = const RangeValues(0, 1000000);
+                  },
+                  icon: Icon(Icons.filter_alt_off),
+                  label: Text('Сброс'),
+                  style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                    foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: dataList.length,

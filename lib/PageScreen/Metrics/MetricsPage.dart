@@ -439,7 +439,7 @@ class _MetricsPageState extends State<MetricsPage> {
                         Text('Количество вакансий: ',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                         Text(
-                          '$resultCountInvitation',
+                          '$resultCountVacancies',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -621,7 +621,7 @@ class _MetricsPageState extends State<MetricsPage> {
                             builder: (context) => DetailsMyVacancy(token: widget.token)));
                   },
                   icon: Icon(Icons.arrow_forward),
-                  label: Text('Перейти к своим вакансиям'),
+                  label: Text('Расчёт метрик для вакансии'),
                   style: ButtonStyle(
                     backgroundColor:
                     MaterialStateProperty.all<Color>(Colors.grey.shade900),

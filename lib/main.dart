@@ -12,15 +12,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // localizationsDelegates: [
-      //   AppLocalizations.delegate,
-      //   GlobalMaterialLocalizations.delegate,
-      //   GlobalWidgetsLocalizations.delegate,
-      // ],
-      // supportedLocales: [
-      //   const Locale('en'),
-      //   const Locale('ru'),
-      // ],
       title: 'Подбор персонала',
       theme: ThemeData(
         primarySwatch: Colors.lightGreen,
