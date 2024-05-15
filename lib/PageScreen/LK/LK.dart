@@ -119,6 +119,11 @@ class LKstate extends State<LK> {
             icon: Icon(Icons.exit_to_app, color: Colors.white),
             onPressed: () {
               Navigator.push(context,MaterialPageRoute(builder: (context) => Home()));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Вы успешно вышли из аккаунта!"),
+                ),
+              );
             },
           ),
         ],

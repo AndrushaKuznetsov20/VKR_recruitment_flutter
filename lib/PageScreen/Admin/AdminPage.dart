@@ -137,7 +137,7 @@ class AdminPageState extends State<AdminPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Работа с пользователями',
+          'Пользователи',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.grey.shade900,

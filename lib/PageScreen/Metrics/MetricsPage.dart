@@ -108,33 +108,6 @@ class _MetricsPageState extends State<MetricsPage> {
     }
   }
 
-  Future<void>  calculateCountSelfDanial(DateTime startDate, DateTime endDate) async {
-    final formatter = DateFormat('yyyy-MM-dd');
-    final startDateTimeFormatted = formatter.format(startDate);
-    final endDateTimeFormatted = formatter.format(endDate);
-
-    final response = await http.get(
-      Uri.parse(
-          'http://172.20.10.3:8092/metrics/countAllSelfDanial/$startDateTimeFormatted/$endDateTimeFormatted'),
-      headers: {
-        'Authorization': 'Bearer ${widget.token}',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      int newValue = int.parse(response.body);
-      setState(() {
-        countSelfDanial = int.parse(response.body);
-        resultCountSelfDanial = response.body;
-        columnValues[2] = newValue;
-        chartData[2] = {
-          'columnName': columnNames[2],
-          'columnValue': newValue,
-        };
-      });
-    }
-  }
-
   Future<void>  calculateCountRelevantResponse(DateTime startDate, DateTime endDate) async {
     final formatter = DateFormat('yyyy-MM-dd');
     final startDateTimeFormatted = formatter.format(startDate);
@@ -153,6 +126,33 @@ class _MetricsPageState extends State<MetricsPage> {
       setState(() {
         countRelevantResponse = int.parse(response.body);
         resultCountRelevantResponse = response.body;
+        columnValues[2] = newValue;
+        chartData[2] = {
+          'columnName': columnNames[2],
+          'columnValue': newValue,
+        };
+      });
+    }
+  }
+
+  Future<void>  calculateCountSelfDanial(DateTime startDate, DateTime endDate) async {
+    final formatter = DateFormat('yyyy-MM-dd');
+    final startDateTimeFormatted = formatter.format(startDate);
+    final endDateTimeFormatted = formatter.format(endDate);
+
+    final response = await http.get(
+      Uri.parse(
+          'http://172.20.10.3:8092/metrics/countAllSelfDanial/$startDateTimeFormatted/$endDateTimeFormatted'),
+      headers: {
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      int newValue = int.parse(response.body);
+      setState(() {
+        countSelfDanial = int.parse(response.body);
+        resultCountSelfDanial = response.body;
         columnValues[3] = newValue;
         chartData[3] = {
           'columnName': columnNames[3],
@@ -580,7 +580,17 @@ class _MetricsPageState extends State<MetricsPage> {
                 width: 300,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    createMetricsReporting(context, startDate, endDate);
+                    if(countVacancies == 0 && countFoundResume == 0 && countInvitation == 0 && countRefusalEmployer == 0 &&
+                    countSelfDanial == 0 && countResponses == 0 && countRelevantResponse == 0) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Невозможно сохранить отчёт, так как метрики не рассчитаны или равны нулевым значениям!"),
+                        ),
+                      );
+                      }
+                    else{
+                      createMetricsReporting(context, startDate, endDate);
+                    }
                   },
                   icon: Icon(Icons.save),
                   label: Text('Сохранить отчёт'),

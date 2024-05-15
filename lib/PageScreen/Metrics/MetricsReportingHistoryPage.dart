@@ -231,37 +231,68 @@ class MetricsReportingHistoryPageState extends State<MetricsReportingHistoryPage
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Количество вакансий:',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(data.countVacancies.toString()),
+                              Row(
+                                children: [
+                                  Text('Количество вакансий:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(width: 8.0),
+                                  Text(data.countVacancies.toString(), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo)),
+                                ],
+                              ),
                               Divider(),
-                              Text('Количество откликов:',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(data.countResponses.toString()),
+                              Row(
+                                children: [
+                                  Text('Количество откликов:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(width: 8.0),
+                                  Text(data.countResponses.toString(), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo)),
+                                ],
+                              ),
                               Divider(),
-                              Text('Количество релевантных откликов:',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(data.countRelevantResponse.toString()),
+                              Row(
+                                children: [
+                                  Text('Количество релевантных откликов:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(width: 8.0),
+                                  Text(data.countRelevantResponse.toString(), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo)),
+                                ],
+                              ),
                               Divider(),
-                              Text('Количество самоотказов:',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(data.countSelfDanial.toString()),
+                              Row(
+                                children: [
+                                  Text('Количество самоотказов:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(width: 8.0),
+                                  Text(data.countSelfDanial.toString(), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo)),
+                                ],
+                              ),
                               Divider(),
-                              Text('Количество отказов работодателя:',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(data.countRefusalEmployer.toString()),
+                              Row(
+                                children: [
+                                  Text('Количество отказов работодателя:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(width: 8.0),
+                                  Text(data.countRefusalEmployer.toString(), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo)),
+                                ],
+                              ),
                               Divider(),
-                              Text('Количество приглашений:',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(data.countInvitation.toString()),
+                              Row(
+                                children: [
+                                  Text('Количество приглашений:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(width: 8.0),
+                                  Text(data.countInvitation.toString(), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo)),
+                                ],
+                              ),
                               SizedBox(height: 4),
                               IconButton(
+                                iconSize: 30.0,
                                 icon: Icon(Icons.delete_forever, color: Colors.black),
                                 onPressed: () {
                                   showDeleteConfirmationDialog(context, data.id);

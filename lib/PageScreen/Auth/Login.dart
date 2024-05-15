@@ -208,6 +208,29 @@ class LoginState extends State<Login>
         );
       }
 
+    if(response.statusCode == 401)
+    {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Ошибка!'),
+          content: Text('Неверный пароль!',style: TextStyle(color: Colors.black),),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('ОК'),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     if(response.statusCode == 400)
       {
         ScaffoldMessenger.of(context).showSnackBar(

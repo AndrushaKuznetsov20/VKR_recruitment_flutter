@@ -185,7 +185,7 @@ class UserVacancyState extends State<UserVacancy> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Актуальные вакансии',
+          'Вакансии',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.grey.shade900,
@@ -199,6 +199,235 @@ class UserVacancyState extends State<UserVacancy> {
           },
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return StatefulBuilder(
+                    builder:
+                        (BuildContext context, StateSetter setState) {
+                      return MediaQuery(
+                        data: MediaQuery.of(context)
+                            .copyWith(textScaleFactor: 1.0),
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context)
+                                  .viewInsets
+                                  .bottom,
+                              top: 16.0,
+                              left: 16.0,
+                              right: 16.0,
+                            ),
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TextField(
+                                        controller: nameController,
+                                        decoration: InputDecoration(
+                                          hintText:
+                                          'Поиск по названию вакансии',
+                                          prefixIcon: Icon(Icons.title,
+                                            color: Colors.black,),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.red),
+                                          ),
+                                        ),
+                                        cursorColor: Colors.black,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TextField(
+                                        controller: descriptionController,
+                                        decoration: InputDecoration(
+                                          hintText:
+                                          'Поиск по описанию вакансии',
+                                          prefixIcon: Icon(Icons.description,
+                                            color: Colors.black,),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.red),
+                                          ),
+                                        ),
+                                        cursorColor: Colors.black,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TextField(
+                                        controller: scheduleController,
+                                        decoration: InputDecoration(
+                                          hintText:
+                                          'Поиск по графику вакансии',
+                                          prefixIcon: Icon(Icons.schedule,
+                                            color: Colors.black,),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.red),
+                                          ),
+                                        ),
+                                        cursorColor: Colors.black,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TextField(
+                                        controller: conditionsController,
+                                        decoration: InputDecoration(
+                                          hintText: 'Поиск по требованиям',
+                                          prefixIcon: Icon(
+                                            Icons.assignment_turned_in,
+                                            color: Colors.black,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.red),
+                                          ),
+                                        ),
+                                        cursorColor: Colors.black,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Выберите размер ЗП',
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(height: 8.0),
+                                          RangeSlider(
+                                            values: currentRangeValues,
+                                            min: 0,
+                                            max: 1000000,
+                                            divisions: 30,
+                                            labels: RangeLabels(
+                                              currentRangeValues.start.round().toString(),
+                                              currentRangeValues.end.round().toString(),
+                                            ),
+                                            activeColor: Colors.black,
+                                            inactiveColor: Colors.grey,
+                                            onChanged: (RangeValues values) {
+                                              setState(() {
+                                                currentRangeValues = values;
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 16),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        foundVacancies(
+                                            nameController.text,
+                                            descriptionController.text,
+                                            scheduleController.text,
+                                            conditionsController.text,
+                                            currentRangeValues.start.round(),
+                                            currentRangeValues.end.round());
+                                        Navigator.pop(context);
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text("Результаты фильтрации!"),
+                                          ),
+                                        );
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                        MaterialStateProperty.all<Color>(Colors.grey.shade900),
+                                        foregroundColor:
+                                        MaterialStateProperty.all<Color>(Colors.white),
+                                      ),
+                                      child: Text('Применить фильтры'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            },
+            icon: Icon(Icons.filter_alt, color: Colors.white),
+            style: ButtonStyle(
+              backgroundColor:
+              MaterialStateProperty.all<Color>(Colors.white),
+              foregroundColor:
+              MaterialStateProperty.all<Color>(Colors.grey.shade900),
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              listVacancySetStatusOk(currentPage, context);
+              nameController.clear();
+              descriptionController.clear();
+              conditionsController.clear();
+              scheduleController.clear();
+              currentRangeValues = const RangeValues(0, 1000000);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Фильтры сброшены!"),
+                ),
+              );
+            },
+            icon: Icon(Icons.filter_alt_off, color: Colors.white),
+            style: ButtonStyle(
+              backgroundColor:
+              MaterialStateProperty.all<Color>(Colors.grey.shade900),
+              foregroundColor:
+              MaterialStateProperty.all<Color>(Colors.white),
+            ),
+          ),
           IconButton(
             icon: Icon(Icons.account_circle, color: Colors.white),
             onPressed: () {
@@ -214,236 +443,6 @@ class UserVacancyState extends State<UserVacancy> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                SizedBox(width: 8),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (BuildContext context) {
-                        return StatefulBuilder(
-                          builder:
-                              (BuildContext context, StateSetter setState) {
-                            return MediaQuery(
-                              data: MediaQuery.of(context)
-                                  .copyWith(textScaleFactor: 1.0),
-                              child: SingleChildScrollView(
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom,
-                                    top: 16.0,
-                                    left: 16.0,
-                                    right: 16.0,
-                                  ),
-                                child: SingleChildScrollView(
-                                child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: TextField(
-                                          controller: nameController,
-                                          decoration: InputDecoration(
-                                            hintText:
-                                                'Поиск по названию вакансии',
-                                            prefixIcon: Icon(Icons.title,
-                                              color: Colors.black,),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            errorBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.red),
-                                            ),
-                                          ),
-                                          cursorColor: Colors.black,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: TextField(
-                                          controller: descriptionController,
-                                          decoration: InputDecoration(
-                                            hintText:
-                                                'Поиск по описанию вакансии',
-                                            prefixIcon: Icon(Icons.description,
-                                              color: Colors.black,),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            errorBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.red),
-                                            ),
-                                          ),
-                                          cursorColor: Colors.black,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: TextField(
-                                          controller: scheduleController,
-                                          decoration: InputDecoration(
-                                            hintText:
-                                                'Поиск по графику вакансии',
-                                            prefixIcon: Icon(Icons.schedule,
-                                              color: Colors.black,),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            errorBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.red),
-                                            ),
-                                          ),
-                                          cursorColor: Colors.black,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: TextField(
-                                          controller: conditionsController,
-                                          decoration: InputDecoration(
-                                            hintText: 'Поиск по требованиям',
-                                            prefixIcon: Icon(
-                                              Icons.assignment_turned_in,
-                                              color: Colors.black,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black),
-                                            ),
-                                            errorBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.red),
-                                            ),
-                                          ),
-                                          cursorColor: Colors.black,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Выберите размер ЗП',
-                                              style: TextStyle(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(height: 8.0),
-                                            RangeSlider(
-                                              values: currentRangeValues,
-                                              min: 0,
-                                              max: 1000000,
-                                              divisions: 30,
-                                              labels: RangeLabels(
-                                                currentRangeValues.start.round().toString(),
-                                                currentRangeValues.end.round().toString(),
-                                              ),
-                                              activeColor: Colors.black,
-                                              inactiveColor: Colors.grey,
-                                              onChanged: (RangeValues values) {
-                                                setState(() {
-                                                  currentRangeValues = values;
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(height: 16),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          foundVacancies(
-                                              nameController.text,
-                                              descriptionController.text,
-                                              scheduleController.text,
-                                              conditionsController.text,
-                                              currentRangeValues.start.round(),
-                                              currentRangeValues.end.round());
-                                          Navigator.pop(context);
-                                        },
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                          MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                                          foregroundColor:
-                                          MaterialStateProperty.all<Color>(Colors.white),
-                                        ),
-                                        child: Text('Применить фильтры'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                                  ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    );
-                  },
-                  icon: Icon(Icons.filter_alt),
-                  label: Text('Фильтры'),
-                  style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                    foregroundColor:
-                    MaterialStateProperty.all<Color>(Colors.white),
-                  ),
-                ),
-                SizedBox(width: 10,),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    listVacancySetStatusOk(currentPage, context);
-                    nameController.clear();
-                    descriptionController.clear();
-                    conditionsController.clear();
-                    scheduleController.clear();
-                    currentRangeValues = const RangeValues(0, 1000000);
-                  },
-                  icon: Icon(Icons.filter_alt_off),
-                  label: Text('Сброс'),
-                  style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.grey.shade900),
-                    foregroundColor:
-                    MaterialStateProperty.all<Color>(Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: dataList.length,

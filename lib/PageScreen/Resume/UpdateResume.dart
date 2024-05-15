@@ -151,10 +151,7 @@ class UpdateResumeState extends State<UpdateResume> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => LK(token: widget.token)));
+            Navigator.of(context).pop();
           },
         ),
       ),

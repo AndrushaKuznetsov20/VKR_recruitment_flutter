@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
 
 import '../Home.dart';
@@ -21,7 +22,6 @@ class UpdateUserState extends State<UpdateUser>
   late TextEditingController usernameController;
   late TextEditingController emailController;
   late TextEditingController numberController;
-  late TextEditingController passwordController;
 
 
   Future<void> updateDataUser(BuildContext context) async
@@ -29,7 +29,6 @@ class UpdateUserState extends State<UpdateUser>
     String username = usernameController.text;
     String email = emailController.text;
     String number = numberController.text;
-    String password = passwordController.text;
 
     final url = Uri.parse('http://172.20.10.3:8092/user/update');
     final headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ${widget.token}'};
@@ -37,7 +36,6 @@ class UpdateUserState extends State<UpdateUser>
       'username': username,
       'email': email,
       'number': number,
-      'password': password,
     });
 
     final response = await http.put(url, headers: headers, body: body);
@@ -69,7 +67,13 @@ class UpdateUserState extends State<UpdateUser>
     usernameController = TextEditingController(text: widget.username);
     emailController = TextEditingController(text: widget.email);
     numberController = TextEditingController(text: widget.number);
-    passwordController = TextEditingController(text: widget.password);
+  }
+
+  int extractIdFromToken(String token)
+  {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    int id = decodedToken['id'];
+    return id;
   }
 
   @override
@@ -131,20 +135,6 @@ class UpdateUserState extends State<UpdateUser>
                 cursorColor: Colors.black,
                 style: TextStyle(color: Colors.black),
                 maxLines: null,
-              ),
-              SizedBox(height: 12),
-              TextField(
-                controller: passwordController,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock, color: Colors.black),
-                  labelText: 'Введите новый пароль',
-                  labelStyle: TextStyle(color: Colors.black),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                ),
-                cursorColor: Colors.black,
-                style: TextStyle(color: Colors.black),
               ),
               SizedBox(height: 24.0),
               TextField(
