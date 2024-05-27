@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import '../../Models/Vacancy.dart';
 import '../Employer/EmployerPage.dart';
 import '../Home.dart';
@@ -21,6 +22,14 @@ class MetricsPage extends StatefulWidget {
 
 class _MetricsPageState extends State<MetricsPage> {
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+
+  List<String> availableMetrics = [];
+  String selectedMetric = '';
+
+  DateTime selectedYear = DateTime(2024, 1, 1);
+  List<int> monthlyValues = List.filled(12, 0);
+  List<int> _monthlyValues = [];
+
   late DateTime startDate;
   late DateTime endDate;
   String resultCountVacancies = '';
@@ -293,6 +302,271 @@ class _MetricsPageState extends State<MetricsPage> {
 
   }
 
+  // Future<void> getCountResponseMonthData() async {
+  //   var monthlyValues = await calculateCountResponsesMonth(selectedYear);
+  //   setState(() {
+  //     _monthlyValues = monthlyValues;
+  //   });
+  // }
+
+  Future<List<int>> calculateCountResponsesMonth(DateTime year) async {
+    final List<int> monthlyValues = [];
+
+    for (int month = 1; month <= 12; month++) {
+      final startDate = DateTime(year.year, month, 1);
+      final endDate = DateTime(year.year, month + 1, 1).subtract(Duration(days: 1));
+
+      final formatter = DateFormat('yyyy-MM-dd');
+      final startDateTimeFormatted = formatter.format(startDate);
+      final endDateTimeFormatted = formatter.format(endDate);
+
+      final response = await http.get(
+        Uri.parse(
+            'http://172.20.10.3:8092/metrics/countAllResponses/$startDateTimeFormatted/$endDateTimeFormatted'),
+        headers: {
+          'Authorization': 'Bearer ${widget.token}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        monthlyValues.add(int.parse(response.body));
+      } else {
+        monthlyValues.add(0);
+      }
+    }
+
+    setState(() {
+      _monthlyValues = monthlyValues;
+    });
+
+    return _monthlyValues;
+  }
+
+  Future<List<int>> calculateCountRelevantResponsesMonth(DateTime year) async {
+    final List<int> monthlyValues = [];
+
+    for (int month = 1; month <= 12; month++) {
+      final startDate = DateTime(year.year, month, 1);
+      final endDate = DateTime(year.year, month + 1, 1).subtract(Duration(days: 1));
+
+      final formatter = DateFormat('yyyy-MM-dd');
+      final startDateTimeFormatted = formatter.format(startDate);
+      final endDateTimeFormatted = formatter.format(endDate);
+
+      final response = await http.get(
+        Uri.parse(
+            'http://172.20.10.3:8092/metrics/countAllRelevantResponses/$startDateTimeFormatted/$endDateTimeFormatted'),
+        headers: {
+          'Authorization': 'Bearer ${widget.token}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        monthlyValues.add(int.parse(response.body));
+      } else {
+        monthlyValues.add(0);
+      }
+    }
+
+    setState(() {
+      _monthlyValues = monthlyValues;
+    });
+
+    return _monthlyValues;
+  }
+
+  Future<List<int>> calculateCountAllRefusalEmployerMonth(DateTime year) async {
+    final List<int> monthlyValues = [];
+
+    for (int month = 1; month <= 12; month++) {
+      final startDate = DateTime(year.year, month, 1);
+      final endDate = DateTime(year.year, month + 1, 1).subtract(Duration(days: 1));
+
+      final formatter = DateFormat('yyyy-MM-dd');
+      final startDateTimeFormatted = formatter.format(startDate);
+      final endDateTimeFormatted = formatter.format(endDate);
+
+      final response = await http.get(
+        Uri.parse(
+            'http://172.20.10.3:8092/metrics/countAllRefusalEmployer/$startDateTimeFormatted/$endDateTimeFormatted'),
+        headers: {
+          'Authorization': 'Bearer ${widget.token}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        monthlyValues.add(int.parse(response.body));
+      } else {
+        monthlyValues.add(0);
+      }
+    }
+
+    setState(() {
+      _monthlyValues = monthlyValues;
+    });
+
+    return _monthlyValues;
+  }
+
+  Future<List<int>> calculateCountAllSelfDanialMonth(DateTime year) async {
+    final List<int> monthlyValues = [];
+
+    for (int month = 1; month <= 12; month++) {
+      final startDate = DateTime(year.year, month, 1);
+      final endDate = DateTime(year.year, month + 1, 1).subtract(Duration(days: 1));
+
+      final formatter = DateFormat('yyyy-MM-dd');
+      final startDateTimeFormatted = formatter.format(startDate);
+      final endDateTimeFormatted = formatter.format(endDate);
+
+      final response = await http.get(
+        Uri.parse(
+            'http://172.20.10.3:8092/metrics/countAllSelfDanial/$startDateTimeFormatted/$endDateTimeFormatted'),
+        headers: {
+          'Authorization': 'Bearer ${widget.token}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        monthlyValues.add(int.parse(response.body));
+      } else {
+        monthlyValues.add(0);
+      }
+    }
+
+    setState(() {
+      _monthlyValues = monthlyValues;
+    });
+
+    return _monthlyValues;
+  }
+
+  Future<List<int>> calculateCountAllInvitationMonth(DateTime year) async {
+    final List<int> monthlyValues = [];
+
+    for (int month = 1; month <= 12; month++) {
+      final startDate = DateTime(year.year, month, 1);
+      final endDate = DateTime(year.year, month + 1, 1).subtract(Duration(days: 1));
+
+      final formatter = DateFormat('yyyy-MM-dd');
+      final startDateTimeFormatted = formatter.format(startDate);
+      final endDateTimeFormatted = formatter.format(endDate);
+
+      final response = await http.get(
+        Uri.parse(
+            'http://172.20.10.3:8092/metrics/countAllInvitation/$startDateTimeFormatted/$endDateTimeFormatted'),
+        headers: {
+          'Authorization': 'Bearer ${widget.token}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        monthlyValues.add(int.parse(response.body));
+      } else {
+        monthlyValues.add(0);
+      }
+    }
+
+    setState(() {
+      _monthlyValues = monthlyValues;
+    });
+
+    return _monthlyValues;
+  }
+
+  Future<List<int>> calculateCountAllFoundResumeMonth(DateTime year) async {
+    final List<int> monthlyValues = [];
+
+    for (int month = 1; month <= 12; month++) {
+      final startDate = DateTime(year.year, month, 1);
+      final endDate = DateTime(year.year, month + 1, 1).subtract(Duration(days: 1));
+
+      final formatter = DateFormat('yyyy-MM-dd');
+      final startDateTimeFormatted = formatter.format(startDate);
+      final endDateTimeFormatted = formatter.format(endDate);
+
+      final response = await http.get(
+        Uri.parse(
+            'http://172.20.10.3:8092/metrics/countAllFoundResume/$startDateTimeFormatted/$endDateTimeFormatted'),
+        headers: {
+          'Authorization': 'Bearer ${widget.token}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        monthlyValues.add(int.parse(response.body));
+      } else {
+        monthlyValues.add(0);
+      }
+    }
+
+    setState(() {
+      _monthlyValues = monthlyValues;
+    });
+
+    return _monthlyValues;
+  }
+
+  Future<List<int>> calculateCountVacancyMonth(DateTime year) async {
+    final List<int> monthlyValues = [];
+
+    for (int month = 1; month <= 12; month++) {
+      final startDate = DateTime(year.year, month, 1);
+      final endDate = DateTime(year.year, month + 1, 1).subtract(Duration(days: 1));
+
+      final formatter = DateFormat('yyyy-MM-dd');
+      final startDateTimeFormatted = formatter.format(startDate);
+      final endDateTimeFormatted = formatter.format(endDate);
+
+      final response = await http.get(
+        Uri.parse(
+            'http://172.20.10.3:8092/metrics/countVacancy/$startDateTimeFormatted/$endDateTimeFormatted'),
+        headers: {
+          'Authorization': 'Bearer ${widget.token}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        monthlyValues.add(int.parse(response.body));
+      } else {
+        monthlyValues.add(0);
+      }
+    }
+
+    setState(() {
+      _monthlyValues = monthlyValues;
+    });
+    return _monthlyValues;
+  }
+
+  Future<void> updateChart() async {
+    List<int> monthlyValues;
+    switch (selectedMetric) {
+      case 'Количество откликов':
+        monthlyValues = await calculateCountResponsesMonth(selectedYear);
+        break;
+      case 'Количество релевантных откликов':
+        monthlyValues = await calculateCountRelevantResponsesMonth(selectedYear);
+      case 'Количество вакансий':
+        monthlyValues = await calculateCountVacancyMonth(selectedYear);
+      case 'Количество самоотказов':
+        monthlyValues = await calculateCountAllSelfDanialMonth(selectedYear);
+      case 'Количество отказов работодателя':
+        monthlyValues = await calculateCountAllRefusalEmployerMonth(selectedYear);
+      case 'Количество приглашений':
+        monthlyValues = await calculateCountAllInvitationMonth(selectedYear);
+      case 'Количество найденных резюме':
+        monthlyValues = await calculateCountAllFoundResumeMonth(selectedYear);
+        break;
+      default:
+        monthlyValues = [];
+    }
+
+    setState(() {
+      _monthlyValues = monthlyValues;
+    });
+  }
+
   int extractIdFromToken(String token)
   {
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
@@ -338,6 +612,13 @@ class _MetricsPageState extends State<MetricsPage> {
   @override
   void initState() {
     super.initState();
+    initializeDateFormatting('ru', null).then((_) {
+      calculateCountResponsesMonth(selectedYear);
+    });
+    availableMetrics = ['Количество откликов', 'Количество релевантных откликов', 'Количество вакансий'
+    , 'Количество самоотказов', 'Количество отказов работодателя', 'Количество приглашений', 'Количество найденных резюме'];
+    selectedMetric = availableMetrics.first;
+    updateChart();
     startDate = DateTime.now();
     endDate = DateTime.now();
     for (int i = 0; i < columnNames.length; i++) {
@@ -645,7 +926,7 @@ class _MetricsPageState extends State<MetricsPage> {
                 height: 400,
                 width: double.infinity,
                 child: SfCartesianChart(
-                  title: ChartTitle(text: 'Рассчитанные метрики'),
+                  title: ChartTitle(text: 'Рассчитанные метрики \n за период с ${dateFormat.format(startDate)} по ${dateFormat.format(endDate)}'),
                   primaryXAxis: CategoryAxis(
                     labelRotation: 90,
                   ),
@@ -679,6 +960,104 @@ class _MetricsPageState extends State<MetricsPage> {
                         }
                         return Colors.grey.shade500;
                       },
+                    ),
+                  ],
+                ),
+              ),
+              Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Выберите год:'),
+                  SizedBox(width: 8.0),
+                  DropdownButton<int>(
+                    value: selectedYear.year,
+                    onChanged: (newYear) {
+                      if (newYear != null) {
+                        setState(() {
+                          selectedYear = DateTime(newYear, 1, 1);
+                          _monthlyValues = [];
+                          calculateCountResponsesMonth(selectedYear);
+                        });
+                      }
+                    },
+                    items: [
+                      for (int i = 2023; i <= 2030; i++)
+                        DropdownMenuItem<int>(
+                          value: i,
+                          child: Text('$i'),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+              DropdownButton<String>(
+                value: selectedMetric,
+                items: availableMetrics.map((String metric) {
+                  return DropdownMenuItem<String>(
+                    value: metric,
+                    child: Text(metric),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedMetric = newValue!;
+                    updateChart();
+                  });
+                },
+              ),
+              SizedBox(height: 3.0),
+              Container(
+                height: 400,
+                width: double.infinity,
+                child: SfCartesianChart(
+                  title: ChartTitle(
+                      text:
+                          'Рассчитанные метрики \n за ${selectedYear.year} год'),
+                  primaryXAxis: CategoryAxis(
+                    labelRotation: 90,
+                    title: AxisTitle(text: 'Месяц'),
+                  ),
+                  primaryYAxis: NumericAxis(
+                    title: AxisTitle(text: 'Количество откликов'),
+                  ),
+                  series: <ChartSeries>[
+                    LineSeries<int, String>(
+                      dataSource: _monthlyValues,
+                      xValueMapper: (_, index) =>
+                          DateFormat('MMM', 'ru').format(DateTime(1, index + 1, 1)),
+                      yValueMapper: (value, _) => value,
+                      name: selectedMetric,
+                      color: Colors.blue,
+                      width: 2,
+                      enableTooltip: true,
+                      dataLabelSettings: DataLabelSettings(
+                        isVisible: true,
+                        labelPosition: ChartDataLabelPosition.outside,
+                        labelAlignment: ChartDataLabelAlignment.auto,
+                        textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    FastLineSeries<int, String>(
+                      dataSource: _monthlyValues,
+                      xValueMapper: (_, index) => DateFormat('MMM', 'ru').format(DateTime(1, index + 1, 1)),
+                      yValueMapper: (value, _) => value,
+                      name: 'Линия тренда',
+                      color: Colors.red,
+                      width: 2,
+                      enableTooltip: true,
+                      dataLabelSettings: DataLabelSettings(
+                        isVisible: true,
+                        labelPosition: ChartDataLabelPosition.outside,
+                        labelAlignment: ChartDataLabelAlignment.auto,
+                        textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                        ),
+                      ),
                     ),
                   ],
                 ),
